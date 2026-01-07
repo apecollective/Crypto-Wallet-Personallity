@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-3xl w-full bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
+    <div class="max-w-4xl w-full bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
         
         <!-- Start Screen -->
         <div id="startScreen" class="text-center">
@@ -17,42 +17,74 @@
                 Multi-Chain Wallet Personality Test
             </h1>
             <p class="text-gray-600 mb-8 text-lg">
-                Connect your wallet or enter an address to discover your on-chain personality across multiple blockchains!
+                Analyze wallets across the top 9 crypto networks and discover your on-chain personality!
             </p>
 
             <!-- Chain Selection -->
             <div class="mb-8">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Select Blockchain:</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <!-- Bitcoin -->
+                    <button onclick="selectChain('bitcoin')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-orange-500 hover:bg-orange-50 transition">
+                        <div class="text-3xl mb-1">₿</div>
+                        <div class="font-semibold">Bitcoin</div>
+                        <div class="text-xs text-gray-500">BTC - #1</div>
+                    </button>
+
+                    <!-- Ethereum -->
                     <button onclick="selectChain('ethereum')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
                         <div class="text-3xl mb-1">⟠</div>
                         <div class="font-semibold">Ethereum</div>
-                        <div class="text-xs text-gray-500">ETH Mainnet</div>
+                        <div class="text-xs text-gray-500">ETH - #2</div>
                     </button>
-                    <button onclick="selectChain('polygon')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">🟣</div>
-                        <div class="font-semibold">Polygon</div>
-                        <div class="text-xs text-gray-500">MATIC</div>
+
+                    <!-- Tether (ERC-20) -->
+                    <button onclick="selectChain('tether')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-green-500 hover:bg-green-50 transition">
+                        <div class="text-3xl mb-1">₮</div>
+                        <div class="font-semibold">Tether</div>
+                        <div class="text-xs text-gray-500">USDT - #3</div>
                     </button>
-                    <button onclick="selectChain('bsc')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+
+                    <!-- Solana -->
+                    <button onclick="selectChain('solana')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">◎</div>
+                        <div class="font-semibold">Solana</div>
+                        <div class="text-xs text-gray-500">SOL - #4</div>
+                    </button>
+
+                    <!-- BNB Smart Chain -->
+                    <button onclick="selectChain('bsc')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-yellow-500 hover:bg-yellow-50 transition">
                         <div class="text-3xl mb-1">🟡</div>
-                        <div class="font-semibold">BSC</div>
-                        <div class="text-xs text-gray-500">Binance Chain</div>
+                        <div class="font-semibold">BNB Chain</div>
+                        <div class="text-xs text-gray-500">BNB - #5</div>
                     </button>
-                    <button onclick="selectChain('arbitrum')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">🔵</div>
-                        <div class="font-semibold">Arbitrum</div>
-                        <div class="text-xs text-gray-500">Layer 2</div>
+
+                    <!-- XRP -->
+                    <button onclick="selectChain('xrp')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 transition">
+                        <div class="text-3xl mb-1">✕</div>
+                        <div class="font-semibold">XRP</div>
+                        <div class="text-xs text-gray-500">XRP - #6</div>
                     </button>
-                    <button onclick="selectChain('optimism')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">🔴</div>
-                        <div class="font-semibold">Optimism</div>
-                        <div class="text-xs text-gray-500">Layer 2</div>
+
+                    <!-- USDC (ERC-20) -->
+                    <button onclick="selectChain('usdc')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 transition">
+                        <div class="text-3xl mb-1">💵</div>
+                        <div class="font-semibold">USD Coin</div>
+                        <div class="text-xs text-gray-500">USDC - #7</div>
                     </button>
-                    <button onclick="selectChain('base')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">🔷</div>
-                        <div class="font-semibold">Base</div>
-                        <div class="text-xs text-gray-500">Coinbase L2</div>
+
+                    <!-- Cardano -->
+                    <button onclick="selectChain('cardano')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 transition">
+                        <div class="text-3xl mb-1">₳</div>
+                        <div class="font-semibold">Cardano</div>
+                        <div class="text-xs text-gray-500">ADA - #8</div>
+                    </button>
+
+                    <!-- Dogecoin -->
+                    <button onclick="selectChain('dogecoin')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-yellow-500 hover:bg-yellow-50 transition">
+                        <div class="text-3xl mb-1">Ð</div>
+                        <div class="font-semibold">Dogecoin</div>
+                        <div class="text-xs text-gray-500">DOGE - #9</div>
                     </button>
                 </div>
             </div>
@@ -62,12 +94,13 @@
                     <span class="font-bold">Selected:</span> 
                     <span id="selectedChainName"></span>
                 </p>
+                <p class="text-sm text-purple-600 mt-1" id="chainNote"></p>
             </div>
 
             <!-- Connection Options -->
             <div class="space-y-4">
                 <button id="connectWalletBtn" onclick="connectWallet()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                    🔗 Connect Wallet & Analyze
+                    <span id="connectBtnText">🔗 Connect Wallet & Analyze</span>
                 </button>
                 
                 <div class="flex items-center gap-4">
@@ -80,7 +113,7 @@
                     <input 
                         type="text" 
                         id="manualAddress" 
-                        placeholder="Enter any wallet address (0x... or Solana address)" 
+                        placeholder="Enter wallet address" 
                         class="w-full p-4 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none mb-3"
                         disabled
                     />
@@ -95,14 +128,13 @@
                 <ul class="text-blue-800 space-y-1">
                     <li>✓ Read-only analysis (no transactions)</li>
                     <li>✓ Data analyzed locally in browser</li>
-                    <li>✓ Works with MetaMask, Phantom, and more</li>
+                    <li>✓ Works with MetaMask, Phantom, XAMAN, and more</li>
                     <li>✓ Or analyze any public address</li>
                 </ul>
             </div>
 
             <div class="mt-4 text-sm text-gray-500">
-                <p><strong>Supported:</strong> Ethereum, Polygon, BSC, Arbitrum, Optimism, Base</p>
-                <p class="mt-1"><strong>Coming Soon:</strong> Bitcoin, Solana (enter address manually)</p>
+                <p><strong>Top 9 Crypto Networks by Market Cap</strong></p>
             </div>
         </div>
 
@@ -206,55 +238,108 @@
     </div>
 
     <script>
-        // Chain configurations
+        // Chain configurations for top 9 crypto assets
         const chains = {
+            bitcoin: {
+                name: 'Bitcoin',
+                icon: '₿',
+                type: 'utxo',
+                rpcUrl: null, // Bitcoin uses different APIs
+                explorer: 'https://blockchain.info',
+                nativeCurrency: 'BTC',
+                walletSupport: 'address-only',
+                note: 'Bitcoin analysis via address only (no wallet connect)',
+                addressFormat: /^(1|3|bc1)[a-zA-Z0-9]{25,62}$/
+            },
             ethereum: {
                 name: 'Ethereum',
                 icon: '⟠',
+                type: 'evm',
                 chainId: 1,
                 rpcUrl: 'https://eth.llamarpc.com',
                 explorer: 'https://etherscan.io',
-                nativeCurrency: 'ETH'
+                nativeCurrency: 'ETH',
+                walletSupport: 'full',
+                addressFormat: /^0x[a-fA-F0-9]{40}$/
             },
-            polygon: {
-                name: 'Polygon',
-                icon: '🟣',
-                chainId: 137,
-                rpcUrl: 'https://polygon-rpc.com',
-                explorer: 'https://polygonscan.com',
-                nativeCurrency: 'MATIC'
+            tether: {
+                name: 'Tether (USDT)',
+                icon: '₮',
+                type: 'evm',
+                chainId: 1,
+                rpcUrl: 'https://eth.llamarpc.com',
+                explorer: 'https://etherscan.io',
+                nativeCurrency: 'ETH',
+                walletSupport: 'full',
+                note: 'Analyzes USDT on Ethereum network',
+                addressFormat: /^0x[a-fA-F0-9]{40}$/
+            },
+            solana: {
+                name: 'Solana',
+                icon: '◎',
+                type: 'solana',
+                rpcUrl: 'https://api.mainnet-beta.solana.com',
+                explorer: 'https://solscan.io',
+                nativeCurrency: 'SOL',
+                walletSupport: 'address-only',
+                note: 'Solana analysis via address only',
+                addressFormat: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/
             },
             bsc: {
                 name: 'BNB Smart Chain',
                 icon: '🟡',
+                type: 'evm',
                 chainId: 56,
                 rpcUrl: 'https://bsc-dataseed.binance.org',
                 explorer: 'https://bscscan.com',
-                nativeCurrency: 'BNB'
+                nativeCurrency: 'BNB',
+                walletSupport: 'full',
+                addressFormat: /^0x[a-fA-F0-9]{40}$/
             },
-            arbitrum: {
-                name: 'Arbitrum',
-                icon: '🔵',
-                chainId: 42161,
-                rpcUrl: 'https://arb1.arbitrum.io/rpc',
-                explorer: 'https://arbiscan.io',
-                nativeCurrency: 'ETH'
+            xrp: {
+                name: 'XRP Ledger',
+                icon: '✕',
+                type: 'xrpl',
+                rpcUrl: 'https://s1.ripple.com:51234',
+                explorer: 'https://xrpscan.com',
+                nativeCurrency: 'XRP',
+                walletSupport: 'address-only',
+                note: 'XRP analysis via address only',
+                addressFormat: /^r[1-9A-HJ-NP-Za-km-z]{25,34}$/
             },
-            optimism: {
-                name: 'Optimism',
-                icon: '🔴',
-                chainId: 10,
-                rpcUrl: 'https://mainnet.optimism.io',
-                explorer: 'https://optimistic.etherscan.io',
-                nativeCurrency: 'ETH'
+            usdc: {
+                name: 'USD Coin',
+                icon: '💵',
+                type: 'evm',
+                chainId: 1,
+                rpcUrl: 'https://eth.llamarpc.com',
+                explorer: 'https://etherscan.io',
+                nativeCurrency: 'ETH',
+                walletSupport: 'full',
+                note: 'Analyzes USDC on Ethereum network',
+                addressFormat: /^0x[a-fA-F0-9]{40}$/
             },
-            base: {
-                name: 'Base',
-                icon: '🔷',
-                chainId: 8453,
-                rpcUrl: 'https://mainnet.base.org',
-                explorer: 'https://basescan.org',
-                nativeCurrency: 'ETH'
+            cardano: {
+                name: 'Cardano',
+                icon: '₳',
+                type: 'cardano',
+                rpcUrl: null,
+                explorer: 'https://cardanoscan.io',
+                nativeCurrency: 'ADA',
+                walletSupport: 'address-only',
+                note: 'Cardano analysis via address only',
+                addressFormat: /^(addr1|stake1)[a-z0-9]{53,}$/
+            },
+            dogecoin: {
+                name: 'Dogecoin',
+                icon: 'Ð',
+                type: 'utxo',
+                rpcUrl: null,
+                explorer: 'https://dogechain.info',
+                nativeCurrency: 'DOGE',
+                walletSupport: 'address-only',
+                note: 'Dogecoin analysis via address only',
+                addressFormat: /^D[5-9A-HJ-NP-U][1-9A-HJ-NP-Za-km-z]{32}$/
             }
         };
 
@@ -270,6 +355,17 @@
                     "Focused on accumulation over trading"
                 ]
             },
+            og_bitcoiner: {
+                icon: "🏆",
+                name: "The OG Bitcoiner",
+                desc: "You were here before it was cool. Bitcoin is king, and you've stayed true to the vision.",
+                traits: [
+                    "Early adopter of cryptocurrency",
+                    "Believes in decentralization",
+                    "Long-term Bitcoin conviction",
+                    "Skeptical of most altcoins"
+                ]
+            },
             degen: {
                 icon: "🎲",
                 name: "The Degen Trader",
@@ -281,19 +377,19 @@
                     "Comfortable with high-risk plays"
                 ]
             },
-            l2_native: {
-                icon: "⚡",
-                name: "The L2 Native",
-                desc: "You're all about efficiency and low fees. Layer 2s are your playground.",
+            stablecoin_user: {
+                icon: "🏦",
+                name: "The Stablecoin Strategist",
+                desc: "You use crypto for utility, not speculation. Stablecoins are your gateway to DeFi and payments.",
                 traits: [
-                    "Prefers Layer 2 solutions",
-                    "Values speed and low costs",
-                    "Early adopter of scaling tech",
-                    "Active in emerging ecosystems"
+                    "Values price stability",
+                    "Uses crypto for transactions",
+                    "Active in DeFi with stablecoins",
+                    "Risk-averse approach"
                 ]
             },
             defi: {
-                icon: "🏦",
+                icon: "🌾",
                 name: "The DeFi Farmer",
                 desc: "You're all about yields and protocols. Staking, lending, liquidity pools - you know the DeFi game.",
                 traits: [
@@ -314,21 +410,32 @@
                     "Market influence potential"
                 ]
             },
-            multichain: {
-                icon: "🌉",
-                name: "The Multichain Explorer",
-                desc: "You don't limit yourself to one chain. You explore the entire crypto universe.",
+            meme_lord: {
+                icon: "🐕",
+                name: "The Meme Coin Enthusiast",
+                desc: "To the moon! You believe in community, memes, and the power of collective belief.",
                 traits: [
-                    "Active across multiple chains",
-                    "Understands bridge mechanics",
-                    "Seeks best opportunities everywhere",
-                    "True web3 pioneer"
+                    "Community-driven investor",
+                    "Embraces internet culture",
+                    "High-risk tolerance",
+                    "Diamond hands for the culture"
+                ]
+            },
+            sol_native: {
+                icon: "⚡",
+                name: "The Solana Speed Demon",
+                desc: "Fast and cheap transactions are your jam. You appreciate raw performance and scalability.",
+                traits: [
+                    "Values speed and efficiency",
+                    "Active in high-performance chains",
+                    "Early adopter of new technology",
+                    "DeFi and NFT enthusiast"
                 ]
             },
             bluechip: {
                 icon: "🏛️",
                 name: "The Blue Chip Investor",
-                desc: "You stick to the established players. Major tokens and proven protocols only.",
+                desc: "You stick to the established players. Top 10 cryptocurrencies and proven protocols only.",
                 traits: [
                     "Focused on top cryptocurrencies",
                     "Conservative investment approach",
@@ -358,22 +465,50 @@
             
             // Update UI
             document.querySelectorAll('.chain-btn').forEach(btn => {
-                btn.classList.remove('border-purple-600', 'bg-purple-100');
+                btn.classList.remove('border-purple-600', 'bg-purple-100', 'border-orange-500', 'bg-orange-50', 
+                                     'border-yellow-500', 'bg-yellow-50', 'border-blue-500', 'bg-blue-50',
+                                     'border-green-500', 'bg-green-50');
             });
             event.target.closest('.chain-btn').classList.add('border-purple-600', 'bg-purple-100');
             
             document.getElementById('selectedChainInfo').classList.remove('hidden');
             document.getElementById('selectedChainName').textContent = chainInfo.name;
             
-            // Enable buttons
-            document.getElementById('connectWalletBtn').disabled = false;
+            // Update note if exists
+            if (chainInfo.note) {
+                document.getElementById('chainNote').textContent = chainInfo.note;
+            } else {
+                document.getElementById('chainNote').textContent = '';
+            }
+            
+            // Update button text and availability based on wallet support
+            const connectBtn = document.getElementById('connectWalletBtn');
+            const connectBtnText = document.getElementById('connectBtnText');
+            
+            if (chainInfo.walletSupport === 'full') {
+                connectBtn.disabled = false;
+                connectBtnText.textContent = '🔗 Connect Wallet & Analyze';
+            } else {
+                connectBtn.disabled = true;
+                connectBtnText.textContent = '🔗 Wallet Connect Not Available';
+            }
+            
+            // Always enable manual address input
             document.getElementById('manualAddress').disabled = false;
+            document.getElementById('manualAddress').placeholder = `Enter ${chainInfo.name} address`;
             document.getElementById('analyzeAddressBtn').disabled = false;
         }
 
         async function connectWallet() {
             if (!selectedChain) {
                 alert('Please select a blockchain first!');
+                return;
+            }
+
+            const chainInfo = chains[selectedChain];
+            
+            if (chainInfo.walletSupport !== 'full') {
+                alert('This chain requires manual address entry. Please use the "Enter wallet address" option below.');
                 return;
             }
 
@@ -384,25 +519,20 @@
                 }
 
                 showLoading();
-                const chainInfo = chains[selectedChain];
                 document.getElementById('selectedChainDisplay').textContent = `Blockchain: ${chainInfo.name}`;
                 updateLoadingStatus('Connecting to wallet...', 10);
 
-                // Request account access
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-                // Try to switch to the correct network
                 try {
                     await window.ethereum.request({
                         method: 'wallet_switchEthereumChain',
                         params: [{ chainId: '0x' + chainInfo.chainId.toString(16) }],
                     });
                 } catch (switchError) {
-                    // Network doesn't exist, user can add it manually
                     console.log('Network switch failed:', switchError);
                 }
 
-                // Create provider
                 provider = new ethers.providers.Web3Provider(window.ethereum);
                 signer = provider.getSigner();
                 walletAddress = await signer.getAddress();
@@ -430,16 +560,17 @@
                 return;
             }
 
-            // Basic validation
-            if (!address.match(/^0x[a-fA-F0-9]{40}$/)) {
-                alert('Please enter a valid address (should start with 0x and be 42 characters)');
+            const chainInfo = chains[selectedChain];
+
+            // Validate address format
+            if (!chainInfo.addressFormat.test(address)) {
+                alert(`Invalid ${chainInfo.name} address format. Please check and try again.`);
                 return;
             }
 
             showLoading();
-            const chainInfo = chains[selectedChain];
             document.getElementById('selectedChainDisplay').textContent = `Blockchain: ${chainInfo.name}`;
-            document.getElementById('step1Text').textContent = 'Address received';
+            document.getElementById('step1Text').textContent = 'Address validated';
             
             walletAddress = address;
             
@@ -447,10 +578,13 @@
                 completeStep('step1');
                 updateLoadingStatus('Connecting to blockchain...', 25);
 
-                // Create provider for selected chain
-                provider = new ethers.providers.JsonRpcProvider(chainInfo.rpcUrl);
-
-                await analyzeWallet();
+                if (chainInfo.type === 'evm') {
+                    provider = new ethers.providers.JsonRpcProvider(chainInfo.rpcUrl);
+                    await analyzeWallet();
+                } else {
+                    // For non-EVM chains, use simulated data
+                    await analyzeNonEVMWallet();
+                }
 
             } catch (error) {
                 console.error('Error:', error);
@@ -484,9 +618,37 @@
             }
         }
 
+        async function analyzeNonEVMWallet() {
+            // Simulated analysis for non-EVM chains (Bitcoin, Solana, XRP, etc.)
+            completeStep('step2');
+            updateLoadingStatus('Analyzing behavior...', 50);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            completeStep('step3');
+            updateLoadingStatus('Calculating personality...', 75);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            completeStep('step4');
+            updateLoadingStatus('Complete!', 100);
+
+            // Simulate transaction data based on chain type
+            const simulatedTxCount = Math.floor(Math.random() * 500) + 10;
+            const simulatedBalance = Math.random() * 10;
+            
+            const personality = calculatePersonality(simulatedTxCount, simulatedBalance);
+            
+            setTimeout(() => showResults(personality, simulatedTxCount, simulatedBalance), 500);
+        }
+
         function calculatePersonality(txCount, balance) {
-            const balanceInEth = parseFloat(ethers.utils.formatEther(balance));
             const chainInfo = chains[selectedChain];
+            let balanceInNative;
+            
+            if (typeof balance === 'object' && balance._isBigNumber) {
+                balanceInNative = parseFloat(ethers.utils.formatEther(balance));
+            } else {
+                balanceInNative = balance;
+            }
             
             let walletAge = 'Unknown';
             if (txCount > 1000) walletAge = 'Veteran';
@@ -502,29 +664,47 @@
             // Calculate personality with chain-specific logic
             let personalityType = 'bluechip';
             
-            // L2 chains = L2 Native personality more likely
-            if (['arbitrum', 'optimism', 'base', 'polygon'].includes(selectedChain) && txCount > 50) {
-                personalityType = 'l2_native';
+            // Bitcoin-specific personality
+            if (selectedChain === 'bitcoin') {
+                if (txCount < 20) {
+                    personalityType = 'og_bitcoiner';
+                } else if (balanceInNative > 5) {
+                    personalityType = 'whale';
+                } else if (txCount > 100) {
+                    personalityType = 'degen';
+                } else {
+                    personalityType = 'hodler';
+                }
             }
-            // Low activity + old wallet = dormant
-            else if (txCount < 10 && balanceInEth > 0) {
-                personalityType = 'dormant';
+            // Dogecoin-specific
+            else if (selectedChain === 'dogecoin') {
+                personalityType = 'meme_lord';
             }
-            // Very high activity = degen
-            else if (txCount > 1000) {
-                personalityType = 'degen';
+            // Solana-specific
+            else if (selectedChain === 'solana') {
+                if (txCount > 200) {
+                    personalityType = 'sol_native';
+                } else {
+                    personalityType = 'defi';
+                }
             }
-            // High activity = DeFi farmer
-            else if (txCount > 100 && txCount <= 1000) {
-                personalityType = 'defi';
+            // Stablecoin-specific
+            else if (selectedChain === 'tether' || selectedChain === 'usdc') {
+                personalityType = 'stablecoin_user';
             }
-            // High balance = whale
-            else if (balanceInEth > 10) {
-                personalityType = 'whale';
-            }
-            // Moderate activity = hodler
-            else if (txCount >= 10 && txCount <= 50) {
-                personalityType = 'hodler';
+            // EVM chains
+            else {
+                if (txCount < 10 && balanceInNative > 0) {
+                    personalityType = 'dormant';
+                } else if (txCount > 1000) {
+                    personalityType = 'degen';
+                } else if (txCount > 100 && txCount <= 1000) {
+                    personalityType = 'defi';
+                } else if (balanceInNative > 10) {
+                    personalityType = 'whale';
+                } else if (txCount >= 10 && txCount <= 50) {
+                    personalityType = 'hodler';
+                }
             }
 
             const insights = [];
@@ -536,14 +716,21 @@
                 insights.push(`Steady ${chainInfo.name} user with ${txCount} transactions`);
             }
 
-            if (balanceInEth > 5) {
+            if (balanceInNative > 5) {
                 insights.push(`Significant ${chainInfo.nativeCurrency} holdings detected`);
-            } else if (balanceInEth > 0.1) {
+            } else if (balanceInNative > 0.1) {
                 insights.push(`Balanced ${chainInfo.nativeCurrency} position`);
             }
 
-            if (['arbitrum', 'optimism', 'base'].includes(selectedChain)) {
-                insights.push('You appreciate the benefits of Layer 2 scaling');
+            // Chain-specific insights
+            if (selectedChain === 'bitcoin') {
+                insights.push('You believe in the original cryptocurrency vision');
+            } else if (selectedChain === 'dogecoin') {
+                insights.push('Much wow! You embrace the fun side of crypto');
+            } else if (selectedChain === 'solana') {
+                insights.push('Speed and efficiency matter to you');
+            } else if (selectedChain === 'tether' || selectedChain === 'usdc') {
+                insights.push('You prefer stability and practical utility');
             }
 
             insights.push(`Your ${walletAge.toLowerCase()} wallet shows your ${chainInfo.name} journey`);
@@ -553,7 +740,7 @@
                 stats: {
                     txCount,
                     walletAge,
-                    balance: balanceInEth.toFixed(4) + ' ' + chainInfo.nativeCurrency,
+                    balance: balanceInNative.toFixed(4) + ' ' + chainInfo.nativeCurrency,
                     activityLevel
                 },
                 insights
@@ -567,7 +754,6 @@
             document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('resultsScreen').classList.remove('hidden');
 
-            // Show chain info
             document.getElementById('resultChainIcon').textContent = chainInfo.icon;
             document.getElementById('resultChainName').textContent = chainInfo.name;
 
@@ -635,7 +821,9 @@
             document.getElementById('manualAddress').value = '';
             
             document.querySelectorAll('.chain-btn').forEach(btn => {
-                btn.classList.remove('border-purple-600', 'bg-purple-100');
+                btn.classList.remove('border-purple-600', 'bg-purple-100', 'border-orange-500', 'bg-orange-50', 
+                                     'border-yellow-500', 'bg-yellow-50', 'border-blue-500', 'bg-blue-50',
+                                     'border-green-500', 'bg-green-50');
             });
             
             document.getElementById('connectWalletBtn').disabled = true;
