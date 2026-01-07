@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Wallet Personality Test</title>
+    <title>Multi-Chain Wallet Personality Test</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
@@ -14,34 +14,104 @@
         <div id="startScreen" class="text-center">
             <div class="text-6xl mb-4">🔮</div>
             <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-                Crypto Wallet Personality Test
+                Multi-Chain Wallet Personality Test
             </h1>
             <p class="text-gray-600 mb-8 text-lg">
-                Connect your wallet and discover your on-chain personality based on your actual transaction history, holdings, and behavior.
+                Connect your wallet or enter an address to discover your on-chain personality across multiple blockchains!
             </p>
+
+            <!-- Chain Selection -->
+            <div class="mb-8">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Select Blockchain:</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <button onclick="selectChain('ethereum')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">⟠</div>
+                        <div class="font-semibold">Ethereum</div>
+                        <div class="text-xs text-gray-500">ETH Mainnet</div>
+                    </button>
+                    <button onclick="selectChain('polygon')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">🟣</div>
+                        <div class="font-semibold">Polygon</div>
+                        <div class="text-xs text-gray-500">MATIC</div>
+                    </button>
+                    <button onclick="selectChain('bsc')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">🟡</div>
+                        <div class="font-semibold">BSC</div>
+                        <div class="text-xs text-gray-500">Binance Chain</div>
+                    </button>
+                    <button onclick="selectChain('arbitrum')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">🔵</div>
+                        <div class="font-semibold">Arbitrum</div>
+                        <div class="text-xs text-gray-500">Layer 2</div>
+                    </button>
+                    <button onclick="selectChain('optimism')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">🔴</div>
+                        <div class="font-semibold">Optimism</div>
+                        <div class="text-xs text-gray-500">Layer 2</div>
+                    </button>
+                    <button onclick="selectChain('base')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
+                        <div class="text-3xl mb-1">🔷</div>
+                        <div class="font-semibold">Base</div>
+                        <div class="text-xs text-gray-500">Coinbase L2</div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="selectedChainInfo" class="hidden mb-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <p class="text-purple-800">
+                    <span class="font-bold">Selected:</span> 
+                    <span id="selectedChainName"></span>
+                </p>
+            </div>
+
+            <!-- Connection Options -->
+            <div class="space-y-4">
+                <button id="connectWalletBtn" onclick="connectWallet()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    🔗 Connect Wallet & Analyze
+                </button>
+                
+                <div class="flex items-center gap-4">
+                    <div class="flex-1 h-px bg-gray-300"></div>
+                    <span class="text-gray-500 text-sm">OR</span>
+                    <div class="flex-1 h-px bg-gray-300"></div>
+                </div>
+
+                <div>
+                    <input 
+                        type="text" 
+                        id="manualAddress" 
+                        placeholder="Enter any wallet address (0x... or Solana address)" 
+                        class="w-full p-4 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none mb-3"
+                        disabled
+                    />
+                    <button id="analyzeAddressBtn" onclick="analyzeManualAddress()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        🔍 Analyze This Address
+                    </button>
+                </div>
+            </div>
             
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm text-left">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6 text-sm text-left">
                 <h3 class="font-bold text-blue-900 mb-2">🔒 Privacy & Security</h3>
                 <ul class="text-blue-800 space-y-1">
-                    <li>✓ We only READ your wallet data (no transactions)</li>
-                    <li>✓ Your data is analyzed locally in your browser</li>
-                    <li>✓ Nothing is stored or sent to any server</li>
-                    <li>✓ Works with MetaMask, Coinbase Wallet, WalletConnect</li>
+                    <li>✓ Read-only analysis (no transactions)</li>
+                    <li>✓ Data analyzed locally in browser</li>
+                    <li>✓ Works with MetaMask, Phantom, and more</li>
+                    <li>✓ Or analyze any public address</li>
                 </ul>
             </div>
 
-            <button onclick="connectWallet()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">
-                Connect Wallet & Analyze
-            </button>
-            
-            <p class="text-gray-500 text-sm mt-4">Supports Ethereum mainnet</p>
+            <div class="mt-4 text-sm text-gray-500">
+                <p><strong>Supported:</strong> Ethereum, Polygon, BSC, Arbitrum, Optimism, Base</p>
+                <p class="mt-1"><strong>Coming Soon:</strong> Bitcoin, Solana (enter address manually)</p>
+            </div>
         </div>
 
         <!-- Loading Screen -->
         <div id="loadingScreen" class="hidden text-center">
             <div class="text-6xl mb-4 animate-bounce">🔍</div>
             <h2 class="text-3xl font-bold text-gray-800 mb-4">Analyzing Your Wallet...</h2>
-            <p class="text-gray-600 mb-6" id="loadingStatus">Connecting to wallet...</p>
+            <p class="text-gray-600 mb-2"><span id="selectedChainDisplay"></span></p>
+            <p class="text-gray-600 mb-6" id="loadingStatus">Connecting...</p>
             
             <div class="bg-gray-200 rounded-full h-3 mb-6 overflow-hidden">
                 <div id="loadingBar" class="bg-gradient-to-r from-purple-600 to-pink-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
@@ -49,13 +119,13 @@
             
             <div class="text-left bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
                 <div id="step1" class="flex items-center text-gray-400">
-                    <span class="mr-2">○</span> Connected to wallet
+                    <span class="mr-2">○</span> <span id="step1Text">Connected to wallet</span>
                 </div>
                 <div id="step2" class="flex items-center text-gray-400">
                     <span class="mr-2">○</span> Fetching transaction history
                 </div>
                 <div id="step3" class="flex items-center text-gray-400">
-                    <span class="mr-2">○</span> Analyzing token holdings
+                    <span class="mr-2">○</span> Analyzing on-chain behavior
                 </div>
                 <div id="step4" class="flex items-center text-gray-400">
                     <span class="mr-2">○</span> Calculating personality traits
@@ -66,6 +136,10 @@
         <!-- Results Screen -->
         <div id="resultsScreen" class="hidden">
             <div class="text-center mb-6">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <span id="resultChainIcon" class="text-3xl"></span>
+                    <span id="resultChainName" class="text-lg font-semibold text-gray-600"></span>
+                </div>
                 <h1 class="text-2xl font-bold text-gray-700 mb-2">Your Crypto Personality:</h1>
                 <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl p-8 shadow-lg">
                     <div id="personalityIcon" class="text-7xl mb-3"></div>
@@ -78,19 +152,19 @@
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 text-center">
                     <div class="text-3xl font-bold text-blue-600" id="statTxCount">-</div>
-                    <div class="text-sm text-blue-800">Total Transactions</div>
+                    <div class="text-sm text-blue-800">Transactions</div>
                 </div>
                 <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 text-center">
                     <div class="text-3xl font-bold text-green-600" id="statWalletAge">-</div>
                     <div class="text-sm text-green-800">Wallet Age</div>
                 </div>
                 <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 text-center">
-                    <div class="text-3xl font-bold text-purple-600" id="statTokens">-</div>
-                    <div class="text-sm text-purple-800">Unique Tokens</div>
+                    <div class="text-3xl font-bold text-purple-600" id="statBalance">-</div>
+                    <div class="text-sm text-purple-800">Balance</div>
                 </div>
                 <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg p-4 text-center">
                     <div class="text-3xl font-bold text-pink-600" id="statActivity">-</div>
-                    <div class="text-sm text-pink-800">Activity Level</div>
+                    <div class="text-sm text-pink-800">Activity</div>
                 </div>
             </div>
             
@@ -108,7 +182,7 @@
 
             <div class="flex gap-4">
                 <button onclick="restartTest()" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
-                    Analyze Another Wallet
+                    Analyze Another
                 </button>
                 <button onclick="shareResults()" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                     Share Results
@@ -116,7 +190,7 @@
             </div>
 
             <div class="mt-6 text-center">
-                <p class="text-sm text-gray-500">Wallet: <span id="walletAddress" class="font-mono"></span></p>
+                <p class="text-sm text-gray-500">Address: <span id="walletAddress" class="font-mono"></span></p>
             </div>
         </div>
 
@@ -132,7 +206,58 @@
     </div>
 
     <script>
-        // Personality type definitions based on crypto behavior
+        // Chain configurations
+        const chains = {
+            ethereum: {
+                name: 'Ethereum',
+                icon: '⟠',
+                chainId: 1,
+                rpcUrl: 'https://eth.llamarpc.com',
+                explorer: 'https://etherscan.io',
+                nativeCurrency: 'ETH'
+            },
+            polygon: {
+                name: 'Polygon',
+                icon: '🟣',
+                chainId: 137,
+                rpcUrl: 'https://polygon-rpc.com',
+                explorer: 'https://polygonscan.com',
+                nativeCurrency: 'MATIC'
+            },
+            bsc: {
+                name: 'BNB Smart Chain',
+                icon: '🟡',
+                chainId: 56,
+                rpcUrl: 'https://bsc-dataseed.binance.org',
+                explorer: 'https://bscscan.com',
+                nativeCurrency: 'BNB'
+            },
+            arbitrum: {
+                name: 'Arbitrum',
+                icon: '🔵',
+                chainId: 42161,
+                rpcUrl: 'https://arb1.arbitrum.io/rpc',
+                explorer: 'https://arbiscan.io',
+                nativeCurrency: 'ETH'
+            },
+            optimism: {
+                name: 'Optimism',
+                icon: '🔴',
+                chainId: 10,
+                rpcUrl: 'https://mainnet.optimism.io',
+                explorer: 'https://optimistic.etherscan.io',
+                nativeCurrency: 'ETH'
+            },
+            base: {
+                name: 'Base',
+                icon: '🔷',
+                chainId: 8453,
+                rpcUrl: 'https://mainnet.base.org',
+                explorer: 'https://basescan.org',
+                nativeCurrency: 'ETH'
+            }
+        };
+
         const personalities = {
             hodler: {
                 icon: "💎",
@@ -156,15 +281,15 @@
                     "Comfortable with high-risk plays"
                 ]
             },
-            collector: {
-                icon: "🎨",
-                name: "The NFT Collector",
-                desc: "You appreciate digital art and culture. Your wallet is a curated gallery of unique assets.",
+            l2_native: {
+                icon: "⚡",
+                name: "The L2 Native",
+                desc: "You're all about efficiency and low fees. Layer 2s are your playground.",
                 traits: [
-                    "Significant NFT holdings",
-                    "Values digital ownership and culture",
-                    "Community-oriented mindset",
-                    "Curator of unique digital assets"
+                    "Prefers Layer 2 solutions",
+                    "Values speed and low costs",
+                    "Early adopter of scaling tech",
+                    "Active in emerging ecosystems"
                 ]
             },
             defi: {
@@ -189,26 +314,26 @@
                     "Market influence potential"
                 ]
             },
+            multichain: {
+                icon: "🌉",
+                name: "The Multichain Explorer",
+                desc: "You don't limit yourself to one chain. You explore the entire crypto universe.",
+                traits: [
+                    "Active across multiple chains",
+                    "Understands bridge mechanics",
+                    "Seeks best opportunities everywhere",
+                    "True web3 pioneer"
+                ]
+            },
             bluechip: {
                 icon: "🏛️",
                 name: "The Blue Chip Investor",
-                desc: "You stick to the established players. ETH, BTC, major protocols - you prefer proven assets.",
+                desc: "You stick to the established players. Major tokens and proven protocols only.",
                 traits: [
                     "Focused on top cryptocurrencies",
                     "Conservative investment approach",
                     "Prefers established projects",
                     "Lower risk tolerance"
-                ]
-            },
-            explorer: {
-                icon: "🧭",
-                name: "The Web3 Explorer",
-                desc: "You're experimenting with everything! New protocols, different chains, emerging trends - you're here to explore.",
-                traits: [
-                    "Wide variety of token interactions",
-                    "Early adopter mentality",
-                    "Curious about new technologies",
-                    "Comfortable with experimentation"
                 ]
             },
             dormant: {
@@ -224,160 +349,237 @@
             }
         };
 
+        let selectedChain = null;
         let provider, signer, walletAddress;
 
-        // Step 1: Connect to user's wallet
+        function selectChain(chain) {
+            selectedChain = chain;
+            const chainInfo = chains[chain];
+            
+            // Update UI
+            document.querySelectorAll('.chain-btn').forEach(btn => {
+                btn.classList.remove('border-purple-600', 'bg-purple-100');
+            });
+            event.target.closest('.chain-btn').classList.add('border-purple-600', 'bg-purple-100');
+            
+            document.getElementById('selectedChainInfo').classList.remove('hidden');
+            document.getElementById('selectedChainName').textContent = chainInfo.name;
+            
+            // Enable buttons
+            document.getElementById('connectWalletBtn').disabled = false;
+            document.getElementById('manualAddress').disabled = false;
+            document.getElementById('analyzeAddressBtn').disabled = false;
+        }
+
         async function connectWallet() {
+            if (!selectedChain) {
+                alert('Please select a blockchain first!');
+                return;
+            }
+
             try {
-                // Check if Web3 wallet is available (MetaMask, etc.)
                 if (typeof window.ethereum === 'undefined') {
-                    showError('Please install MetaMask or another Web3 wallet to use this app!');
+                    showError('Please install MetaMask or another Web3 wallet!');
                     return;
                 }
 
                 showLoading();
-                updateLoadingStatus('Connecting to your wallet...', 10);
+                const chainInfo = chains[selectedChain];
+                document.getElementById('selectedChainDisplay').textContent = `Blockchain: ${chainInfo.name}`;
+                updateLoadingStatus('Connecting to wallet...', 10);
 
                 // Request account access
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
-                
-                // Create provider and get signer
+
+                // Try to switch to the correct network
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: '0x' + chainInfo.chainId.toString(16) }],
+                    });
+                } catch (switchError) {
+                    // Network doesn't exist, user can add it manually
+                    console.log('Network switch failed:', switchError);
+                }
+
+                // Create provider
                 provider = new ethers.providers.Web3Provider(window.ethereum);
                 signer = provider.getSigner();
                 walletAddress = await signer.getAddress();
 
                 completeStep('step1');
-                updateLoadingStatus('Connected! Fetching transaction data...', 25);
+                updateLoadingStatus('Connected! Fetching data...', 25);
 
-                // Start analysis
                 await analyzeWallet();
 
             } catch (error) {
-                console.error('Error connecting wallet:', error);
-                showError('Failed to connect wallet. Please try again.');
+                console.error('Error:', error);
+                showError('Failed to connect. Make sure you approved the connection.');
             }
         }
 
-        // Step 2: Analyze the wallet
+        async function analyzeManualAddress() {
+            if (!selectedChain) {
+                alert('Please select a blockchain first!');
+                return;
+            }
+
+            const address = document.getElementById('manualAddress').value.trim();
+            if (!address) {
+                alert('Please enter a wallet address!');
+                return;
+            }
+
+            // Basic validation
+            if (!address.match(/^0x[a-fA-F0-9]{40}$/)) {
+                alert('Please enter a valid address (should start with 0x and be 42 characters)');
+                return;
+            }
+
+            showLoading();
+            const chainInfo = chains[selectedChain];
+            document.getElementById('selectedChainDisplay').textContent = `Blockchain: ${chainInfo.name}`;
+            document.getElementById('step1Text').textContent = 'Address received';
+            
+            walletAddress = address;
+            
+            try {
+                completeStep('step1');
+                updateLoadingStatus('Connecting to blockchain...', 25);
+
+                // Create provider for selected chain
+                provider = new ethers.providers.JsonRpcProvider(chainInfo.rpcUrl);
+
+                await analyzeWallet();
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Failed to analyze address. Please check the address and try again.');
+            }
+        }
+
         async function analyzeWallet() {
             try {
-                // Get basic wallet info
                 const balance = await provider.getBalance(walletAddress);
                 const txCount = await provider.getTransactionCount(walletAddress);
                 
                 completeStep('step2');
-                updateLoadingStatus('Analyzing your on-chain behavior...', 50);
+                updateLoadingStatus('Analyzing behavior...', 50);
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
-                // Simulate getting more detailed data (in production, use APIs like Etherscan, Alchemy, etc.)
-                // For demo purposes, we'll use transaction count and balance to determine personality
-                
-                await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
                 completeStep('step3');
-                updateLoadingStatus('Calculating your crypto personality...', 75);
-
+                updateLoadingStatus('Calculating personality...', 75);
                 await new Promise(resolve => setTimeout(resolve, 1000));
-                completeStep('step4');
-                updateLoadingStatus('Almost there...', 90);
 
-                // Calculate personality based on wallet data
-                const personality = calculatePersonality(txCount, balance);
-                
-                await new Promise(resolve => setTimeout(resolve, 500));
+                completeStep('step4');
                 updateLoadingStatus('Complete!', 100);
 
-                // Show results
+                const personality = calculatePersonality(txCount, balance);
+                
                 setTimeout(() => showResults(personality, txCount, balance), 500);
 
             } catch (error) {
-                console.error('Error analyzing wallet:', error);
-                showError('Failed to analyze wallet data. Please try again.');
+                console.error('Error analyzing:', error);
+                showError('Failed to fetch wallet data. The RPC might be slow or the address might be invalid.');
             }
         }
 
-        // Step 3: Calculate personality based on wallet metrics
         function calculatePersonality(txCount, balance) {
             const balanceInEth = parseFloat(ethers.utils.formatEther(balance));
+            const chainInfo = chains[selectedChain];
             
-            // Determine wallet age (simplified - would need first transaction date in production)
             let walletAge = 'Unknown';
             if (txCount > 1000) walletAge = 'Veteran';
             else if (txCount > 100) walletAge = 'Experienced';
-            else if (txCount > 10) walletAge = 'Growing';
+            else if (txCount > 10) walletAge = 'Active';
             else walletAge = 'New';
 
-            // Determine activity level
             let activityLevel = 'Low';
             if (txCount > 500) activityLevel = 'Very High';
             else if (txCount > 100) activityLevel = 'High';
             else if (txCount > 20) activityLevel = 'Moderate';
 
-            // Calculate personality type
-            let personalityType = 'explorer';
+            // Calculate personality with chain-specific logic
+            let personalityType = 'bluechip';
             
-            if (txCount < 10 && balanceInEth > 0) {
+            // L2 chains = L2 Native personality more likely
+            if (['arbitrum', 'optimism', 'base', 'polygon'].includes(selectedChain) && txCount > 50) {
+                personalityType = 'l2_native';
+            }
+            // Low activity + old wallet = dormant
+            else if (txCount < 10 && balanceInEth > 0) {
                 personalityType = 'dormant';
-            } else if (txCount > 1000) {
+            }
+            // Very high activity = degen
+            else if (txCount > 1000) {
                 personalityType = 'degen';
-            } else if (txCount > 100 && txCount <= 1000) {
+            }
+            // High activity = DeFi farmer
+            else if (txCount > 100 && txCount <= 1000) {
                 personalityType = 'defi';
-            } else if (balanceInEth > 10) {
+            }
+            // High balance = whale
+            else if (balanceInEth > 10) {
                 personalityType = 'whale';
-            } else if (txCount >= 10 && txCount <= 50) {
+            }
+            // Moderate activity = hodler
+            else if (txCount >= 10 && txCount <= 50) {
                 personalityType = 'hodler';
-            } else if (txCount > 50 && txCount <= 100) {
-                personalityType = 'bluechip';
             }
 
-            // Generate insights
             const insights = [];
             if (txCount > 500) {
-                insights.push('You\'re extremely active in the crypto space with ' + txCount + ' transactions');
+                insights.push(`Extremely active on ${chainInfo.name} with ${txCount} transactions`);
             } else if (txCount < 10) {
-                insights.push('You have a minimalist approach with only ' + txCount + ' transactions');
+                insights.push(`Minimalist approach with only ${txCount} transactions`);
             } else {
-                insights.push('You maintain steady activity with ' + txCount + ' transactions');
+                insights.push(`Steady ${chainInfo.name} user with ${txCount} transactions`);
             }
 
             if (balanceInEth > 5) {
-                insights.push('You hold significant value in your wallet');
+                insights.push(`Significant ${chainInfo.nativeCurrency} holdings detected`);
             } else if (balanceInEth > 0.1) {
-                insights.push('You maintain a balanced position in ETH');
+                insights.push(`Balanced ${chainInfo.nativeCurrency} position`);
             }
 
-            insights.push('Your ' + walletAge.toLowerCase() + ' wallet shows your journey in Web3');
+            if (['arbitrum', 'optimism', 'base'].includes(selectedChain)) {
+                insights.push('You appreciate the benefits of Layer 2 scaling');
+            }
+
+            insights.push(`Your ${walletAge.toLowerCase()} wallet shows your ${chainInfo.name} journey`);
 
             return {
                 type: personalityType,
                 stats: {
                     txCount,
                     walletAge,
-                    tokens: Math.floor(txCount / 10) + 1, // Simulated
-                    activityLevel,
-                    balanceInEth: balanceInEth.toFixed(4)
+                    balance: balanceInEth.toFixed(4) + ' ' + chainInfo.nativeCurrency,
+                    activityLevel
                 },
                 insights
             };
         }
 
-        // Display results
         function showResults(personality, txCount, balance) {
             const p = personalities[personality.type];
+            const chainInfo = chains[selectedChain];
             
             document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('resultsScreen').classList.remove('hidden');
 
-            // Set personality info
+            // Show chain info
+            document.getElementById('resultChainIcon').textContent = chainInfo.icon;
+            document.getElementById('resultChainName').textContent = chainInfo.name;
+
             document.getElementById('personalityIcon').textContent = p.icon;
             document.getElementById('personalityType').textContent = p.name;
             document.getElementById('personalityDesc').textContent = p.desc;
 
-            // Set stats
             document.getElementById('statTxCount').textContent = personality.stats.txCount;
             document.getElementById('statWalletAge').textContent = personality.stats.walletAge;
-            document.getElementById('statTokens').textContent = personality.stats.tokens;
+            document.getElementById('statBalance').textContent = personality.stats.balance;
             document.getElementById('statActivity').textContent = personality.stats.activityLevel;
 
-            // Set traits
             const traitsList = document.getElementById('traits');
             traitsList.innerHTML = '';
             p.traits.forEach(trait => {
@@ -387,7 +589,6 @@
                 traitsList.appendChild(li);
             });
 
-            // Set insights
             const insightsDiv = document.getElementById('insights');
             insightsDiv.innerHTML = '';
             personality.insights.forEach(insight => {
@@ -397,12 +598,10 @@
                 insightsDiv.appendChild(p);
             });
 
-            // Set wallet address (shortened)
             const shortAddress = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
             document.getElementById('walletAddress').textContent = shortAddress;
         }
 
-        // UI Helper Functions
         function showLoading() {
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('loadingScreen').classList.remove('hidden');
@@ -428,36 +627,15 @@
         }
 
         function restartTest() {
+            selectedChain = null;
             document.getElementById('resultsScreen').classList.add('hidden');
             document.getElementById('errorScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('selectedChainInfo').classList.add('hidden');
+            document.getElementById('manualAddress').value = '';
             
-            // Reset loading steps
-            ['step1', 'step2', 'step3', 'step4'].forEach(id => {
-                const step = document.getElementById(id);
-                step.classList.remove('text-green-600', 'font-semibold');
-                step.classList.add('text-gray-400');
-                step.querySelector('span').textContent = '○';
+            document.querySelectorAll('.chain-btn').forEach(btn => {
+                btn.classList.remove('border-purple-600', 'bg-purple-100');
             });
-        }
-
-        function shareResults() {
-            const personalityName = document.getElementById('personalityType').textContent;
-            const icon = document.getElementById('personalityIcon').textContent;
-            const text = `I just discovered my crypto personality: ${icon} ${personalityName}! Find out yours with the Crypto Wallet Personality Test.`;
             
-            if (navigator.share) {
-                navigator.share({
-                    title: 'My Crypto Personality',
-                    text: text
-                });
-            } else {
-                // Fallback: copy to clipboard
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('Results copied to clipboard!');
-                });
-            }
-        }
-    </script>
-</body>
-</html>
+            document.getElementById('connectWalletBtn').disabled = true
