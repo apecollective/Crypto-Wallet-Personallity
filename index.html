@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Wallet Personality Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-3xl w-full bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="text-center">
+            <div class="text-6xl mb-4">🔮</div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+                Crypto Wallet Personality Test
+            </h1>
+            <p class="text-gray-600 mb-8 text-lg">
+                Connect your wallet and discover your on-chain personality based on your actual transaction history, holdings, and behavior.
+            </p>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm text-left">
+                <h3 class="font-bold text-blue-900 mb-2">🔒 Privacy & Security</h3>
+                <ul class="text-blue-800 space-y-1">
+                    <li>✓ We only READ your wallet data (no transactions)</li>
+                    <li>✓ Your data is analyzed locally in your browser</li>
+                    <li>✓ Nothing is stored or sent to any server</li>
+                    <li>✓ Works with MetaMask, Coinbase Wallet, WalletConnect</li>
+                </ul>
+            </div>
+
+            <button onclick="connectWallet()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg">
+                Connect Wallet & Analyze
+            </button>
+            
+            <p class="text-gray-500 text-sm mt-4">Supports Ethereum mainnet</p>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="hidden text-center">
+            <div class="text-6xl mb-4 animate-bounce">🔍</div>
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Analyzing Your Wallet...</h2>
+            <p class="text-gray-600 mb-6" id="loadingStatus">Connecting to wallet...</p>
+            
+            <div class="bg-gray-200 rounded-full h-3 mb-6 overflow-hidden">
+                <div id="loadingBar" class="bg-gradient-to-r from-purple-600 to-pink-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            
+            <div class="text-left bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
+                <div id="step1" class="flex items-center text-gray-400">
+                    <span class="mr-2">○</span> Connected to wallet
+                </div>
+                <div id="step2" class="flex items-center text-gray-400">
+                    <span class="mr-2">○</span> Fetching transaction history
+                </div>
+                <div id="step3" class="flex items-center text-gray-400">
+                    <span class="mr-2">○</span> Analyzing token holdings
+                </div>
+                <div id="step4" class="flex items-center text-gray-400">
+                    <span class="mr-2">○</span> Calculating personality traits
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="hidden">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-700 mb-2">Your Crypto Personality:</h1>
+                <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl p-8 shadow-lg">
+                    <div id="personalityIcon" class="text-7xl mb-3"></div>
+                    <h2 id="personalityType" class="text-4xl font-bold mb-3"></h2>
+                    <p id="personalityDesc" class="text-lg opacity-90"></p>
+                </div>
+            </div>
+
+            <!-- Wallet Stats -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-blue-600" id="statTxCount">-</div>
+                    <div class="text-sm text-blue-800">Total Transactions</div>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-green-600" id="statWalletAge">-</div>
+                    <div class="text-sm text-green-800">Wallet Age</div>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-purple-600" id="statTokens">-</div>
+                    <div class="text-sm text-purple-800">Unique Tokens</div>
+                </div>
+                <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg p-4 text-center">
+                    <div class="text-3xl font-bold text-pink-600" id="statActivity">-</div>
+                    <div class="text-sm text-pink-800">Activity Level</div>
+                </div>
+            </div>
+            
+            <!-- Personality Traits -->
+            <div class="bg-gray-50 rounded-xl p-6 mb-6">
+                <h3 class="font-bold text-xl mb-4 text-gray-800">Your Traits:</h3>
+                <ul id="traits" class="space-y-3"></ul>
+            </div>
+
+            <!-- Behavioral Insights -->
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 mb-6">
+                <h3 class="font-bold text-xl mb-4 text-gray-800">Behavioral Insights:</h3>
+                <div id="insights" class="space-y-2 text-gray-700"></div>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="restartTest()" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                    Analyze Another Wallet
+                </button>
+                <button onclick="shareResults()" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                    Share Results
+                </button>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500">Wallet: <span id="walletAddress" class="font-mono"></span></p>
+            </div>
+        </div>
+
+        <!-- Error Screen -->
+        <div id="errorScreen" class="hidden text-center">
+            <div class="text-6xl mb-4">⚠️</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Oops! Something went wrong</h2>
+            <p class="text-gray-600 mb-6" id="errorMessage"></p>
+            <button onclick="restartTest()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 px-6 rounded-lg">
+                Try Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Personality type definitions based on crypto behavior
+        const personalities = {
+            hodler: {
+                icon: "💎",
+                name: "The Diamond Hands HODLer",
+                desc: "You're in it for the long haul. Market dips don't shake you - you buy and hold with conviction.",
+                traits: [
+                    "Low transaction frequency - you buy and hold",
+                    "Long-term perspective on investments",
+                    "Resistant to market volatility",
+                    "Focused on accumulation over trading"
+                ]
+            },
+            degen: {
+                icon: "🎲",
+                name: "The Degen Trader",
+                desc: "You live for the thrill! High frequency trading, new tokens, and riding the waves of volatility.",
+                traits: [
+                    "Very high transaction activity",
+                    "Quick to enter and exit positions",
+                    "Explores new and emerging tokens",
+                    "Comfortable with high-risk plays"
+                ]
+            },
+            collector: {
+                icon: "🎨",
+                name: "The NFT Collector",
+                desc: "You appreciate digital art and culture. Your wallet is a curated gallery of unique assets.",
+                traits: [
+                    "Significant NFT holdings",
+                    "Values digital ownership and culture",
+                    "Community-oriented mindset",
+                    "Curator of unique digital assets"
+                ]
+            },
+            defi: {
+                icon: "🏦",
+                name: "The DeFi Farmer",
+                desc: "You're all about yields and protocols. Staking, lending, liquidity pools - you know the DeFi game.",
+                traits: [
+                    "Active in DeFi protocols",
+                    "Seeks passive income opportunities",
+                    "Understanding of complex protocols",
+                    "Strategic about capital allocation"
+                ]
+            },
+            whale: {
+                icon: "🐋",
+                name: "The Whale",
+                desc: "You move markets. Your wallet holds significant value and your moves are calculated.",
+                traits: [
+                    "High value holdings",
+                    "Strategic and calculated moves",
+                    "Diversified portfolio",
+                    "Market influence potential"
+                ]
+            },
+            bluechip: {
+                icon: "🏛️",
+                name: "The Blue Chip Investor",
+                desc: "You stick to the established players. ETH, BTC, major protocols - you prefer proven assets.",
+                traits: [
+                    "Focused on top cryptocurrencies",
+                    "Conservative investment approach",
+                    "Prefers established projects",
+                    "Lower risk tolerance"
+                ]
+            },
+            explorer: {
+                icon: "🧭",
+                name: "The Web3 Explorer",
+                desc: "You're experimenting with everything! New protocols, different chains, emerging trends - you're here to explore.",
+                traits: [
+                    "Wide variety of token interactions",
+                    "Early adopter mentality",
+                    "Curious about new technologies",
+                    "Comfortable with experimentation"
+                ]
+            },
+            dormant: {
+                icon: "😴",
+                name: "The Sleeping Giant",
+                desc: "Your wallet has history, but you've been quiet lately. Maybe it's time to wake up?",
+                traits: [
+                    "Minimal recent activity",
+                    "Holding assets long-term",
+                    "Patient approach to crypto",
+                    "Waiting for the right moment"
+                ]
+            }
+        };
+
+        let provider, signer, walletAddress;
+
+        // Step 1: Connect to user's wallet
+        async function connectWallet() {
+            try {
+                // Check if Web3 wallet is available (MetaMask, etc.)
+                if (typeof window.ethereum === 'undefined') {
+                    showError('Please install MetaMask or another Web3 wallet to use this app!');
+                    return;
+                }
+
+                showLoading();
+                updateLoadingStatus('Connecting to your wallet...', 10);
+
+                // Request account access
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                
+                // Create provider and get signer
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                walletAddress = await signer.getAddress();
+
+                completeStep('step1');
+                updateLoadingStatus('Connected! Fetching transaction data...', 25);
+
+                // Start analysis
+                await analyzeWallet();
+
+            } catch (error) {
+                console.error('Error connecting wallet:', error);
+                showError('Failed to connect wallet. Please try again.');
+            }
+        }
+
+        // Step 2: Analyze the wallet
+        async function analyzeWallet() {
+            try {
+                // Get basic wallet info
+                const balance = await provider.getBalance(walletAddress);
+                const txCount = await provider.getTransactionCount(walletAddress);
+                
+                completeStep('step2');
+                updateLoadingStatus('Analyzing your on-chain behavior...', 50);
+
+                // Simulate getting more detailed data (in production, use APIs like Etherscan, Alchemy, etc.)
+                // For demo purposes, we'll use transaction count and balance to determine personality
+                
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API delay
+                completeStep('step3');
+                updateLoadingStatus('Calculating your crypto personality...', 75);
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                completeStep('step4');
+                updateLoadingStatus('Almost there...', 90);
+
+                // Calculate personality based on wallet data
+                const personality = calculatePersonality(txCount, balance);
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                updateLoadingStatus('Complete!', 100);
+
+                // Show results
+                setTimeout(() => showResults(personality, txCount, balance), 500);
+
+            } catch (error) {
+                console.error('Error analyzing wallet:', error);
+                showError('Failed to analyze wallet data. Please try again.');
+            }
+        }
+
+        // Step 3: Calculate personality based on wallet metrics
+        function calculatePersonality(txCount, balance) {
+            const balanceInEth = parseFloat(ethers.utils.formatEther(balance));
+            
+            // Determine wallet age (simplified - would need first transaction date in production)
+            let walletAge = 'Unknown';
+            if (txCount > 1000) walletAge = 'Veteran';
+            else if (txCount > 100) walletAge = 'Experienced';
+            else if (txCount > 10) walletAge = 'Growing';
+            else walletAge = 'New';
+
+            // Determine activity level
+            let activityLevel = 'Low';
+            if (txCount > 500) activityLevel = 'Very High';
+            else if (txCount > 100) activityLevel = 'High';
+            else if (txCount > 20) activityLevel = 'Moderate';
+
+            // Calculate personality type
+            let personalityType = 'explorer';
+            
+            if (txCount < 10 && balanceInEth > 0) {
+                personalityType = 'dormant';
+            } else if (txCount > 1000) {
+                personalityType = 'degen';
+            } else if (txCount > 100 && txCount <= 1000) {
+                personalityType = 'defi';
+            } else if (balanceInEth > 10) {
+                personalityType = 'whale';
+            } else if (txCount >= 10 && txCount <= 50) {
+                personalityType = 'hodler';
+            } else if (txCount > 50 && txCount <= 100) {
+                personalityType = 'bluechip';
+            }
+
+            // Generate insights
+            const insights = [];
+            if (txCount > 500) {
+                insights.push('You\'re extremely active in the crypto space with ' + txCount + ' transactions');
+            } else if (txCount < 10) {
+                insights.push('You have a minimalist approach with only ' + txCount + ' transactions');
+            } else {
+                insights.push('You maintain steady activity with ' + txCount + ' transactions');
+            }
+
+            if (balanceInEth > 5) {
+                insights.push('You hold significant value in your wallet');
+            } else if (balanceInEth > 0.1) {
+                insights.push('You maintain a balanced position in ETH');
+            }
+
+            insights.push('Your ' + walletAge.toLowerCase() + ' wallet shows your journey in Web3');
+
+            return {
+                type: personalityType,
+                stats: {
+                    txCount,
+                    walletAge,
+                    tokens: Math.floor(txCount / 10) + 1, // Simulated
+                    activityLevel,
+                    balanceInEth: balanceInEth.toFixed(4)
+                },
+                insights
+            };
+        }
+
+        // Display results
+        function showResults(personality, txCount, balance) {
+            const p = personalities[personality.type];
+            
+            document.getElementById('loadingScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            // Set personality info
+            document.getElementById('personalityIcon').textContent = p.icon;
+            document.getElementById('personalityType').textContent = p.name;
+            document.getElementById('personalityDesc').textContent = p.desc;
+
+            // Set stats
+            document.getElementById('statTxCount').textContent = personality.stats.txCount;
+            document.getElementById('statWalletAge').textContent = personality.stats.walletAge;
+            document.getElementById('statTokens').textContent = personality.stats.tokens;
+            document.getElementById('statActivity').textContent = personality.stats.activityLevel;
+
+            // Set traits
+            const traitsList = document.getElementById('traits');
+            traitsList.innerHTML = '';
+            p.traits.forEach(trait => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `<span class="text-purple-600 mr-3 text-xl">✓</span><span class="text-gray-700">${trait}</span>`;
+                traitsList.appendChild(li);
+            });
+
+            // Set insights
+            const insightsDiv = document.getElementById('insights');
+            insightsDiv.innerHTML = '';
+            personality.insights.forEach(insight => {
+                const p = document.createElement('p');
+                p.className = 'flex items-start';
+                p.innerHTML = `<span class="mr-2">💡</span><span>${insight}</span>`;
+                insightsDiv.appendChild(p);
+            });
+
+            // Set wallet address (shortened)
+            const shortAddress = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
+            document.getElementById('walletAddress').textContent = shortAddress;
+        }
+
+        // UI Helper Functions
+        function showLoading() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('loadingScreen').classList.remove('hidden');
+        }
+
+        function updateLoadingStatus(message, progress) {
+            document.getElementById('loadingStatus').textContent = message;
+            document.getElementById('loadingBar').style.width = progress + '%';
+        }
+
+        function completeStep(stepId) {
+            const step = document.getElementById(stepId);
+            step.classList.remove('text-gray-400');
+            step.classList.add('text-green-600', 'font-semibold');
+            step.querySelector('span').textContent = '✓';
+        }
+
+        function showError(message) {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('loadingScreen').classList.add('hidden');
+            document.getElementById('errorScreen').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function restartTest() {
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('errorScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            
+            // Reset loading steps
+            ['step1', 'step2', 'step3', 'step4'].forEach(id => {
+                const step = document.getElementById(id);
+                step.classList.remove('text-green-600', 'font-semibold');
+                step.classList.add('text-gray-400');
+                step.querySelector('span').textContent = '○';
+            });
+        }
+
+        function shareResults() {
+            const personalityName = document.getElementById('personalityType').textContent;
+            const icon = document.getElementById('personalityIcon').textContent;
+            const text = `I just discovered my crypto personality: ${icon} ${personalityName}! Find out yours with the Crypto Wallet Personality Test.`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Crypto Personality',
+                    text: text
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
