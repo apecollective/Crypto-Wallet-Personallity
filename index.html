@@ -240,15 +240,15 @@
 
     <script>
         const chains = {
-            ethereum: { name: 'Ethereum', symbol: 'ETH', chainId: 1, chainIdHex: '0x1', type: 'evm' },
-            bsc: { name: 'BSC', symbol: 'BNB', chainId: 56, chainIdHex: '0x38', type: 'evm' },
-            polygon: { name: 'Polygon', symbol: 'POL', chainId: 137, chainIdHex: '0x89', type: 'evm' },
-            arbitrum: { name: 'Arbitrum', symbol: 'ETH', chainId: 42161, chainIdHex: '0xa4b1', type: 'evm' },
-            base: { name: 'Base', symbol: 'ETH', chainId: 8453, chainIdHex: '0x2105', type: 'evm' },
-            optimism: { name: 'Optimism', symbol: 'ETH', chainId: 10, chainIdHex: '0xa', type: 'evm' },
-            avalanche: { name: 'Avalanche', symbol: 'AVAX', chainId: 43114, chainIdHex: '0xa86a', type: 'evm' },
-            solana: { name: 'Solana', symbol: 'SOL', chainId: 'mainnet', type: 'solana' },
-            bitcoin: { name: 'Bitcoin', symbol: 'BTC', type: 'utxo' }
+            bitcoin: { name: 'Bitcoin', icon: '₿', type: 'utxo', rpcUrl: null, explorer: 'https://blockchain.info', nativeCurrency: 'BTC', walletSupport: 'address-only', note: 'Bitcoin analysis via address only (no wallet connect)', addressFormat: /^(1|3|bc1)[a-zA-Z0-9]{25,62}$/ },
+            ethereum: { name: 'Ethereum', icon: '⟠', type: 'evm', chainId: 1, rpcUrl: 'https://eth.llamarpc.com', explorer: 'https://etherscan.io', nativeCurrency: 'ETH', walletSupport: 'full', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
+            tether: { name: 'Tether (USDT)', icon: '₮', type: 'evm', chainId: 1, rpcUrl: 'https://eth.llamarpc.com', explorer: 'https://etherscan.io', nativeCurrency: 'ETH', walletSupport: 'full', note: 'Analyzes USDT on Ethereum network', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
+            solana: { name: 'Solana', icon: '◎', type: 'solana', rpcUrl: 'https://api.mainnet-beta.solana.com', explorer: 'https://solscan.io', nativeCurrency: 'SOL', walletSupport: 'address-only', note: 'Solana analysis via address only', addressFormat: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/ },
+            bsc: { name: 'BNB Smart Chain', icon: '🟡', type: 'evm', chainId: 56, rpcUrl: 'https://bsc-dataseed.binance.org', explorer: 'https://bscscan.com', nativeCurrency: 'BNB', walletSupport: 'full', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
+            xrp: { name: 'XRP Ledger', icon: '✕', type: 'xrpl', rpcUrl: 'https://s1.ripple.com:51234', explorer: 'https://xrpscan.com', nativeCurrency: 'XRP', walletSupport: 'address-only', note: 'XRP analysis via address only', addressFormat: /^r[1-9A-HJ-NP-Za-km-z]{25,34}$/ },
+            avalanche: { name: 'Avalanche', icon: '🔺', type: 'evm', chainId: 43114, rpcUrl: 'https://api.avax.network/ext/bc/C/rpc', explorer: 'https://snowtrace.io', nativeCurrency: 'AVAX', walletSupport: 'full', note: 'Avalanche C-Chain analysis', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
+            cardano: { name: 'Cardano', icon: '₳', type: 'cardano', rpcUrl: null, explorer: 'https://cardanoscan.io', nativeCurrency: 'ADA', walletSupport: 'address-only', note: 'Cardano analysis via address only', addressFormat: /^(addr1|stake1)[a-z0-9]{53,}$/ },
+            dogecoin: { name: 'Dogecoin', icon: 'Ð', type: 'utxo', rpcUrl: null, explorer: 'https://dogechain.info', nativeCurrency: 'DOGE', walletSupport: 'address-only', note: 'Dogecoin analysis via address only', addressFormat: /^D[5-9A-HJ-NP-U][1-9A-HJ-NP-Za-km-z]{32}$/ }
         };
 
         const personalities = {
@@ -380,50 +380,25 @@
         }
 
         async function analyzeWallet() {
-    try {
-        updateLoadingStatus('Securely fetching multi-chain data...', 30);
-        
-        const response = await fetch('/api/analyze', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                address: walletAddress,
-                chainId: chains[selectedChain].chainIdHex // Use Hex IDs like '0x1'
-            })
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error);
-
-        completeStep('step2');
-        updateLoadingStatus('Parsing on-chain behavior...', 60);
-
-        // 1. Process Balance (Convert from Wei/Raw to Decimal)
-        const balanceInNative = parseFloat(ethers.utils.formatEther(data.balance));
-        
-        // 2. Process History for Charting
-        const historicalData = data.history.map(tx => ({
-            date: new Date(tx.block_timestamp).toLocaleDateString('en-US', { month: 'short' }),
-            balance: parseFloat(tx.value_decimal) || balanceInNative // Approximation for the chart
-        })).reverse();
-
-        // 3. Process Transaction Count
-        const txCount = data.history.length; // Or use a total_tx field if provided
-
-        completeStep('step3');
-        updateLoadingStatus('Finalizing personality...', 85);
-        
-        const personality = calculatePersonality(txCount, balanceInNative);
-        
-        completeStep('step4');
-        updateLoadingStatus('Complete!', 100);
-
-        setTimeout(() => showResults(personality, txCount, balanceInNative, historicalData), 500);
-    } catch (error) {
-        console.error('Proxy Error:', error);
-        showError('Analysis failed: ' + error.message);
-    }
-}
+            try {
+                const balance = await provider.getBalance(walletAddress);
+                const txCount = await provider.getTransactionCount(walletAddress);
+                completeStep('step2');
+                updateLoadingStatus('Analyzing behavior...', 50);
+                await new Promise(r => setTimeout(r, 1500));
+                completeStep('step3');
+                updateLoadingStatus('Calculating personality...', 75);
+                
+                // Fetch historical balance data
+                const historicalData = await fetchHistoricalBalance(walletAddress);
+                
+                await new Promise(r => setTimeout(r, 1000));
+                completeStep('step4');
+                updateLoadingStatus('Complete!', 100);
+                const personality = calculatePersonality(txCount, balance);
+                setTimeout(() => showResults(personality, txCount, balance, historicalData), 500);
+            } catch (error) { console.error('Error analyzing:', error); showError('Failed to fetch wallet data. The RPC might be slow or the address might be invalid.'); }
+        }
 
         async function analyzeNonEVMWallet() {
             const chainInfo = chains[selectedChain];
