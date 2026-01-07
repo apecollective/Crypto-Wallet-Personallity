@@ -638,4 +638,35 @@
                 btn.classList.remove('border-purple-600', 'bg-purple-100');
             });
             
-            document.getElementById('connectWalletBtn').disabled = true
+            document.getElementById('connectWalletBtn').disabled = true;
+            document.getElementById('manualAddress').disabled = true;
+            document.getElementById('analyzeAddressBtn').disabled = true;
+            
+            ['step1', 'step2', 'step3', 'step4'].forEach(id => {
+                const step = document.getElementById(id);
+                step.classList.remove('text-green-600', 'font-semibold');
+                step.classList.add('text-gray-400');
+                step.querySelector('span').textContent = '○';
+            });
+        }
+
+        function shareResults() {
+            const personalityName = document.getElementById('personalityType').textContent;
+            const icon = document.getElementById('personalityIcon').textContent;
+            const chainInfo = chains[selectedChain];
+            const text = `I just analyzed my ${chainInfo.name} wallet and I'm ${icon} ${personalityName}! Find out your crypto personality!`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Crypto Personality',
+                    text: text
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
