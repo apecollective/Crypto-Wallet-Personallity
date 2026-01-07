@@ -61,10 +61,10 @@
                         <div class="text-xs text-gray-500">XRP - #6</div>
                     </button>
 
-                    <button onclick="selectChain('usdc')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 transition">
-                        <div class="text-3xl mb-1">💵</div>
-                        <div class="font-semibold">USD Coin</div>
-                        <div class="text-xs text-gray-500">USDC - #7</div>
+                    <button onclick="selectChain('avalanche')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-red-500 hover:bg-red-50 transition">
+                        <div class="text-3xl mb-1">🔺</div>
+                        <div class="font-semibold">Avalanche</div>
+                        <div class="text-xs text-gray-500">AVAX - #7</div>
                     </button>
 
                     <button onclick="selectChain('cardano')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-blue-500 hover:bg-blue-50 transition">
@@ -246,7 +246,7 @@
             solana: { name: 'Solana', icon: '◎', type: 'solana', rpcUrl: 'https://api.mainnet-beta.solana.com', explorer: 'https://solscan.io', nativeCurrency: 'SOL', walletSupport: 'address-only', note: 'Solana analysis via address only', addressFormat: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/ },
             bsc: { name: 'BNB Smart Chain', icon: '🟡', type: 'evm', chainId: 56, rpcUrl: 'https://bsc-dataseed.binance.org', explorer: 'https://bscscan.com', nativeCurrency: 'BNB', walletSupport: 'full', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
             xrp: { name: 'XRP Ledger', icon: '✕', type: 'xrpl', rpcUrl: 'https://s1.ripple.com:51234', explorer: 'https://xrpscan.com', nativeCurrency: 'XRP', walletSupport: 'address-only', note: 'XRP analysis via address only', addressFormat: /^r[1-9A-HJ-NP-Za-km-z]{25,34}$/ },
-            usdc: { name: 'USD Coin', icon: '💵', type: 'evm', chainId: 1, rpcUrl: 'https://eth.llamarpc.com', explorer: 'https://etherscan.io', nativeCurrency: 'ETH', walletSupport: 'full', note: 'Analyzes USDC on Ethereum network', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
+            avalanche: { name: 'Avalanche', icon: '🔺', type: 'evm', chainId: 43114, rpcUrl: 'https://api.avax.network/ext/bc/C/rpc', explorer: 'https://snowtrace.io', nativeCurrency: 'AVAX', walletSupport: 'full', note: 'Avalanche C-Chain analysis', addressFormat: /^0x[a-fA-F0-9]{40}$/ },
             cardano: { name: 'Cardano', icon: '₳', type: 'cardano', rpcUrl: null, explorer: 'https://cardanoscan.io', nativeCurrency: 'ADA', walletSupport: 'address-only', note: 'Cardano analysis via address only', addressFormat: /^(addr1|stake1)[a-z0-9]{53,}$/ },
             dogecoin: { name: 'Dogecoin', icon: 'Ð', type: 'utxo', rpcUrl: null, explorer: 'https://dogechain.info', nativeCurrency: 'DOGE', walletSupport: 'address-only', note: 'Dogecoin analysis via address only', addressFormat: /^D[5-9A-HJ-NP-U][1-9A-HJ-NP-Za-km-z]{32}$/ }
         };
@@ -436,6 +436,8 @@
                     return await fetchEthereumHistoricalBalance(address);
                 } else if (selectedChain === 'bsc') {
                     return await fetchBSCHistoricalBalance(address);
+                } else if (selectedChain === 'avalanche') {
+                    return await fetchAvalancheHistoricalBalance(address);
                 } else if (selectedChain === 'bitcoin') {
                     return await fetchBitcoinHistoricalBalance(address);
                 } else if (selectedChain === 'solana') {
@@ -521,6 +523,43 @@
                 return data.length > 0 ? data : generateFallbackHistoricalData();
             } catch (error) {
                 console.error('BSC historical fetch error:', error);
+                return generateFallbackHistoricalData();
+            }
+        }
+
+        async function fetchAvalancheHistoricalBalance(address) {
+            try {
+                // Similar approach for Avalanche C-Chain
+                const currentBlock = await provider.getBlockNumber();
+                const data = [];
+                const blocksPerDay = 43200; // ~2 second blocks
+                const pointsToSample = 12;
+                
+                for (let i = 0; i < pointsToSample; i++) {
+                    const daysBack = Math.floor((pointsToSample - i - 1) * 30);
+                    const blockNumber = Math.max(0, currentBlock - (daysBack * blocksPerDay));
+                    
+                    try {
+                        const balance = await provider.getBalance(address, blockNumber);
+                        const balanceInAvax = parseFloat(ethers.utils.formatEther(balance));
+                        
+                        const date = new Date();
+                        date.setDate(date.getDate() - daysBack);
+                        
+                        data.push({
+                            date: date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+                            balance: balanceInAvax
+                        });
+                    } catch (err) {
+                        console.log(`Failed to fetch Avalanche block ${blockNumber}:`, err);
+                    }
+                    
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                
+                return data.length > 0 ? data : generateFallbackHistoricalData();
+            } catch (error) {
+                console.error('Avalanche historical fetch error:', error);
                 return generateFallbackHistoricalData();
             }
         }
@@ -658,8 +697,16 @@
                 personalityType = 'meme_lord';
             } else if (selectedChain === 'solana') {
                 personalityType = txCount > 200 ? 'sol_native' : 'defi';
-            } else if (selectedChain === 'tether' || selectedChain === 'usdc') {
+            } else if (selectedChain === 'tether') {
                 personalityType = 'stablecoin_user';
+            } else if (selectedChain === 'avalanche') {
+                if (txCount > 150) {
+                    personalityType = 'defi';
+                } else if (balanceInNative > 100) {
+                    personalityType = 'whale';
+                } else {
+                    personalityType = 'bluechip';
+                }
             } else {
                 if (txCount < 10 && balanceInNative > 0) personalityType = 'dormant';
                 else if (txCount > 1000) personalityType = 'degen';
@@ -675,7 +722,8 @@
             if (selectedChain === 'bitcoin') insights.push('You believe in the original cryptocurrency vision');
             else if (selectedChain === 'dogecoin') insights.push('Much wow! You embrace the fun side of crypto');
             else if (selectedChain === 'solana') insights.push('Speed and efficiency matter to you');
-            else if (selectedChain === 'tether' || selectedChain === 'usdc') insights.push('You prefer stability and practical utility');
+            else if (selectedChain === 'tether') insights.push('You prefer stability and practical utility');
+            else if (selectedChain === 'avalanche') insights.push('You value high-performance DeFi and scalability');
             insights.push(`Your ${walletAge.toLowerCase()} wallet shows your ${chainInfo.name} journey`);
 
             return { type: personalityType, stats: { txCount, walletAge, balance: balanceInNative.toFixed(4) + ' ' + chainInfo.nativeCurrency, activityLevel }, insights };
