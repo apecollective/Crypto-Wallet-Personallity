@@ -252,16 +252,66 @@
         };
 
         const personalities = {
-            hodler: { icon: "💎", name: "The Diamond Hands HODLer", desc: "You're in it for the long haul. Market dips don't shake you - you buy and hold with conviction.", traits: ["Low transaction frequency - you buy and hold", "Long-term perspective on investments", "Resistant to market volatility", "Focused on accumulation over trading"] },
-            og_bitcoiner: { icon: "🏆", name: "The OG Bitcoiner", desc: "You were here before it was cool. Bitcoin is king, and you've stayed true to the vision.", traits: ["Early adopter of cryptocurrency", "Believes in decentralization", "Long-term Bitcoin conviction", "Skeptical of most altcoins"] },
-            degen: { icon: "🎲", name: "The Degen Trader", desc: "You live for the thrill! High frequency trading, new tokens, and riding the waves of volatility.", traits: ["Very high transaction activity", "Quick to enter and exit positions", "Explores new and emerging tokens", "Comfortable with high-risk plays"] },
-            stablecoin_user: { icon: "🏦", name: "The Stablecoin Strategist", desc: "You use crypto for utility, not speculation. Stablecoins are your gateway to DeFi and payments.", traits: ["Values price stability", "Uses crypto for transactions", "Active in DeFi with stablecoins", "Risk-averse approach"] },
-            defi: { icon: "🌾", name: "The DeFi Farmer", desc: "You're all about yields and protocols. Staking, lending, liquidity pools - you know the DeFi game.", traits: ["Active in DeFi protocols", "Seeks passive income opportunities", "Understanding of complex protocols", "Strategic about capital allocation"] },
-            whale: { icon: "🐋", name: "The Whale", desc: "You move markets. Your wallet holds significant value and your moves are calculated.", traits: ["High value holdings", "Strategic and calculated moves", "Diversified portfolio", "Market influence potential"] },
-            meme_lord: { icon: "🐕", name: "The Meme Coin Enthusiast", desc: "To the moon! You believe in community, memes, and the power of collective belief.", traits: ["Community-driven investor", "Embraces internet culture", "High-risk tolerance", "Diamond hands for the culture"] },
-            sol_native: { icon: "⚡", name: "The Solana Speed Demon", desc: "Fast and cheap transactions are your jam. You appreciate raw performance and scalability.", traits: ["Values speed and efficiency", "Active in high-performance chains", "Early adopter of new technology", "DeFi and NFT enthusiast"] },
-            bluechip: { icon: "🏛️", name: "The Blue Chip Investor", desc: "You stick to the established players. Top 10 cryptocurrencies and proven protocols only.", traits: ["Focused on top cryptocurrencies", "Conservative investment approach", "Prefers established projects", "Lower risk tolerance"] },
-            dormant: { icon: "😴", name: "The Sleeping Giant", desc: "Your wallet has history, but you've been quiet lately. Maybe it's time to wake up?", traits: ["Minimal recent activity", "Holding assets long-term", "Patient approach to crypto", "Waiting for the right moment"] }
+            // Bitcoin Personalities
+            btc_genesis: { icon: "👑", name: "The Genesis Pioneer", desc: "You were mining Bitcoin when it was just a whitepaper dream. True OG status.", traits: ["Pre-2012 wallet creation", "Witnessed Bitcoin's entire history", "Diamond hands through every cycle", "Part of crypto folklore"] },
+            btc_early_believer: { icon: "🏆", name: "The Early Believer", desc: "You got into Bitcoin early and stayed the course. Your conviction paid off.", traits: ["2012-2015 era adoption", "Survived multiple bear markets", "Strong Bitcoin maximalist views", "Long-term accumulation strategy"] },
+            btc_hodler: { icon: "💎", name: "The Bitcoin HODLer", desc: "You understand that Bitcoin is digital gold. Low time preference, high conviction.", traits: ["Buy and hold strategy", "Believes in Bitcoin's scarcity", "Ignores short-term volatility", "In it for the long haul"] },
+            btc_trader: { icon: "📊", name: "The Bitcoin Trader", desc: "You actively trade Bitcoin, reading charts and timing the market.", traits: ["Frequent trading activity", "Technical analysis enthusiast", "Seeks to capitalize on volatility", "Short to medium-term focus"] },
+            btc_newbie: { icon: "🌱", name: "The Bitcoin Newcomer", desc: "Welcome to Bitcoin! You're at the start of an exciting journey.", traits: ["Recently created wallet", "Learning about Bitcoin", "Small but growing position", "Curious and engaged"] },
+            
+            // Ethereum Personalities
+            eth_ico_veteran: { icon: "🎖️", name: "The ICO Veteran", desc: "You were buying ETH at $1-10. You've seen it all - ICO mania, DeFi summer, NFT boom.", traits: ["2015-2017 era wallet", "Survived the ICO bubble", "Early DeFi participant", "Battle-tested investor"] },
+            eth_defi_og: { icon: "🌾", name: "The DeFi OG", desc: "You discovered DeFi before it was cool. MakerDAO, Compound, Uniswap - you were early to all of them.", traits: ["2017-2019 DeFi adoption", "Understands complex protocols", "Yield farming pioneer", "Protocol governance participant"] },
+            eth_defi_farmer: { icon: "👨‍🌾", name: "The DeFi Yield Farmer", desc: "You chase yields across protocols, always optimizing for maximum returns.", traits: ["Active DeFi user", "Multiple protocol interactions", "Liquidity provider", "Gas fee savvy"] },
+            eth_nft_collector: { icon: "🖼️", name: "The NFT Collector", desc: "Profile pictures, art, and digital collectibles - you see the value in digital ownership.", traits: ["Active NFT trader", "Community participant", "Cultural investor", "Early to new trends"] },
+            eth_builder: { icon: "🔨", name: "The Ethereum Builder", desc: "You're not just using Ethereum, you're building on it. Smart contracts and dApps are your playground.", traits: ["Contract deployment experience", "Technical knowledge", "Ecosystem contributor", "Innovation focused"] },
+            eth_whale: { icon: "🐋", name: "The Ethereum Whale", desc: "Your wallet moves markets. Big holdings, bigger influence.", traits: ["Significant ETH holdings", "Strategic positioning", "Market awareness", "Long-term perspective"] },
+            eth_newcomer: { icon: "🆕", name: "The Ethereum Explorer", desc: "You're discovering the world of smart contracts and DeFi. Welcome to Ethereum!", traits: ["New to Ethereum", "Exploring dApps", "Learning about DeFi", "Growing engagement"] },
+            
+            // Solana Personalities
+            sol_early_adopter: { icon: "🚀", name: "The Solana Early Adopter", desc: "You bet on Solana when it was sub-$10. Speed and scalability sold you immediately.", traits: ["Early Solana believer", "High-performance advocate", "NFT and DeFi active", "Community engaged"] },
+            sol_degen: { icon: "⚡", name: "The Solana Degen", desc: "You trade memecoins, flip NFTs, and love the fast-paced Solana ecosystem.", traits: ["Very high transaction count", "Memecoin participant", "NFT flipper", "Thrives on chaos"] },
+            sol_defi_user: { icon: "🌊", name: "The Solana DeFi User", desc: "You appreciate Solana's speed for DeFi. Low fees, fast transactions, smooth UX.", traits: ["Active DeFi participant", "Yield optimization", "Multi-protocol user", "Efficiency focused"] },
+            sol_newcomer: { icon: "🌟", name: "The Solana Newbie", desc: "You just discovered Solana's speed and are excited about the possibilities.", traits: ["Recently joined Solana", "Exploring the ecosystem", "Small but active", "Learning fast"] },
+            
+            // BNB Chain Personalities
+            bnb_early_trader: { icon: "💛", name: "The BNB Early Trader", desc: "You jumped to BSC for lower fees and haven't looked back. Smart move.", traits: ["Early BSC adoption", "Fee-conscious", "Active trader", "Multi-chain user"] },
+            bnb_defi_hunter: { icon: "🎯", name: "The BSC DeFi Hunter", desc: "You hunt for yields on BSC, taking advantage of lower fees and faster transactions.", traits: ["DeFi protocol user", "Yield optimizer", "Gas savings focused", "Risk-aware"] },
+            bnb_trader: { icon: "📈", name: "The BNB Trader", desc: "You actively trade on BSC, leveraging its speed and low costs.", traits: ["High transaction frequency", "DEX power user", "Cost optimizer", "Market participant"] },
+            bnb_newcomer: { icon: "🐣", name: "The BSC Explorer", desc: "You're new to BNB Chain but already enjoying the low fees.", traits: ["Recent BSC user", "Cost-conscious", "Learning DeFi", "Growing portfolio"] },
+            
+            // Avalanche Personalities
+            avax_early_believer: { icon: "⛰️", name: "The Avalanche Pioneer", desc: "You believed in Avalanche's subnet architecture early. A true innovator.", traits: ["Early AVAX adoption", "Subnet enthusiast", "DeFi participant", "Technical understanding"] },
+            avax_defi_power: { icon: "❄️", name: "The Avalanche DeFi Power User", desc: "You leverage Avalanche's speed for advanced DeFi strategies.", traits: ["Active DeFi user", "Multi-protocol engagement", "High transaction volume", "Strategy focused"] },
+            avax_trader: { icon: "🏔️", name: "The AVAX Trader", desc: "You trade actively on Avalanche, enjoying its fast finality.", traits: ["Frequent trading", "DEX user", "Market participant", "Speed appreciator"] },
+            avax_newcomer: { icon: "🧊", name: "The Avalanche Newcomer", desc: "You just discovered Avalanche's speed and are exploring its ecosystem.", traits: ["New to Avalanche", "Exploring subnets", "DeFi curious", "Growing engagement"] },
+            
+            // XRP Personalities
+            xrp_believer: { icon: "✨", name: "The XRP Believer", desc: "Through lawsuits and volatility, you've held strong. Your conviction is unwavering.", traits: ["Long-term XRP holder", "Community supporter", "Weathered legal battles", "Strong conviction"] },
+            xrp_trader: { icon: "💫", name: "The XRP Trader", desc: "You actively trade XRP, capitalizing on its volatility.", traits: ["Active trading", "Market timing", "Volatility player", "Short-term focus"] },
+            xrp_utility: { icon: "🌐", name: "The XRP Utility User", desc: "You use XRP for its intended purpose - fast, cheap cross-border transactions.", traits: ["Payment focused", "Utility over speculation", "International transfers", "Practical approach"] },
+            xrp_newcomer: { icon: "⭐", name: "The XRP Explorer", desc: "You're new to XRP and discovering its use cases.", traits: ["Recent adoption", "Learning about XRP", "Small position", "Curious observer"] },
+            
+            // Cardano Personalities
+            ada_early_adopter: { icon: "🎓", name: "The Cardano Academic", desc: "You appreciate Cardano's peer-reviewed approach. Slow and steady wins the race.", traits: ["Early ADA investor", "Research-focused", "Long-term vision", "Academic appreciation"] },
+            ada_staker: { icon: "🏛️", name: "The Cardano Staker", desc: "You stake your ADA and participate in governance. True Cardano community member.", traits: ["Active staking", "Governance participant", "Community engaged", "Patient investor"] },
+            ada_believer: { icon: "💙", name: "The Cardano Believer", desc: "You believe in Cardano's methodical approach to blockchain development.", traits: ["Long-term holder", "Development follower", "Community supporter", "Patient mindset"] },
+            ada_newcomer: { icon: "📘", name: "The Cardano Student", desc: "You're learning about Cardano's unique approach to blockchain.", traits: ["New to Cardano", "Learning about staking", "Small holdings", "Research oriented"] },
+            
+            // Dogecoin Personalities
+            doge_og: { icon: "🐕", name: "The OG Doge Holder", desc: "You bought Doge for the memes and stayed for the community. Much wow, very diamond hands.", traits: ["Early Doge adoption", "Community champion", "Meme culture enthusiast", "Long-term holder"] },
+            doge_memester: { icon: "😄", name: "The Doge Memester", desc: "To the moon! You're here for the fun, the community, and the memes.", traits: ["Active community member", "Social media engaged", "Fun-focused", "Optimistic outlook"] },
+            doge_trader: { icon: "🎲", name: "The Doge Trader", desc: "You trade Doge volatility like a pro. High risk, high reward.", traits: ["Active trading", "Volatility player", "Risk tolerant", "Market participant"] },
+            doge_newcomer: { icon: "🌙", name: "The Doge Newbie", desc: "You just joined the Doge community. Welcome, Shibe!", traits: ["Recent buyer", "Learning about Doge", "Community curious", "New to crypto"] },
+            
+            // Tether Personalities
+            usdt_stablecoin_pro: { icon: "🏦", name: "The Stablecoin Pro", desc: "You use USDT for its stability and liquidity. Smart risk management.", traits: ["Stablecoin focused", "Risk averse", "DeFi participant", "Strategic trader"] },
+            usdt_trader: { icon: "💱", name: "The USDT Trader", desc: "USDT is your base currency for trading across the crypto market.", traits: ["Trading base currency", "Market active", "Liquidity focused", "Multi-exchange user"] },
+            usdt_defi: { icon: "🔄", name: "The USDT DeFi User", desc: "You use USDT in DeFi protocols for stable yields.", traits: ["DeFi active", "Yield focused", "Stability seeker", "Protocol user"] },
+            
+            // Universal Personalities
+            whale: { icon: "🐋", name: "The Whale", desc: "Your wallet holds significant value. Your moves are calculated and strategic.", traits: ["High value holdings", "Market influence", "Strategic investor", "Long-term focused"] },
+            dormant: { icon: "😴", name: "The Sleeping Giant", desc: "Your wallet has history but has been quiet lately. Time to wake up?", traits: ["Minimal recent activity", "Old wallet", "Patient holder", "Waiting for the moment"] }
         };
 
         let selectedChain = null, provider, signer, walletAddress;
@@ -687,43 +737,177 @@
         function calculatePersonality(txCount, balance) {
             const chainInfo = chains[selectedChain];
             let balanceInNative = (typeof balance === 'object' && balance._isBigNumber) ? parseFloat(ethers.utils.formatEther(balance)) : balance;
-            let walletAge = txCount > 1000 ? 'Veteran' : txCount > 100 ? 'Experienced' : txCount > 10 ? 'Active' : 'New';
-            let activityLevel = txCount > 500 ? 'Very High' : txCount > 100 ? 'High' : txCount > 20 ? 'Moderate' : 'Low';
-            let personalityType = 'bluechip';
             
+            // Calculate wallet age category
+            let walletAge = 'Unknown';
+            let walletAgeYears = 0;
+            
+            if (txCount > 5000) { walletAge = 'Ancient'; walletAgeYears = 5; }
+            else if (txCount > 2000) { walletAge = 'Veteran'; walletAgeYears = 4; }
+            else if (txCount > 1000) { walletAge = 'Experienced'; walletAgeYears = 3; }
+            else if (txCount > 500) { walletAge = 'Mature'; walletAgeYears = 2; }
+            else if (txCount > 100) { walletAge = 'Active'; walletAgeYears = 1; }
+            else if (txCount > 10) { walletAge = 'Growing'; walletAgeYears = 0.5; }
+            else { walletAge = 'New'; walletAgeYears = 0.1; }
+
+            let activityLevel = txCount > 500 ? 'Very High' : txCount > 100 ? 'High' : txCount > 20 ? 'Moderate' : 'Low';
+            let personalityType = 'whale';
+            
+            // BITCOIN - Age and behavior based personalities
             if (selectedChain === 'bitcoin') {
-                personalityType = txCount < 20 ? 'og_bitcoiner' : balanceInNative > 5 ? 'whale' : txCount > 100 ? 'degen' : 'hodler';
-            } else if (selectedChain === 'dogecoin') {
-                personalityType = 'meme_lord';
-            } else if (selectedChain === 'solana') {
-                personalityType = txCount > 200 ? 'sol_native' : 'defi';
-            } else if (selectedChain === 'tether') {
-                personalityType = 'stablecoin_user';
-            } else if (selectedChain === 'avalanche') {
-                if (txCount > 150) {
-                    personalityType = 'defi';
-                } else if (balanceInNative > 100) {
-                    personalityType = 'whale';
+                if (txCount < 50 && walletAgeYears >= 4) {
+                    personalityType = 'btc_genesis';
+                } else if (txCount < 100 && walletAgeYears >= 2) {
+                    personalityType = 'btc_early_believer';
+                } else if (txCount > 500) {
+                    personalityType = 'btc_trader';
+                } else if (txCount >= 10 && txCount <= 100) {
+                    personalityType = 'btc_hodler';
                 } else {
-                    personalityType = 'bluechip';
+                    personalityType = 'btc_newbie';
                 }
-            } else {
-                if (txCount < 10 && balanceInNative > 0) personalityType = 'dormant';
-                else if (txCount > 1000) personalityType = 'degen';
-                else if (txCount > 100 && txCount <= 1000) personalityType = 'defi';
-                else if (balanceInNative > 10) personalityType = 'whale';
-                else if (txCount >= 10 && txCount <= 50) personalityType = 'hodler';
+            }
+            
+            // ETHEREUM - DeFi and NFT focused personalities
+            else if (selectedChain === 'ethereum') {
+                if (balanceInNative > 100) {
+                    personalityType = 'eth_whale';
+                } else if (txCount > 2000 && walletAgeYears >= 3) {
+                    personalityType = 'eth_ico_veteran';
+                } else if (txCount > 1000 && walletAgeYears >= 2) {
+                    personalityType = 'eth_defi_og';
+                } else if (txCount > 500 && txCount <= 1000) {
+                    personalityType = 'eth_defi_farmer';
+                } else if (txCount > 200 && txCount <= 500) {
+                    personalityType = 'eth_nft_collector';
+                } else if (txCount > 100 && txCount <= 200) {
+                    personalityType = 'eth_builder';
+                } else {
+                    personalityType = 'eth_newcomer';
+                }
+            }
+            
+            // SOLANA - Speed and activity based
+            else if (selectedChain === 'solana') {
+                if (txCount > 1000 && walletAgeYears >= 1) {
+                    personalityType = 'sol_early_adopter';
+                } else if (txCount > 500) {
+                    personalityType = 'sol_degen';
+                } else if (txCount > 100) {
+                    personalityType = 'sol_defi_user';
+                } else {
+                    personalityType = 'sol_newcomer';
+                }
+            }
+            
+            // BNB CHAIN - Trading and DeFi focused
+            else if (selectedChain === 'bsc') {
+                if (txCount > 1000 && walletAgeYears >= 1.5) {
+                    personalityType = 'bnb_early_trader';
+                } else if (txCount > 500) {
+                    personalityType = 'bnb_trader';
+                } else if (txCount > 100) {
+                    personalityType = 'bnb_defi_hunter';
+                } else {
+                    personalityType = 'bnb_newcomer';
+                }
+            }
+            
+            // AVALANCHE - DeFi and subnet focused
+            else if (selectedChain === 'avalanche') {
+                if (txCount > 500 && walletAgeYears >= 1) {
+                    personalityType = 'avax_early_believer';
+                } else if (txCount > 200) {
+                    personalityType = 'avax_defi_power';
+                } else if (txCount > 50) {
+                    personalityType = 'avax_trader';
+                } else {
+                    personalityType = 'avax_newcomer';
+                }
+            }
+            
+            // XRP - Community and utility focused
+            else if (selectedChain === 'xrp') {
+                if (txCount > 500 && walletAgeYears >= 2) {
+                    personalityType = 'xrp_believer';
+                } else if (txCount > 200) {
+                    personalityType = 'xrp_trader';
+                } else if (txCount > 50) {
+                    personalityType = 'xrp_utility';
+                } else {
+                    personalityType = 'xrp_newcomer';
+                }
+            }
+            
+            // CARDANO - Academic and staking focused
+            else if (selectedChain === 'cardano') {
+                if (txCount > 500 && walletAgeYears >= 2) {
+                    personalityType = 'ada_early_adopter';
+                } else if (txCount > 100) {
+                    personalityType = 'ada_staker';
+                } else if (txCount > 20) {
+                    personalityType = 'ada_believer';
+                } else {
+                    personalityType = 'ada_newcomer';
+                }
+            }
+            
+            // DOGECOIN - Meme and community focused
+            else if (selectedChain === 'dogecoin') {
+                if (txCount > 500 && walletAgeYears >= 2) {
+                    personalityType = 'doge_og';
+                } else if (txCount > 100) {
+                    personalityType = 'doge_trader';
+                } else if (txCount > 20) {
+                    personalityType = 'doge_memester';
+                } else {
+                    personalityType = 'doge_newcomer';
+                }
+            }
+            
+            // TETHER - Stablecoin strategies
+            else if (selectedChain === 'tether') {
+                if (txCount > 500) {
+                    personalityType = 'usdt_trader';
+                } else if (txCount > 100) {
+                    personalityType = 'usdt_defi';
+                } else {
+                    personalityType = 'usdt_stablecoin_pro';
+                }
+            }
+            
+            // Check for dormant wallets (universal)
+            if (txCount > 100 && activityLevel === 'Low' && walletAgeYears >= 2) {
+                personalityType = 'dormant';
+            }
+            
+            // Check for whales (universal) - override if balance is massive
+            if (balanceInNative > 1000 && selectedChain !== 'dogecoin') {
+                personalityType = 'whale';
             }
 
             const insights = [];
             insights.push(txCount > 500 ? `Extremely active on ${chainInfo.name} with ${txCount} transactions` : txCount < 10 ? `Minimalist approach with only ${txCount} transactions` : `Steady ${chainInfo.name} user with ${txCount} transactions`);
-            if (balanceInNative > 5) insights.push(`Significant ${chainInfo.nativeCurrency} holdings detected`);
-            else if (balanceInNative > 0.1) insights.push(`Balanced ${chainInfo.nativeCurrency} position`);
+            
+            if (balanceInNative > 100) insights.push(`Significant ${chainInfo.nativeCurrency} holdings detected`);
+            else if (balanceInNative > 1) insights.push(`Balanced ${chainInfo.nativeCurrency} position`);
+            else if (balanceInNative > 0.01) insights.push(`Growing ${chainInfo.nativeCurrency} portfolio`);
+            
+            if (walletAgeYears >= 4) insights.push('Your wallet has witnessed multiple market cycles');
+            else if (walletAgeYears >= 2) insights.push('You\'ve been through at least one full market cycle');
+            else if (walletAgeYears >= 1) insights.push('You\'re building experience in the crypto space');
+            
+            // Chain-specific insights
             if (selectedChain === 'bitcoin') insights.push('You believe in the original cryptocurrency vision');
+            else if (selectedChain === 'ethereum') insights.push('You\'re at the forefront of smart contract innovation');
             else if (selectedChain === 'dogecoin') insights.push('Much wow! You embrace the fun side of crypto');
             else if (selectedChain === 'solana') insights.push('Speed and efficiency matter to you');
             else if (selectedChain === 'tether') insights.push('You prefer stability and practical utility');
             else if (selectedChain === 'avalanche') insights.push('You value high-performance DeFi and scalability');
+            else if (selectedChain === 'bsc') insights.push('You appreciate low fees and fast transactions');
+            else if (selectedChain === 'xrp') insights.push('You see value in efficient payment systems');
+            else if (selectedChain === 'cardano') insights.push('You appreciate methodical, research-driven development');
+            
             insights.push(`Your ${walletAge.toLowerCase()} wallet shows your ${chainInfo.name} journey`);
 
             return { type: personalityType, stats: { txCount, walletAge, balance: balanceInNative.toFixed(4) + ' ' + chainInfo.nativeCurrency, activityLevel }, insights };
