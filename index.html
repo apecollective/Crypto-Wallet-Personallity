@@ -100,6 +100,13 @@
                         🔍 Analyze This Address
                     </button>
                 </div>
+
+                <!-- Test Address Button -->
+                <div id="testAddressDiv" class="hidden">
+                    <button onclick="useTestAddress()" class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg text-sm transition">
+                        🧪 Try Demo Address
+                    </button>
+                </div>
             </div>
             
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6 text-sm text-left">
@@ -378,6 +385,16 @@
         let walletAddress = null;
         let chartInstance = null;
         const apiCache = new Map();
+
+        // Test addresses for each chain
+        const testAddresses = {
+            ethereum: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', // Vitalik
+            bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis
+            solana: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM', // Popular wallet
+            bsc: '0x8894E0a0c962CB723c1976a4421c95949bE2D4E3', // Binance hot wallet
+            polygon: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH bridge
+            avalanche: '0x9f8c163cBA728e99993ABe7495F06c0A3c8Ac8b9' // Popular AVAX wallet
+        };
 
         // ==================== BLOCKCHAIN API FUNCTIONS ====================
 
@@ -783,6 +800,19 @@
             document.getElementById('connectWalletBtn').disabled = false;
             document.getElementById('manualAddress').disabled = false;
             document.getElementById('analyzeAddressBtn').disabled = false;
+            
+            // Show test address button
+            document.getElementById('testAddressDiv').classList.remove('hidden');
+        }
+
+        function useTestAddress() {
+            if (!selectedChain) return;
+            
+            const testAddr = testAddresses[selectedChain];
+            if (testAddr) {
+                document.getElementById('manualAddress').value = testAddr;
+                analyzeManualAddress();
+            }
         }
 
         async function connectWallet() {
@@ -793,10 +823,28 @@
                 document.getElementById('selectedChainDisplay').textContent = `Analyzing ${chains[selectedChain].name} wallet...`;
                 
                 if (selectedChain === 'ethereum' || selectedChain === 'bsc' || selectedChain === 'polygon' || selectedChain === 'avalanche') {
-                    if (typeof window.ethereum !== 'undefined') {
-                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        walletAddress = accounts[0];
+                    // Check if MetaMask is installed
+                    if (typeof window.ethereum === 'undefined') {
+                        showError('MetaMask not detected. Please install MetaMask extension or enter an address manually below.');
+                        return;
+                    }
+
+                    try {
+                        // Request account access
+                        updateLoadingStatus('Requesting wallet access...', 10);
+                        const accounts = await window.ethereum.request({ 
+                            method: 'eth_requestAccounts' 
+                        });
                         
+                        if (!accounts || accounts.length === 0) {
+                            showError('No accounts found. Please unlock MetaMask and try again.');
+                            return;
+                        }
+
+                        walletAddress = accounts[0];
+                        console.log('Connected wallet:', walletAddress);
+                        
+                        // Analyze the wallet
                         const result = await getEthereumData(walletAddress, selectedChain);
                         completeStep('step4');
                         updateLoadingStatus('Complete!', 100);
@@ -804,13 +852,28 @@
                         setTimeout(() => {
                             showResults(result.personality, result.txCount, result.balance, result.historicalData);
                         }, 500);
-                    } else {
-                        showError('Please install MetaMask to connect your Ethereum wallet');
+                        
+                    } catch (error) {
+                        console.error('MetaMask error:', error);
+                        if (error.code === 4001) {
+                            showError('Connection rejected. Please approve the connection in MetaMask and try again.');
+                        } else if (error.code === -32002) {
+                            showError('Connection request pending. Please check MetaMask and approve the connection.');
+                        } else {
+                            throw error;
+                        }
                     }
                 } else if (selectedChain === 'solana') {
-                    if (window.solana && window.solana.isPhantom) {
+                    if (!window.solana || !window.solana.isPhantom) {
+                        showError('Phantom wallet not detected. Please install Phantom extension or enter an address manually below.');
+                        return;
+                    }
+
+                    try {
+                        updateLoadingStatus('Requesting wallet access...', 10);
                         const response = await window.solana.connect();
                         walletAddress = response.publicKey.toString();
+                        console.log('Connected Solana wallet:', walletAddress);
                         
                         const result = await getSolanaData(walletAddress);
                         completeStep('step4');
@@ -819,15 +882,22 @@
                         setTimeout(() => {
                             showResults(result.personality, result.txCount, result.balance, result.historicalData);
                         }, 500);
-                    } else {
-                        showError('Please install Phantom wallet to connect your Solana wallet');
+                    } catch (error) {
+                        console.error('Phantom error:', error);
+                        if (error.code === 4001) {
+                            showError('Connection rejected. Please approve the connection in Phantom and try again.');
+                        } else {
+                            throw error;
+                        }
                     }
+                } else if (selectedChain === 'bitcoin') {
+                    showError('Bitcoin wallet connection not supported. Please enter your Bitcoin address manually below.');
                 } else {
-                    showError('Wallet connection not available for this chain. Please enter address manually.');
+                    showError('Wallet connection not available for this chain. Please enter address manually below.');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                showError(error.message || 'Failed to analyze wallet. Please try again.');
+                console.error('Connection error:', error);
+                showError(error.message || 'Failed to connect wallet. Please try entering your address manually below.');
             }
         }
 
