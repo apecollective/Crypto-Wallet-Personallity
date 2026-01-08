@@ -236,7 +236,7 @@
         // API Keys are hardcoded and ready to use!
         const API_CONFIG = {
             etherscan: {
-                key: '2MVET94BZC1VKINQ4QZVFVBV8SQKNWRUUQ',
+                key: 'UEHPZWDPNC2ZSGRJMBYPVH5GUVE72I66NN',
                 mainnet: 'https://api.etherscan.io/api',
                 bsc: 'https://api.bscscan.com/api',
                 polygon: 'https://api.polygonscan.com/api'
@@ -246,7 +246,7 @@
                 endpoint: 'https://api.helius.xyz/v0'
             },
             avalanche: {
-                key: '2MVET94BZC1VKINQ4QZVFVBV8SQKNWRUUQ',
+                key: 'UEHPZWDPNC2ZSGRJMBYPVH5GUVE72I66NN',
                 snowtrace: 'https://api.snowtrace.io/api'
             }
         };
@@ -440,11 +440,23 @@
             // Fetch transactions
             const txUrl = `${apiEndpoint}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=${apiKey}`;
             
+            console.log('Fetching transactions from:', apiEndpoint);
             const txResponse = await fetch(txUrl);
             const txData = await txResponse.json();
 
+            console.log('Transaction API response:', txData);
+
             if (txData.status !== '1') {
-                throw new Error(txData.message || 'Failed to fetch transaction data');
+                // Better error messages for common issues
+                if (txData.message && txData.message.includes('Invalid API Key')) {
+                    throw new Error('Invalid API key. Please check your Etherscan API key.');
+                } else if (txData.message && txData.message.includes('rate limit')) {
+                    throw new Error('Rate limit exceeded. Please wait a minute and try again.');
+                } else if (txData.result && txData.result.includes('Max rate limit reached')) {
+                    throw new Error('API rate limit reached. Please wait 1 minute and try again.');
+                } else {
+                    throw new Error(txData.message || txData.result || 'Failed to fetch transaction data');
+                }
             }
 
             completeStep('step2');
@@ -453,8 +465,21 @@
             // Fetch balance
             const balanceUrl = `${apiEndpoint}?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
             
+            console.log('Fetching balance...');
             const balResponse = await fetch(balanceUrl);
             const balData = await balResponse.json();
+
+            console.log('Balance API response:', balData);
+
+            if (balData.status !== '1') {
+                if (balData.message && balData.message.includes('Invalid API Key')) {
+                    throw new Error('Invalid API key. Please check your Etherscan API key.');
+                } else if (balData.message && balData.message.includes('rate limit')) {
+                    throw new Error('Rate limit exceeded. Please wait a minute and try again.');
+                } else {
+                    throw new Error(balData.message || balData.result || 'Failed to fetch balance data');
+                }
+            }
 
             const balance = parseFloat(balData.result) / 1e18;
             const transactions = txData.result;
