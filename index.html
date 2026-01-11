@@ -3,243 +3,582 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Chain Wallet Personality Test</title>
+    <title>Wallet Personality - Discover Your Crypto Vibe</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-</head>
-<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-4xl w-full bg-white/95 backdrop-blur rounded-2xl shadow-2xl p-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        <!-- Start Screen -->
-        <div id="startScreen" class="text-center">
-            <div class="text-6xl mb-4">🔮</div>
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-                Multi-Chain Wallet Personality Test
-            </h1>
-            <p class="text-gray-600 mb-8 text-lg">
-                Analyze wallets across multiple crypto networks and discover your on-chain personality!
-            </p>
-
-            <div class="bg-green-50 border-2 border-green-300 rounded-lg p-4 mb-6">
-                <h3 class="font-bold text-green-900 mb-2">✓ API Keys Configured</h3>
-                <p class="text-green-800 text-sm">Ready to analyze real blockchain data!</p>
-            </div>
-
-            <!-- Chain Selection -->
-            <div class="mb-8">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Select Blockchain:</h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <button onclick="selectChain('bitcoin')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-orange-500 hover:bg-orange-50 transition">
-                        <div class="text-3xl mb-1">₿</div>
-                        <div class="font-semibold">Bitcoin</div>
-                        <div class="text-xs text-gray-500">BTC</div>
-                    </button>
-
-                    <button onclick="selectChain('ethereum')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">⟠</div>
-                        <div class="font-semibold">Ethereum</div>
-                        <div class="text-xs text-gray-500">ETH</div>
-                    </button>
-
-                    <button onclick="selectChain('solana')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">◎</div>
-                        <div class="font-semibold">Solana</div>
-                        <div class="text-xs text-gray-500">SOL</div>
-                    </button>
-
-                    <button onclick="selectChain('bsc')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-yellow-500 hover:bg-yellow-50 transition">
-                        <div class="text-3xl mb-1">🟡</div>
-                        <div class="font-semibold">BNB Chain</div>
-                        <div class="text-xs text-gray-500">BNB</div>
-                    </button>
-
-                    <button onclick="selectChain('polygon')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-purple-500 hover:bg-purple-50 transition">
-                        <div class="text-3xl mb-1">⬡</div>
-                        <div class="font-semibold">Polygon</div>
-                        <div class="text-xs text-gray-500">MATIC</div>
-                    </button>
-
-                    <button onclick="selectChain('avalanche')" class="chain-btn border-2 border-gray-300 rounded-lg p-4 hover:border-red-500 hover:bg-red-50 transition">
-                        <div class="text-3xl mb-1">🔺</div>
-                        <div class="font-semibold">Avalanche</div>
-                        <div class="text-xs text-gray-500">AVAX</div>
-                    </button>
-                </div>
-            </div>
-
-            <div id="selectedChainInfo" class="hidden mb-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                <p class="text-purple-800">
-                    <span class="font-bold">Selected:</span> 
-                    <span id="selectedChainName"></span>
-                </p>
-                <p class="text-sm text-purple-600 mt-1" id="chainNote">✓ Ready to analyze!</p>
-            </div>
-
-            <!-- Connection Options -->
-            <div class="space-y-4">
-                <button id="connectWalletBtn" onclick="connectWallet()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                    <span id="connectBtnText">🔗 Connect Wallet & Analyze</span>
-                </button>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0e1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background gradient */
+        .bg-animated {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Glass card effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Chain cards */
+        .chain-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chain-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .chain-btn:hover::before {
+            left: 100%;
+        }
+        
+        .chain-btn:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #00f2fe;
+            box-shadow: 0 12px 40px rgba(0, 242, 254, 0.3);
+        }
+        
+        .chain-btn.active {
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.1);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+        }
+        
+        /* Buttons */
+        .btn-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 18px 36px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .btn-gradient:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .btn-gradient:hover {
+            background-position: 100% 0;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-gradient:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #00f2fe;
+            color: #00f2fe;
+            font-weight: 600;
+            padding: 18px 36px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: #00f2fe;
+            color: #0a0e1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 242, 254, 0.4);
+        }
+        
+        /* Input */
+        input {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 18px 24px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00f2fe;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+        
+        input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Text gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Progress bar */
+        .progress-track {
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #4facfe, #00f2fe);
+            background-size: 200% 100%;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            animation: shimmer 2s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Glow effect */
+        .glow {
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
+        }
+        
+        /* Pulse animation */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Float animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Fade in */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Badge */
+        .badge {
+            background: rgba(0, 242, 254, 0.2);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00f2fe;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Stats card */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 242, 254, 0.5);
+        }
+        
+        /* Timeframe toggle buttons */
+        .timeframe-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .timeframe-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 242, 254, 0.3);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .timeframe-active {
+            background: rgba(0, 242, 254, 0.2);
+            border-color: rgb(0, 242, 254);
+            color: rgb(0, 242, 254);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-animated">
+    
+    <div class="min-h-screen p-4 md:p-8">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Start Screen -->
+            <div id="startScreen" class="fade-in">
                 
-                <div class="flex items-center gap-4">
-                    <div class="flex-1 h-px bg-gray-300"></div>
-                    <span class="text-gray-500 text-sm">OR</span>
-                    <div class="flex-1 h-px bg-gray-300"></div>
+                <!-- Header -->
+                <div class="text-center mb-12">
+                    <div class="text-8xl mb-6 float">🔮</div>
+                    <h1 class="text-6xl md:text-7xl font-black mb-4 text-gradient">
+                        WALLET VIBE CHECK
+                    </h1>
+                    <p class="text-2xl text-white/80 mb-6">
+                        Discover your on-chain personality
+                    </p>
+                    <div class="badge mx-auto">
+                        <div class="status-dot"></div>
+                        <span>Powered by Moralis</span>
+                    </div>
                 </div>
-
-                <div>
-                    <input 
-                        type="text" 
-                        id="manualAddress" 
-                        placeholder="Enter wallet address" 
-                        class="w-full p-4 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none mb-3"
-                        disabled
-                    />
-                    <button id="analyzeAddressBtn" onclick="analyzeManualAddress()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-full text-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                        🔍 Analyze This Address
-                    </button>
+                
+                <!-- Main Container -->
+                <div class="glass p-8 md:p-12 mb-8">
+                    
+                    <h2 class="text-3xl font-bold mb-8 text-center">Choose Your Chain</h2>
+                    
+                    <!-- Chain Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+                        
+                        <div class="chain-btn" onclick="selectChain('bitcoin')">
+                            <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="text-lg font-bold text-center">Bitcoin</div>
+                            <div class="text-sm text-white/60 text-center">BTC</div>
+                        </div>
+                        
+                        <div class="chain-btn" onclick="selectChain('ethereum')">
+                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="text-lg font-bold text-center">Ethereum</div>
+                            <div class="text-sm text-white/60 text-center">ETH</div>
+                        </div>
+                        
+                        <div class="chain-btn" onclick="selectChain('solana')">
+                            <img src="https://cryptologos.cc/logos/solana-sol-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="text-lg font-bold text-center">Solana</div>
+                            <div class="text-sm text-white/60 text-center">SOL</div>
+                        </div>
+                        
+                        <div class="chain-btn" onclick="selectChain('bsc')">
+                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="text-lg font-bold text-center">BNB Chain</div>
+                            <div class="text-sm text-white/60 text-center">BNB</div>
+                        </div>
+                        
+                        <div class="chain-btn" onclick="selectChain('polygon')">
+                            <img src="https://cryptologos.cc/logos/polygon-matic-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="text-lg font-bold text-center">Polygon</div>
+                            <div class="text-sm text-white/60 text-center">MATIC</div>
+                        </div>
+                        
+                        <div class="chain-btn" onclick="selectChain('avalanche')">
+                            <img src="https://cryptologos.cc/logos/avalanche-avax-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="text-lg font-bold text-center">Avalanche</div>
+                            <div class="text-sm text-white/60 text-center">AVAX</div>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- Selected Info -->
+                    <div id="selectedChainInfo" class="hidden glass p-4 mb-8 text-center glow">
+                        <span class="text-white/70">Selected: </span>
+                        <span id="selectedChainName" class="font-bold text-gradient text-xl"></span>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="space-y-4">
+                        
+                        <button id="connectWalletBtn" onclick="connectWallet()" class="btn-gradient w-full text-lg" disabled>
+                            🔗 Connect Wallet
+                        </button>
+                        
+                        <div class="flex items-center gap-4 my-6">
+                            <div class="flex-1 h-px bg-white/20"></div>
+                            <span class="text-white/50 text-sm font-semibold">OR ENTER ADDRESS</span>
+                            <div class="flex-1 h-px bg-white/20"></div>
+                        </div>
+                        
+                        <input 
+                            type="text" 
+                            id="manualAddress" 
+                            placeholder="0x... or wallet address"
+                            disabled
+                        />
+                        
+                        <button id="analyzeAddressBtn" onclick="analyzeManualAddress()" class="btn-outline w-full text-lg" disabled>
+                            🔍 Analyze Address
+                        </button>
+                        
+                        <div id="testAddressDiv" class="hidden text-center">
+                            <button onclick="useTestAddress()" class="text-cyan-400 hover:text-cyan-300 font-semibold transition">
+                                🎲 Try Demo Wallet (5 wallets per chain - click to cycle)
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
                 </div>
-
-                <!-- Test Address Button -->
-                <div id="testAddressDiv" class="hidden">
-                    <button onclick="useTestAddress()" class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg text-sm transition">
-                        🧪 Try Demo Address
-                    </button>
-                </div>
+                
             </div>
             
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6 text-sm text-left">
-                <h3 class="font-bold text-blue-900 mb-2">🔒 Privacy & Security</h3>
-                <ul class="text-blue-800 space-y-1">
-                    <li>✓ Read-only analysis (no transactions)</li>
-                    <li>✓ Real blockchain data via API</li>
-                    <li>✓ Works with MetaMask, Phantom, and more</li>
-                    <li>✓ Or analyze any public address</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Loading Screen -->
-        <div id="loadingScreen" class="hidden text-center">
-            <div class="text-6xl mb-4 animate-bounce">🔍</div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Analyzing Your Wallet...</h2>
-            <p class="text-gray-600 mb-2"><span id="selectedChainDisplay"></span></p>
-            <p class="text-gray-600 mb-6" id="loadingStatus">Connecting...</p>
-            
-            <div class="bg-gray-200 rounded-full h-3 mb-6 overflow-hidden">
-                <div id="loadingBar" class="bg-gradient-to-r from-purple-600 to-pink-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
-            </div>
-            
-            <div class="text-left bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
-                <div id="step1" class="flex items-center text-gray-400">
-                    <span class="mr-3 text-lg">○</span>
-                    <span>Connecting to blockchain...</span>
-                </div>
-                <div id="step2" class="flex items-center text-gray-400">
-                    <span class="mr-3 text-lg">○</span>
-                    <span>Fetching transaction history...</span>
-                </div>
-                <div id="step3" class="flex items-center text-gray-400">
-                    <span class="mr-3 text-lg">○</span>
-                    <span>Analyzing patterns...</span>
-                </div>
-                <div id="step4" class="flex items-center text-gray-400">
-                    <span class="mr-3 text-lg">○</span>
-                    <span>Determining personality...</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div id="resultsScreen" class="hidden">
-            <div class="text-center mb-8">
-                <div class="flex items-center justify-center gap-3 mb-4">
-                    <div id="resultChainIcon" class="text-5xl"></div>
-                    <div>
-                        <h2 class="text-3xl font-bold text-gray-800">Your <span id="resultChainName"></span> Personality</h2>
+            <!-- Loading Screen -->
+            <div id="loadingScreen" class="hidden fade-in">
+                <div class="glass p-12 text-center">
+                    <div class="text-8xl mb-8 pulse">🔍</div>
+                    <h2 class="text-4xl font-bold mb-4">Analyzing Your Wallet</h2>
+                    <p class="text-xl text-white/70 mb-2" id="selectedChainDisplay"></p>
+                    <p class="text-white/50 mb-10" id="loadingStatus">Initializing...</p>
+                    
+                    <div class="progress-track mb-10 max-w-md mx-auto">
+                        <div id="loadingBar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="space-y-4 max-w-md mx-auto text-left">
+                        <div id="step1" class="flex items-center text-white/40">
+                            <span class="mr-4 text-xl">○</span>
+                            <span>Connecting to blockchain...</span>
+                        </div>
+                        <div id="step2" class="flex items-center text-white/40">
+                            <span class="mr-4 text-xl">○</span>
+                            <span>Fetching transaction history...</span>
+                        </div>
+                        <div id="step3" class="flex items-center text-white/40">
+                            <span class="mr-4 text-xl">○</span>
+                            <span>Analyzing patterns...</span>
+                        </div>
+                        <div id="step4" class="flex items-center text-white/40">
+                            <span class="mr-4 text-xl">○</span>
+                            <span>Determining personality...</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-8 mb-8">
-                <div class="text-center">
-                    <div id="personalityIcon" class="text-8xl mb-4"></div>
-                    <h3 id="personalityType" class="text-4xl font-bold text-purple-900 mb-3"></h3>
-                    <p id="personalityDesc" class="text-gray-700 text-lg"></p>
+            
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="hidden fade-in">
+                <div class="glass p-8 md:p-12">
+                    
+                    <!-- Chain Info -->
+                    <div class="text-center mb-8">
+                        <div class="flex items-center justify-center gap-4 mb-2">
+                            <div id="resultChainIcon" class="text-4xl"></div>
+                            <h3 class="text-2xl font-bold">
+                                <span id="resultChainName"></span> Analysis
+                            </h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Personality Header -->
+                    <div class="text-center mb-12">
+                        <div class="text-9xl mb-6" id="personalityIcon"></div>
+                        <h2 class="text-5xl font-black mb-4 text-gradient" id="personalityType"></h2>
+                        <p class="text-2xl text-white/80" id="personalityDesc"></p>
+                    </div>
+                    
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                        <div class="stat-card">
+                            <div class="text-sm text-white/60 mb-2">TRANSACTIONS</div>
+                            <div class="text-4xl font-black text-gradient" id="statTxCount"></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="text-sm text-white/60 mb-2">WALLET AGE</div>
+                            <div class="text-4xl font-black text-gradient" id="statWalletAge"></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="text-sm text-white/60 mb-2">BALANCE</div>
+                            <div class="text-4xl font-black text-gradient" id="statBalance"></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="text-sm text-white/60 mb-2">ACTIVITY</div>
+                            <div class="text-4xl font-black text-gradient" id="statActivity"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Traits -->
+                    <div class="glass p-8 mb-6">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>✨</span> Your Traits
+                        </h3>
+                        <ul id="traits" class="space-y-4 text-lg"></ul>
+                    </div>
+                    
+                    <!-- Insights -->
+                    <div class="glass p-8 mb-6">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>💡</span> Insights
+                        </h3>
+                        <div id="insights" class="space-y-4 text-lg text-white/80"></div>
+                    </div>
+                    
+                    <!-- Chart -->
+                    <div class="glass p-8 mb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold flex items-center gap-3">
+                                <span>📊</span> Balance History
+                            </h3>
+                            <div class="flex gap-2">
+                                <button onclick="changeTimeframe('daily')" id="btn-daily" class="timeframe-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                    Daily
+                                </button>
+                                <button onclick="changeTimeframe('weekly')" id="btn-weekly" class="timeframe-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                    Weekly
+                                </button>
+                                <button onclick="changeTimeframe('biweekly')" id="btn-biweekly" class="timeframe-btn timeframe-active px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                    Biweekly
+                                </button>
+                                <button onclick="changeTimeframe('monthly')" id="btn-monthly" class="timeframe-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                    Monthly
+                                </button>
+                            </div>
+                        </div>
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    
+                    <!-- Wallet Address -->
+                    <div class="text-center text-sm text-white/50 mb-8 font-mono">
+                        <span id="walletAddress"></span>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button onclick="shareResults()" class="btn-gradient text-lg">
+                            📤 Share Results
+                        </button>
+                        <button onclick="restartTest()" class="btn-outline text-lg">
+                            🔄 Test Another Wallet
+                        </button>
+                    </div>
+                    
                 </div>
             </div>
-
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
-                    <h4 class="text-sm font-semibold text-gray-500 mb-2">Total Transactions</h4>
-                    <p id="statTxCount" class="text-3xl font-bold text-purple-600"></p>
-                </div>
-                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
-                    <h4 class="text-sm font-semibold text-gray-500 mb-2">Wallet Age</h4>
-                    <p id="statWalletAge" class="text-3xl font-bold text-purple-600"></p>
-                </div>
-                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
-                    <h4 class="text-sm font-semibold text-gray-500 mb-2">Current Balance</h4>
-                    <p id="statBalance" class="text-3xl font-bold text-purple-600"></p>
-                </div>
-                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
-                    <h4 class="text-sm font-semibold text-gray-500 mb-2">Activity Level</h4>
-                    <p id="statActivity" class="text-3xl font-bold text-purple-600"></p>
+            
+            <!-- Error Screen -->
+            <div id="errorScreen" class="hidden fade-in">
+                <div class="glass p-12 text-center">
+                    <div class="text-8xl mb-8">⚠️</div>
+                    <h2 class="text-4xl font-bold mb-6">Oops!</h2>
+                    <p class="text-xl text-white/70 mb-10" id="errorMessage"></p>
+                    <button onclick="restartTest()" class="btn-gradient text-lg">
+                        Try Again
+                    </button>
                 </div>
             </div>
-
-            <div class="bg-white border-2 border-gray-200 rounded-xl p-6 mb-6">
-                <h4 class="text-xl font-bold text-gray-800 mb-4">✨ Your Traits</h4>
-                <ul id="traits" class="space-y-3"></ul>
-            </div>
-
-            <div class="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-purple-200 rounded-xl p-6 mb-6">
-                <h4 class="text-xl font-bold text-gray-800 mb-4">💡 Insights</h4>
-                <div id="insights" class="space-y-3 text-gray-700"></div>
-            </div>
-
-            <div class="bg-white border-2 border-gray-200 rounded-xl p-6 mb-6">
-                <h4 class="text-xl font-bold text-gray-800 mb-4">📊 Balance History</h4>
-                <canvas id="portfolioChart"></canvas>
-            </div>
-
-            <div class="text-center text-sm text-gray-600 mb-6">
-                <p>Wallet: <span id="walletAddress" class="font-mono"></span></p>
-            </div>
-
-            <div class="flex gap-4">
-                <button onclick="shareResults()" class="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-full transition">
-                    📤 Share Results
-                </button>
-                <button onclick="restartTest()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 px-8 rounded-full transition">
-                    🔄 Test Another
-                </button>
-            </div>
+            
         </div>
-
-        <!-- Error Screen -->
-        <div id="errorScreen" class="hidden text-center">
-            <div class="text-6xl mb-4">⚠️</div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Oops!</h2>
-            <p id="errorMessage" class="text-gray-600 mb-8"></p>
-            <button onclick="restartTest()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-full text-lg transition">
-                Try Again
-            </button>
-        </div>
-
     </div>
 
-    <script>
-        // ==================== CONFIGURATION ====================
+    <script>        // ==================== CONFIGURATION ====================
         
         // API Keys are hardcoded and ready to use!
         const API_CONFIG = {
+            moralis: {
+                key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjRhM2IwMjFiLTE5ODMtNGI3Ny05NThkLWNkNDhjYjFlZTczZiIsIm9yZ0lkIjoiNDg5MTEwIiwidXNlcklkIjoiNTAzMjMyIiwidHlwZUlkIjoiY2MxNDg2ODMtN2I0Zi00YmJjLWI4MzUtODBiZmMyNzEzNTA5IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3Njc3ODM1ODQsImV4cCI6NDkyMzU0MzU4NH0.iz4j7M9szIwo7_Dm97iJej-Y_TSDmZ-juM5qjXoj8S8',
+                endpoint: 'https://deep-index.moralis.io/api/v2.2'
+            },
             etherscan: {
                 key: 'UEHPZWDPNC2ZSGRJMBYPVH5GUVE72I66NN',
                 mainnet: 'https://api.etherscan.io/api',
                 bsc: 'https://api.bscscan.com/api',
                 polygon: 'https://api.polygonscan.com/api'
+            },
+            alchemy: {
+                ethereum: 'https://eth-mainnet.g.alchemy.com/v2/demo',
+                polygon: 'https://polygon-mainnet.g.alchemy.com/v2/demo',
             },
             helius: {
                 key: 'bbd9292e-e6e2-4d83-8567-d82d6286a2af',
@@ -266,25 +605,25 @@
             },
             solana: {
                 name: 'Solana',
-                icon: '◎',
+                icon: 'SOL',
                 nativeCurrency: 'SOL',
                 explorer: 'solscan.io'
             },
             bsc: {
                 name: 'BNB Chain',
-                icon: '🟡',
+                icon: 'BNB',
                 nativeCurrency: 'BNB',
                 explorer: 'bscscan.com'
             },
             polygon: {
                 name: 'Polygon',
-                icon: '⬡',
+                icon: 'MATIC',
                 nativeCurrency: 'MATIC',
                 explorer: 'polygonscan.com'
             },
             avalanche: {
                 name: 'Avalanche',
-                icon: '🔺',
+                icon: 'AVAX',
                 nativeCurrency: 'AVAX',
                 explorer: 'snowtrace.io'
             }
@@ -384,17 +723,114 @@
         let selectedChain = null;
         let walletAddress = null;
         let chartInstance = null;
+        let currentTimeframe = 'biweekly';
+        let rawTransactions = null;
+        let currentBalance = 0;
         const apiCache = new Map();
 
-        // Test addresses for each chain
-        const testAddresses = {
-            ethereum: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', // Vitalik
-            bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis
-            solana: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM', // Popular wallet
-            bsc: '0x8894E0a0c962CB723c1976a4421c95949bE2D4E3', // Binance hot wallet
-            polygon: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH bridge
-            avalanche: '0x9f8c163cBA728e99993ABe7495F06c0A3c8Ac8b9' // Popular AVAX wallet
+        // Multiple demo addresses for each chain - cycles through different wallets
+        const demoWallets = {
+            ethereum: [
+                { address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', name: 'Vitalik Buterin' },
+                { address: '0xab5801a7d398351b8be11c439e05c5b3259aec9b', name: 'Vitalik (Old Wallet)' },
+                { address: '0x220866B1A2219f40e72f5c628B65D54268cA3A9D', name: 'Blur Marketplace' },
+                { address: '0x28C6c06298d514Db089934071355E5743bf21d60', name: 'Binance 14' },
+                { address: '0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503', name: 'Binance Hot Wallet' }
+            ],
+            bitcoin: [
+                { address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', name: 'Genesis Block (Satoshi)' },
+                { address: 'bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97', name: 'Binance Cold Wallet' },
+                { address: '3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6', name: 'Bitfinex Cold Storage' },
+                { address: '1P5ZEDWTKTFGxQjZphgWPQUpe554WKDfHQ', name: 'Large BTC Holder' },
+                { address: '12tkqA9xSoowkzoERHMWNKsTey55YEBqkv', name: 'Mt. Gox Cold Wallet' }
+            ],
+            solana: [
+                { address: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM', name: 'Popular SOL Wallet' },
+                { address: 'GThUX1Atko4tqhN2NaiTazWSeFWMuiUvfFnyJyUghFMJ', name: 'Phantom Team' },
+                { address: 'H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG', name: 'FTX Cold Wallet' },
+                { address: 'CuieVDEDtLo7FypA9SbLM9saXFdb1dsshEkyErMqkRQq', name: 'Solana Foundation' },
+                { address: 'GjphYQcbP1m3FuDyCTUJf2mUMxKPE3j6feWU1rxvC7Ps', name: 'Magic Eden Treasury' }
+            ],
+            bsc: [
+                { address: '0x8894E0a0c962CB723c1976a4421c95949bE2D4E3', name: 'Binance Hot Wallet' },
+                { address: '0xBE0eB53F46cd790Cd13851d5EFf43D12404d33E8', name: 'Binance 8' },
+                { address: '0xF977814e90dA44bFA03b6295A0616a897441aceC', name: 'Binance Cold Wallet 1' },
+                { address: '0x5a52E96BAcdaBb82fd05763E25335261B270Efcb', name: 'PancakeSwap Main' },
+                { address: '0x73feaa1eE314F8c655E354234017bE2193C9E24E', name: 'PancakeSwap MasterChef' }
+            ],
+            polygon: [
+                { address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', name: 'WETH Bridge' },
+                { address: '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf', name: 'Polygon ERC20 Bridge' },
+                { address: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff', name: 'QuickSwap Router' },
+                { address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', name: 'WMATIC Token' },
+                { address: '0x1a13F4Ca1d028320A707D99520AbFefca3998b7F', name: 'Aave Polygon' }
+            ],
+            avalanche: [
+                { address: '0x9f8c163cBA728e99993ABe7495F06c0A3c8Ac8b9', name: 'Avalanche Foundation' },
+                { address: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4', name: 'Trader Joe Router' },
+                { address: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', name: 'WAVAX Token' },
+                { address: '0x8eBAf22B6F053dFFeaf46f4Dd9eFA95D89ba8580', name: 'Pangolin Router' },
+                { address: '0x152b9d0FdC40C096757F570A51E494bd4b943E50', name: 'AVAX Bridge' }
+            ]
         };
+        
+        // Track which demo wallet index to use for each chain
+        const demoWalletIndex = {
+            ethereum: 0,
+            bitcoin: 0,
+            solana: 0,
+            bsc: 0,
+            polygon: 0,
+            avalanche: 0
+        };
+
+        // ==================== TIMEFRAME HELPER FUNCTIONS ====================
+        
+        function getTimeframeKey(date, timeframe) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            
+            switch(timeframe) {
+                case 'daily':
+                    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                case 'weekly':
+                    const weekNum = Math.ceil(day / 7);
+                    return `${year}-${String(month).padStart(2, '0')}-W${weekNum}`;
+                case 'biweekly':
+                    const period = day <= 14 ? 1 : 2;
+                    return `${year}-${String(month).padStart(2, '0')}-P${period}`;
+                case 'monthly':
+                    return `${year}-${String(month).padStart(2, '0')}`;
+                default:
+                    return `${year}-${String(month).padStart(2, '0')}`;
+            }
+        }
+        
+        function getTimeframeLabel(date, timeframe) {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDate();
+            
+            switch(timeframe) {
+                case 'daily':
+                    return `${monthNames[month]} ${day}, ${year}`;
+                case 'weekly':
+                    const weekNum = Math.ceil(day / 7);
+                    const weekStart = (weekNum - 1) * 7 + 1;
+                    const weekEnd = Math.min(weekNum * 7, new Date(year, month + 1, 0).getDate());
+                    return `${monthNames[month]} ${weekStart}-${weekEnd}`;
+                case 'biweekly':
+                    const period = day <= 14 ? 1 : 2;
+                    const periodLabel = period === 1 ? '1-14' : '15-end';
+                    return `${monthNames[month]} ${periodLabel}`;
+                case 'monthly':
+                    return `${monthNames[month]} ${year}`;
+                default:
+                    return `${monthNames[month]} ${year}`;
+            }
+        }
 
         // ==================== BLOCKCHAIN API FUNCTIONS ====================
 
@@ -412,24 +848,156 @@
             return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
         }
 
-        // ETHEREUM API (works for ETH, BSC, Polygon, Avalanche)
+        // ETHEREUM API (using Etherscan as primary - most reliable!)
         async function getEthereumData(address, chainType = 'ethereum') {
             if (!isValidEthereumAddress(address)) {
                 throw new Error('Invalid Ethereum address format');
             }
 
-            const apiEndpoint = chainType === 'bsc' ? API_CONFIG.etherscan.bsc : 
-                              chainType === 'polygon' ? API_CONFIG.etherscan.polygon :
-                              chainType === 'avalanche' ? API_CONFIG.avalanche.snowtrace :
-                              API_CONFIG.etherscan.mainnet;
+            // Try Etherscan first (most reliable)
+            try {
+                return await getEthereumDataViaEtherscan(address, chainType);
+            } catch (etherscanError) {
+                console.warn('Etherscan failed, trying Alchemy...', etherscanError);
+                
+                // Fallback to Alchemy for Ethereum
+                if (chainType === 'ethereum') {
+                    try {
+                        return await getEthereumDataViaAlchemy(address);
+                    } catch (alchemyError) {
+                        console.error('Both Etherscan and Alchemy failed');
+                        throw new Error('Unable to fetch wallet data. Please try again later.');
+                    }
+                } else {
+                    throw etherscanError;
+                }
+            }
+        }
 
+        // Moralis API implementation (PRIMARY - most reliable!)
+        async function getEthereumDataViaMoralis(address, chainType = 'ethereum') {
+            console.log('=== USING MORALIS API ===');
+            
+            const cacheKey = `${chainType}-moralis:${address}`;
+            if (apiCache.has(cacheKey)) {
+                const cached = apiCache.get(cacheKey);
+                if (Date.now() - cached.timestamp < 300000) {
+                    return cached.data;
+                }
+            }
+
+            // Map chain types to Moralis chain identifiers
+            const chainMap = {
+                'ethereum': '0x1',
+                'bsc': '0x38',
+                'polygon': '0x89',
+                'avalanche': '0xa86a'
+            };
+
+            const chain = chainMap[chainType] || '0x1';
+            
+            updateLoadingStatus('Fetching data via Moralis...', 30);
+            completeStep('step1');
+
+            // Moralis uses RESTful API - no API key needed for basic calls
+            const baseUrl = 'https://deep-index.moralis.io/api/v2.2';
+            
+            // Get wallet transactions
+            const txUrl = `${baseUrl}/${address}?chain=${chain}`;
+            console.log('Moralis TX URL:', txUrl);
+
+            const headers = {
+                'Accept': 'application/json',
+                'X-API-Key': API_CONFIG.moralis.key
+            };
+
+            const txResponse = await fetch(txUrl, {
+                method: 'GET',
+                headers: headers
+            });
+
+            if (!txResponse.ok) {
+                throw new Error(`Moralis API error: ${txResponse.status} - ${txResponse.statusText}`);
+            }
+
+            const walletData = await txResponse.json();
+            console.log('Moralis wallet data:', walletData);
+
+            completeStep('step2');
+            updateLoadingStatus('Analyzing transactions...', 60);
+
+            // Get native balance
+            const balanceUrl = `${baseUrl}/${address}/balance?chain=${chain}`;
+            console.log('Moralis Balance URL:', balanceUrl);
+
+            const balanceResponse = await fetch(balanceUrl, {
+                method: 'GET',
+                headers: headers
+            });
+
+            const balanceData = await balanceResponse.json();
+            console.log('Moralis balance data:', balanceData);
+
+            const balance = parseFloat(balanceData.balance) / 1e18;
+
+            // Get transaction history
+            const historyUrl = `${baseUrl}/${address}?chain=${chain}&limit=100`;
+            const historyResponse = await fetch(historyUrl, {
+                method: 'GET',
+                headers: headers
+            });
+
+            const historyData = await historyResponse.json();
+            const transactions = historyData.result || [];
+
+            completeStep('step3');
+
+            // Convert Moralis format to our format
+            const formattedTransactions = transactions.map(tx => ({
+                hash: tx.hash,
+                timeStamp: Math.floor(new Date(tx.block_timestamp).getTime() / 1000),
+                from: tx.from_address,
+                to: tx.to_address,
+                value: tx.value,
+                gasUsed: tx.gas_used || '0',
+                gasPrice: tx.gas_price || '0',
+                input: tx.input || '0x'
+            }));
+
+            const result = analyzeEthereumWallet(address, formattedTransactions, balance, chainType);
+            
+            apiCache.set(cacheKey, {
+                data: result,
+                timestamp: Date.now()
+            });
+
+            return result;
+        }
+
+        // Etherscan API implementation (V2)
+        async function getEthereumDataViaEtherscan(address, chainType = 'ethereum') {
+            // V2 API endpoints
+            const apiEndpoint = chainType === 'bsc' ? 'https://api.bscscan.com/v2/api' : 
+                              chainType === 'polygon' ? 'https://api.polygonscan.com/v2/api' :
+                              chainType === 'avalanche' ? 'https://api.snowtrace.io/v2/api' :
+                              'https://api.etherscan.io/v2/api';
+
+            // Chain IDs for V2 API
+            const chainIds = {
+                'ethereum': 1,
+                'bsc': 56,
+                'polygon': 137,
+                'avalanche': 43114
+            };
+            
+            const chainId = chainIds[chainType] || 1;
             const apiKey = chainType === 'avalanche' ? API_CONFIG.avalanche.key : API_CONFIG.etherscan.key;
 
             // Check cache
             const cacheKey = `${chainType}:${address}`;
             if (apiCache.has(cacheKey)) {
                 const cached = apiCache.get(cacheKey);
-                if (Date.now() - cached.timestamp < 300000) { // 5 min cache
+                if (Date.now() - cached.timestamp < 300000) {
                     return cached.data;
                 }
             }
@@ -437,33 +1005,61 @@
             updateLoadingStatus('Fetching transaction history...', 30);
             completeStep('step1');
 
-            // Fetch transactions
-            const txUrl = `${apiEndpoint}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=${apiKey}`;
+            // Fetch transactions using V2 API format
+            const txUrl = `${apiEndpoint}?chainid=${chainId}&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=${apiKey}`;
             
-            console.log('Fetching transactions from:', apiEndpoint);
+            console.log('=== ETHERSCAN API V2 CALL ===');
+            console.log('Chain:', chainType);
+            console.log('Chain ID:', chainId);
+            console.log('Endpoint:', apiEndpoint);
+            console.log('Address:', address);
+            console.log('API Key:', apiKey ? apiKey.substring(0, 10) + '...' : 'MISSING');
+            console.log('Full URL:', txUrl.replace(apiKey, 'API_KEY_HIDDEN'));
+            
             const txResponse = await fetch(txUrl);
+            
+            console.log('Response status:', txResponse.status);
+            console.log('Response OK:', txResponse.ok);
+            
             const txData = await txResponse.json();
 
-            console.log('Transaction API response:', txData);
+            console.log('=== API RESPONSE ===');
+            console.log('Full Response:', txData);
+            console.log('Status:', txData.status);
+            console.log('Message:', txData.message);
+            console.log('Result type:', typeof txData.result);
+            console.log('Result length:', Array.isArray(txData.result) ? txData.result.length : 'N/A');
 
             if (txData.status !== '1') {
-                // Better error messages for common issues
-                if (txData.message && txData.message.includes('Invalid API Key')) {
-                    throw new Error('Invalid API key. Please check your Etherscan API key.');
-                } else if (txData.message && txData.message.includes('rate limit')) {
-                    throw new Error('Rate limit exceeded. Please wait a minute and try again.');
-                } else if (txData.result && txData.result.includes('Max rate limit reached')) {
-                    throw new Error('API rate limit reached. Please wait 1 minute and try again.');
+                let errorMsg = 'Etherscan API Error: ';
+                
+                if (txData.result && typeof txData.result === 'string') {
+                    if (txData.result.includes('Invalid API Key')) {
+                        errorMsg = 'Invalid Etherscan API key. The API key may have expired.';
+                    } else if (txData.result.includes('rate limit')) {
+                        errorMsg = 'Rate limit exceeded. Please wait a moment and try again.';
+                    } else {
+                        errorMsg += txData.result;
+                    }
+                } else if (txData.message && txData.message.includes('NOTOK')) {
+                    errorMsg = `Etherscan returned NOTOK status.\n\nDetails: ${txData.message}\nResult: ${JSON.stringify(txData.result)}`;
                 } else {
-                    throw new Error(txData.message || txData.result || 'Failed to fetch transaction data');
+                    errorMsg += `Status: ${txData.status}, Message: ${txData.message}, Result: ${JSON.stringify(txData.result)}`;
                 }
+                
+                console.error('=== ETHERSCAN ERROR DETAILS ===');
+                console.error('Status:', txData.status);
+                console.error('Message:', txData.message);
+                console.error('Result:', txData.result);
+                console.error('Full response:', txData);
+                throw new Error(errorMsg);
             }
 
             completeStep('step2');
             updateLoadingStatus('Analyzing wallet...', 60);
 
-            // Fetch balance
-            const balanceUrl = `${apiEndpoint}?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
+            // Fetch balance using V2 API
+            const balanceUrl = `${apiEndpoint}?chainid=${chainId}&module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
             
             console.log('Fetching balance...');
             const balResponse = await fetch(balanceUrl);
@@ -472,13 +1068,7 @@
             console.log('Balance API response:', balData);
 
             if (balData.status !== '1') {
-                if (balData.message && balData.message.includes('Invalid API Key')) {
-                    throw new Error('Invalid API key. Please check your Etherscan API key.');
-                } else if (balData.message && balData.message.includes('rate limit')) {
-                    throw new Error('Rate limit exceeded. Please wait a minute and try again.');
-                } else {
-                    throw new Error(balData.message || balData.result || 'Failed to fetch balance data');
-                }
+                throw new Error('Failed to fetch balance');
             }
 
             const balance = parseFloat(balData.result) / 1e18;
@@ -488,13 +1078,98 @@
 
             const result = analyzeEthereumWallet(address, transactions, balance, chainType);
             
-            // Cache result
             apiCache.set(cacheKey, {
                 data: result,
                 timestamp: Date.now()
             });
 
             return result;
+        }
+
+        // Alchemy API implementation (fallback)
+        async function getEthereumDataViaAlchemy(address) {
+            console.log('=== USING ALCHEMY API ===');
+            
+            const cacheKey = `ethereum-alchemy:${address}`;
+            if (apiCache.has(cacheKey)) {
+                const cached = apiCache.get(cacheKey);
+                if (Date.now() - cached.timestamp < 300000) {
+                    return cached.data;
+                }
+            }
+
+            updateLoadingStatus('Fetching data via Alchemy...', 30);
+            completeStep('step1');
+
+            // Get transaction count
+            const txCountResponse = await fetch(API_CONFIG.alchemy.ethereum, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: 1,
+                    method: 'eth_getTransactionCount',
+                    params: [address, 'latest']
+                })
+            });
+            const txCountData = await txCountResponse.json();
+            const txCount = parseInt(txCountData.result, 16);
+
+            completeStep('step2');
+            updateLoadingStatus('Analyzing wallet...', 60);
+
+            // Get balance
+            const balanceResponse = await fetch(API_CONFIG.alchemy.ethereum, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: 2,
+                    method: 'eth_getBalance',
+                    params: [address, 'latest']
+                })
+            });
+            const balanceData = await balanceResponse.json();
+            const balance = parseInt(balanceData.result, 16) / 1e18;
+
+            completeStep('step3');
+
+            // Create simplified result since we don't have full transaction history
+            const result = {
+                personality: {
+                    type: determinePersonalityFromBasicData(txCount, balance),
+                    stats: {
+                        txCount: txCount,
+                        balance: `${balance.toFixed(4)} ETH`,
+                        walletAge: 'Unknown',
+                        activityLevel: txCount > 100 ? 'High' : txCount > 50 ? 'Medium' : 'Low'
+                    },
+                    insights: [
+                        `You have ${txCount} total transactions`,
+                        `Current balance: ${balance.toFixed(4)} ETH`,
+                        'Using simplified analysis (Etherscan backup)'
+                    ]
+                },
+                txCount: txCount,
+                balance: balance,
+                historicalData: []
+            };
+
+            apiCache.set(cacheKey, {
+                data: result,
+                timestamp: Date.now()
+            });
+
+            return result;
+        }
+
+        function determinePersonalityFromBasicData(txCount, balance) {
+            if (balance > 10) return 'whale';
+            if (balance > 1 && txCount < 50) return 'hodler';
+            if (txCount > 500) return 'daytrader';
+            if (txCount > 100) return 'defi';
+            if (txCount < 10) return 'newbie';
+            return 'cautious';
         }
 
         // BITCOIN API
@@ -535,7 +1210,7 @@
             return result;
         }
 
-        // SOLANA API
+        // SOLANA API (using Helius - much more reliable!)
         async function getSolanaData(address) {
             if (!isValidSolanaAddress(address)) {
                 throw new Error('Invalid Solana address format');
@@ -552,8 +1227,14 @@
             updateLoadingStatus('Fetching Solana data...', 30);
             completeStep('step1');
 
-            // Get balance using public RPC
-            const balanceResponse = await fetch('https://api.mainnet-beta.solana.com', {
+            // Use Helius RPC (much better than public Solana RPC)
+            const heliusRpcUrl = `https://mainnet.helius-rpc.com/?api-key=${API_CONFIG.helius.key}`;
+            
+            console.log('=== USING HELIUS FOR SOLANA ===');
+            console.log('RPC URL:', heliusRpcUrl);
+
+            // Get balance using Helius RPC
+            const balanceResponse = await fetch(heliusRpcUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -564,14 +1245,24 @@
                 })
             });
 
+            if (!balanceResponse.ok) {
+                throw new Error(`Helius RPC error: ${balanceResponse.status}`);
+            }
+
             const balanceData = await balanceResponse.json();
+            console.log('Balance response:', balanceData);
+            
+            if (balanceData.error) {
+                throw new Error(`Solana RPC error: ${balanceData.error.message}`);
+            }
+
             const balance = balanceData.result?.value / 1e9 || 0;
 
             completeStep('step2');
             updateLoadingStatus('Analyzing transactions...', 60);
 
-            // Get transaction signatures
-            const sigResponse = await fetch('https://api.mainnet-beta.solana.com', {
+            // Get transaction signatures using Helius RPC
+            const sigResponse = await fetch(heliusRpcUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -583,6 +1274,12 @@
             });
 
             const sigData = await sigResponse.json();
+            console.log('Signatures response:', sigData);
+
+            if (sigData.error) {
+                throw new Error(`Solana RPC error: ${sigData.error.message}`);
+            }
+
             const transactions = sigData.result || [];
 
             completeStep('step3');
@@ -652,30 +1349,42 @@
                 insights.push('You\'re just getting started on your journey');
             }
 
-            // Historical data
+            // Historical data - calculate backwards from current balance for accuracy
             const historicalData = [];
-            let runningBalance = 0;
-            const monthlyData = {};
-
-            transactions.forEach(tx => {
+            const timeframeData = {};
+            
+            // Start from current balance and work backwards through transactions
+            let runningBalance = balance;
+            
+            // Process transactions in reverse order (newest to oldest)
+            const reversedTxs = [...transactions].reverse();
+            
+            reversedTxs.forEach(tx => {
                 const value = parseFloat(tx.value || 0) / 1e18;
-                if (tx.from.toLowerCase() === address.toLowerCase()) {
-                    runningBalance -= value;
-                } else {
-                    runningBalance += value;
-                }
-
                 const date = new Date(tx.timeStamp * 1000);
-                const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                const timeKey = getTimeframeKey(date, currentTimeframe);
+                const timeLabel = getTimeframeLabel(date, currentTimeframe);
 
-                if (!monthlyData[monthKey]) {
-                    historicalData.push({
-                        month: monthKey,
+                // Record balance BEFORE processing this transaction
+                if (!timeframeData[timeKey]) {
+                    historicalData.unshift({ // Add to beginning since we're going backwards
+                        month: timeLabel,
                         balance: Math.max(0, runningBalance)
                     });
-                    monthlyData[monthKey] = true;
+                    timeframeData[timeKey] = true;
+                }
+                
+                // Now adjust balance for this transaction (reverse the effect)
+                if (tx.from.toLowerCase() === address.toLowerCase()) {
+                    runningBalance += value; // Was sent out, so add it back
+                } else {
+                    runningBalance -= value; // Was received, so subtract it
                 }
             });
+            
+            // Store raw transactions and current balance for timeframe switching
+            rawTransactions = transactions;
+            currentBalance = balance;
 
             return {
                 personality: {
@@ -815,9 +1524,9 @@
             const chainInfo = chains[chain];
             
             document.querySelectorAll('.chain-btn').forEach(btn => {
-                btn.classList.remove('border-purple-600', 'bg-purple-100');
+                btn.classList.remove('active');
             });
-            event.target.closest('.chain-btn').classList.add('border-purple-600', 'bg-purple-100');
+            event.target.closest('.chain-btn').classList.add('active');
             
             document.getElementById('selectedChainInfo').classList.remove('hidden');
             document.getElementById('selectedChainName').textContent = chainInfo.name;
@@ -833,11 +1542,47 @@
         function useTestAddress() {
             if (!selectedChain) return;
             
-            const testAddr = testAddresses[selectedChain];
-            if (testAddr) {
-                document.getElementById('manualAddress').value = testAddr;
+            const walletArray = demoWallets[selectedChain];
+            if (walletArray && walletArray.length > 0) {
+                // Get current index for this chain
+                const currentIndex = demoWalletIndex[selectedChain];
+                
+                // Get the wallet at current index
+                const wallet = walletArray[currentIndex];
+                
+                // Update index for next time (cycle through)
+                demoWalletIndex[selectedChain] = (currentIndex + 1) % walletArray.length;
+                
+                // Show which demo wallet is being used
+                const chainInfo = chains[selectedChain];
+                showDemoWalletNotification(`Analyzing: ${wallet.name} on ${chainInfo.name}`);
+                
+                // Set the address and analyze
+                document.getElementById('manualAddress').value = wallet.address;
                 analyzeManualAddress();
             }
+        }
+        
+        function showDemoWalletNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 glass p-4 rounded-xl text-white font-semibold z-50 fade-in';
+            notification.style.boxShadow = '0 8px 32px rgba(0, 242, 254, 0.4)';
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🔍</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
         }
 
         async function connectWallet() {
@@ -922,7 +1667,15 @@
                 }
             } catch (error) {
                 console.error('Connection error:', error);
-                showError(error.message || 'Failed to connect wallet. Please try entering your address manually below.');
+                
+                let errorMessage = error.message || 'Failed to connect wallet';
+                
+                // Check if it's a network/CORS error
+                if (error.message && error.message.includes('Failed to fetch')) {
+                    errorMessage = `❌ Connection Error\n\nYou must run this app through a web server!\n\n1. Double-click START-SERVER.bat\n2. Open http://localhost:8080\n3. Navigate to wallet-personality-trendy.html\n\nDo NOT open the HTML file directly.`;
+                }
+                
+                showError(errorMessage);
             }
         }
 
@@ -964,82 +1717,216 @@
                 
             } catch (error) {
                 console.error('Error:', error);
-                showError(error.message || 'Failed to analyze wallet. Please check the address and try again.');
+                
+                let errorMessage = error.message || 'Failed to analyze wallet';
+                
+                // Check if it's a network/CORS error
+                if (error.message && error.message.includes('Failed to fetch')) {
+                    errorMessage = `❌ Connection Error\n\nYou must run this app through a web server!\n\n1. Double-click START-SERVER.bat\n2. Open http://localhost:8080\n3. Navigate to wallet-personality-trendy.html\n\nDo NOT open the HTML file directly in your browser.`;
+                } else if (error.message && error.message.includes('CORS')) {
+                    errorMessage = `❌ CORS Error\n\nPlease run the app through http-server:\n\n1. Double-click START-SERVER.bat\n2. Open http://localhost:8080`;
+                }
+                
+                showError(errorMessage);
             }
+        }
+
+        function regenerateChartData(timeframe) {
+            if (!rawTransactions || rawTransactions.length === 0) {
+                return [];
+            }
+            
+            const historicalData = [];
+            const timeframeData = {};
+            
+            // Start from current balance and work backwards
+            let runningBalance = currentBalance;
+            
+            // Process transactions in reverse order (newest to oldest)
+            const reversedTxs = [...rawTransactions].reverse();
+            
+            reversedTxs.forEach(tx => {
+                const value = parseFloat(tx.value || 0) / 1e18;
+                const date = new Date(tx.timeStamp * 1000);
+                const timeKey = getTimeframeKey(date, timeframe);
+                const timeLabel = getTimeframeLabel(date, timeframe);
+                
+                // Record balance BEFORE processing this transaction
+                if (!timeframeData[timeKey]) {
+                    historicalData.unshift({ // Add to beginning since we're going backwards
+                        month: timeLabel,
+                        balance: Math.max(0, runningBalance)
+                    });
+                    timeframeData[timeKey] = true;
+                }
+                
+                // Adjust balance for this transaction (reverse the effect)
+                if (tx.from.toLowerCase() === walletAddress.toLowerCase()) {
+                    runningBalance += value; // Was sent out, so add it back
+                } else {
+                    runningBalance -= value; // Was received, so subtract it
+                }
+            });
+            
+            return historicalData;
+        }
+        
+        function changeTimeframe(timeframe) {
+            currentTimeframe = timeframe;
+            
+            // Update button styles
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.classList.remove('timeframe-active');
+            });
+            document.getElementById(`btn-${timeframe}`).classList.add('timeframe-active');
+            
+            // Regenerate chart with new timeframe
+            const newHistoricalData = regenerateChartData(timeframe);
+            createPortfolioChart(newHistoricalData);
         }
 
         function createPortfolioChart(historicalData) {
             const canvas = document.getElementById('portfolioChart');
-            const ctx = canvas.getContext('2d');
+            const chartContainer = canvas.parentElement;
             
+            // Destroy old chart instance if it exists
             if (chartInstance) {
                 chartInstance.destroy();
+                chartInstance = null;
             }
 
+            // Show/hide chart container based on data availability
+            if (!historicalData || historicalData.length === 0) {
+                chartContainer.style.display = 'none';
+                return;
+            }
+
+            chartContainer.style.display = 'block';
+            const ctx = canvas.getContext('2d');
             const chainInfo = chains[selectedChain];
             
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: historicalData.map(d => d.month),
-                    datasets: [{
-                        label: `Balance (${chainInfo.nativeCurrency})`,
-                        data: historicalData.map(d => d.balance),
-                        borderColor: 'rgb(147, 51, 234)',
-                        backgroundColor: 'rgba(147, 51, 234, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            padding: 12,
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: 'rgb(147, 51, 234)',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: function(context) {
-                                    return `${chainInfo.nativeCurrency}: ${context.parsed.y.toFixed(4)}`;
-                                }
-                            }
-                        }
+            // Small delay to ensure proper cleanup
+            setTimeout(() => {
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: historicalData.map(d => d.month),
+                        datasets: [{
+                            label: `Balance (${chainInfo.nativeCurrency})`,
+                            data: historicalData.map(d => d.balance),
+                            borderColor: 'rgb(0, 242, 254)',
+                            backgroundColor: 'rgba(0, 242, 254, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: 'rgb(0, 242, 254)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#fff',
+                                    font: {
+                                        size: 14,
+                                        weight: '600'
+                                    }
+                                }
                             },
-                            ticks: {
-                                callback: function(value) {
-                                    return value.toFixed(2);
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(10, 14, 26, 0.95)',
+                                padding: 16,
+                                titleColor: '#00f2fe',
+                                bodyColor: '#fff',
+                                borderColor: 'rgb(0, 242, 254)',
+                                borderWidth: 2,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed.y;
+                                        let formatted;
+                                        
+                                        // Smart formatting based on value size
+                                        if (value === 0) {
+                                            formatted = '0';
+                                        } else if (value < 0.0001) {
+                                            formatted = value.toExponential(2); // Scientific notation
+                                        } else if (value < 0.01) {
+                                            formatted = value.toFixed(6);
+                                        } else if (value < 1) {
+                                            formatted = value.toFixed(4);
+                                        } else if (value < 100) {
+                                            formatted = value.toFixed(2);
+                                        } else {
+                                            formatted = value.toLocaleString(undefined, {
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 2
+                                            });
+                                        }
+                                        
+                                        return `${chainInfo.nativeCurrency}: ${formatted}`;
+                                    }
                                 }
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
+                        scales: {
+                            y: {
+                                beginAtZero: false, // Don't force zero for better small value visibility
+                                grace: '10%', // Add 10% padding above/below for better visibility
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)',
+                                    borderColor: 'rgba(255, 255, 255, 0.2)'
+                                },
+                                ticks: {
+                                    color: '#fff',
+                                    font: {
+                                        size: 12
+                                    },
+                                    callback: function(value) {
+                                        // Smart formatting based on value size
+                                        if (value === 0) return '0';
+                                        if (value < 0.0001) return value.toExponential(2); // Scientific notation for tiny values
+                                        if (value < 0.01) return value.toFixed(6); // 6 decimals for small values
+                                        if (value < 1) return value.toFixed(4); // 4 decimals for medium-small
+                                        if (value < 100) return value.toFixed(2); // 2 decimals for normal
+                                        return value.toFixed(0); // No decimals for large values
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.05)',
+                                    borderColor: 'rgba(255, 255, 255, 0.2)'
+                                },
+                                ticks: {
+                                    color: '#fff',
+                                    font: {
+                                        size: 11
+                                    },
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
                             }
                         }
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
                     }
-                }
-            });
+                });
+            }, 100);
         }
 
         function showResults(personality, txCount, balance, historicalData) {
@@ -1063,8 +1950,8 @@
             traitsList.innerHTML = '';
             p.traits.forEach(trait => {
                 const li = document.createElement('li');
-                li.className = 'flex items-start';
-                li.innerHTML = `<span class="text-purple-600 mr-3 text-xl">✓</span><span class="text-gray-700">${trait}</span>`;
+                li.className = 'flex items-start text-white/90';
+                li.innerHTML = `<span class="text-cyan-400 mr-3 text-xl">✓</span><span>${trait}</span>`;
                 traitsList.appendChild(li);
             });
             
@@ -1097,8 +1984,8 @@
 
         function completeStep(stepId) {
             const step = document.getElementById(stepId);
-            step.classList.remove('text-gray-400');
-            step.classList.add('text-green-600', 'font-semibold');
+            step.classList.remove('text-white/40');
+            step.classList.add('text-cyan-400');
             step.querySelector('span').textContent = '✓';
         }
 
@@ -1106,25 +1993,41 @@
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('errorScreen').classList.remove('hidden');
-            document.getElementById('errorMessage').textContent = message;
+            
+            // Format the error message with line breaks
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.style.whiteSpace = 'pre-wrap';
+            errorElement.style.textAlign = 'left';
+            errorElement.textContent = message;
         }
 
         function restartTest() {
             selectedChain = null;
             walletAddress = null;
+            
+            // Destroy chart if it exists
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+            
             document.getElementById('resultsScreen').classList.add('hidden');
             document.getElementById('errorScreen').classList.add('hidden');
             document.getElementById('startScreen').classList.remove('hidden');
             document.getElementById('selectedChainInfo').classList.add('hidden');
             document.getElementById('manualAddress').value = '';
-            document.querySelectorAll('.chain-btn').forEach(btn => btn.classList.remove('border-purple-600', 'bg-purple-100'));
+            document.querySelectorAll('.chain-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             document.getElementById('connectWalletBtn').disabled = true;
             document.getElementById('manualAddress').disabled = true;
             document.getElementById('analyzeAddressBtn').disabled = true;
+            document.getElementById('testAddressDiv').classList.add('hidden');
+            
             ['step1', 'step2', 'step3', 'step4'].forEach(id => {
                 const step = document.getElementById(id);
-                step.classList.remove('text-green-600', 'font-semibold');
-                step.classList.add('text-gray-400');
+                step.classList.remove('text-cyan-400');
+                step.classList.add('text-white/40');
                 step.querySelector('span').textContent = '○';
             });
         }
