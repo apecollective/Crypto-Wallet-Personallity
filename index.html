@@ -248,6 +248,25 @@
             }
         }
         
+        /* Personality Icon - Responsive */
+        .personality-icon {
+            font-size: 4rem;
+            line-height: 1;
+            font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+        }
+        
+        @media (min-width: 640px) {
+            .personality-icon {
+                font-size: 6rem;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .personality-icon {
+                font-size: 8rem;
+            }
+        }
+        
         /* Badge */
         .badge {
             background: rgba(0, 242, 254, 0.2);
@@ -314,11 +333,11 @@
                 
                 <!-- Header -->
                 <div class="text-center mb-12">
-                    <div class="text-8xl mb-6 float">🔮</div>
-                    <h1 class="text-6xl md:text-7xl font-black mb-4 text-gradient">
+                    <div class="text-6xl md:text-8xl mb-6 float">🔮</div>
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 text-gradient px-4">
                         WALLET VIBE CHECK
                     </h1>
-                    <p class="text-2xl text-white/80 mb-6">
+                    <p class="text-lg sm:text-xl md:text-2xl text-white/80 mb-6 px-4">
                         Discover your on-chain personality
                     </p>
                     <div class="badge mx-auto">
@@ -464,93 +483,95 @@
                     
                     <!-- Personality Header -->
                     <div class="text-center mb-12">
-                        <div class="mb-6" id="personalityIcon" style="font-size: 8rem; line-height: 1; font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;"></div>
-                        <h2 class="text-5xl font-black mb-4 text-gradient" id="personalityType"></h2>
-                        <p class="text-2xl text-white/80" id="personalityDesc"></p>
+                        <div class="mb-6 personality-icon" id="personalityIcon"></div>
+                        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-gradient px-4" id="personalityType"></h2>
+                        <p class="text-lg sm:text-xl md:text-2xl text-white/80 px-4" id="personalityDesc"></p>
                     </div>
                     
                     <!-- Stats Grid -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                         <div class="stat-card">
-                            <div class="text-sm text-white/60 mb-2">TRANSACTIONS</div>
-                            <div class="text-4xl font-black text-gradient" id="statTxCount"></div>
+                            <div class="text-xs sm:text-sm text-white/60 mb-2">TRANSACTIONS</div>
+                            <div class="text-2xl sm:text-3xl md:text-4xl font-black text-gradient" id="statTxCount"></div>
                         </div>
                         <div class="stat-card">
-                            <div class="text-sm text-white/60 mb-2">WALLET AGE</div>
-                            <div class="text-4xl font-black text-gradient" id="statWalletAge"></div>
+                            <div class="text-xs sm:text-sm text-white/60 mb-2">WALLET AGE</div>
+                            <div class="text-2xl sm:text-3xl md:text-4xl font-black text-gradient" id="statWalletAge"></div>
                         </div>
                         <div class="stat-card">
-                            <div class="text-sm text-white/60 mb-2">BALANCE</div>
-                            <div class="text-4xl font-black text-gradient" id="statBalance"></div>
+                            <div class="text-xs sm:text-sm text-white/60 mb-2">BALANCE</div>
+                            <div class="text-2xl sm:text-3xl md:text-4xl font-black text-gradient" id="statBalance"></div>
                         </div>
                         <div class="stat-card">
-                            <div class="text-sm text-white/60 mb-2">ACTIVITY</div>
-                            <div class="text-4xl font-black text-gradient" id="statActivity"></div>
+                            <div class="text-xs sm:text-sm text-white/60 mb-2">ACTIVITY</div>
+                            <div class="text-2xl sm:text-3xl md:text-4xl font-black text-gradient" id="statActivity"></div>
                         </div>
                     </div>
                     
                     <!-- Traits -->
-                    <div class="glass p-8 mb-6">
-                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div class="glass p-4 sm:p-6 md:p-8 mb-6">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
                             <span>✨</span> Your Traits
                         </h3>
-                        <ul id="traits" class="space-y-4 text-lg"></ul>
+                        <ul id="traits" class="space-y-4 text-base sm:text-lg"></ul>
                     </div>
                     
                     <!-- Strengths -->
-                    <div class="glass p-8 mb-6" id="strengthsSection" style="display:none;">
-                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div class="glass p-4 sm:p-6 md:p-8 mb-6" id="strengthsSection" style="display:none;">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
                             <span>💪</span> Your Strengths
                         </h3>
-                        <ul id="strengths" class="space-y-3 text-lg text-white/90"></ul>
+                        <ul id="strengths" class="space-y-3 text-base sm:text-lg text-white/90"></ul>
                     </div>
                     
                     <!-- Watch Outs -->
-                    <div class="glass p-8 mb-6" id="watchoutsSection" style="display:none;">
-                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div class="glass p-4 sm:p-6 md:p-8 mb-6" id="watchoutsSection" style="display:none;">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
                             <span>⚠️</span> Things to Watch Out For
                         </h3>
-                        <ul id="watchouts" class="space-y-3 text-lg text-white/90"></ul>
+                        <ul id="watchouts" class="space-y-3 text-base sm:text-lg text-white/90"></ul>
                     </div>
                     
                     <!-- Advice (for newbies) -->
-                    <div class="glass p-8 mb-6" id="adviceSection" style="display:none;">
-                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div class="glass p-4 sm:p-6 md:p-8 mb-6" id="adviceSection" style="display:none;">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
                             <span>🎓</span> Pro Tips for Your Journey
                         </h3>
-                        <ul id="advice" class="space-y-3 text-lg text-white/90"></ul>
+                        <ul id="advice" class="space-y-3 text-base sm:text-lg text-white/90"></ul>
                     </div>
                     
                     <!-- Insights -->
-                    <div class="glass p-8 mb-6">
-                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <div class="glass p-4 sm:p-6 md:p-8 mb-6">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
                             <span>💡</span> Insights
                         </h3>
-                        <div id="insights" class="space-y-4 text-lg text-white/80"></div>
+                        <div id="insights" class="space-y-4 text-base sm:text-lg text-white/80"></div>
                     </div>
                     
                     <!-- Chart -->
-                    <div class="glass p-8 mb-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-2xl font-bold flex items-center gap-3">
+                    <div class="glass p-4 sm:p-6 md:p-8 mb-8">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                            <h3 class="text-xl sm:text-2xl font-bold flex items-center gap-3">
                                 <span>📊</span> Balance History
                             </h3>
-                            <div class="flex gap-2">
-                                <button onclick="changeTimeframe('daily')" id="btn-daily" class="timeframe-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="changeTimeframe('daily')" id="btn-daily" class="timeframe-btn px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
                                     Daily
                                 </button>
-                                <button onclick="changeTimeframe('weekly')" id="btn-weekly" class="timeframe-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                <button onclick="changeTimeframe('weekly')" id="btn-weekly" class="timeframe-btn px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
                                     Weekly
                                 </button>
-                                <button onclick="changeTimeframe('biweekly')" id="btn-biweekly" class="timeframe-btn timeframe-active px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                <button onclick="changeTimeframe('biweekly')" id="btn-biweekly" class="timeframe-btn timeframe-active px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
                                     Biweekly
                                 </button>
-                                <button onclick="changeTimeframe('monthly')" id="btn-monthly" class="timeframe-btn px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                <button onclick="changeTimeframe('monthly')" id="btn-monthly" class="timeframe-btn px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition">
                                     Monthly
                                 </button>
                             </div>
                         </div>
-                        <canvas id="portfolioChart"></canvas>
+                        <div class="w-full overflow-x-auto">
+                            <canvas id="portfolioChart"></canvas>
+                        </div>
                     </div>
                     
                     <!-- Wallet Address -->
