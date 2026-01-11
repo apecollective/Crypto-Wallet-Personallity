@@ -464,7 +464,7 @@
                     
                     <!-- Personality Header -->
                     <div class="text-center mb-12">
-                        <div class="text-9xl mb-6" id="personalityIcon"></div>
+                        <div class="mb-6" id="personalityIcon" style="font-size: 8rem; line-height: 1; font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;"></div>
                         <h2 class="text-5xl font-black mb-4 text-gradient" id="personalityType"></h2>
                         <p class="text-2xl text-white/80" id="personalityDesc"></p>
                     </div>
@@ -495,6 +495,30 @@
                             <span>✨</span> Your Traits
                         </h3>
                         <ul id="traits" class="space-y-4 text-lg"></ul>
+                    </div>
+                    
+                    <!-- Strengths -->
+                    <div class="glass p-8 mb-6" id="strengthsSection" style="display:none;">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>💪</span> Your Strengths
+                        </h3>
+                        <ul id="strengths" class="space-y-3 text-lg text-white/90"></ul>
+                    </div>
+                    
+                    <!-- Watch Outs -->
+                    <div class="glass p-8 mb-6" id="watchoutsSection" style="display:none;">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>⚠️</span> Things to Watch Out For
+                        </h3>
+                        <ul id="watchouts" class="space-y-3 text-lg text-white/90"></ul>
+                    </div>
+                    
+                    <!-- Advice (for newbies) -->
+                    <div class="glass p-8 mb-6" id="adviceSection" style="display:none;">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>🎓</span> Pro Tips for Your Journey
+                        </h3>
+                        <ul id="advice" class="space-y-3 text-lg text-white/90"></ul>
                     </div>
                     
                     <!-- Insights -->
@@ -631,91 +655,219 @@
 
         const personalities = {
             hodler: {
-                name: 'The HODLer',
+                name: 'The Diamond Hands',
                 icon: '💎',
-                desc: 'You believe in long-term value and rarely sell. Diamond hands!',
+                desc: 'You\'re a true believer in the long game. Market dips don\'t shake you—they energize you. While others panic sell, you\'re accumulating. Your conviction is unshakeable, and your patience is legendary.',
                 traits: [
-                    'Strong conviction in your investments',
-                    'Rarely panic sells during dips',
-                    'Patient and strategic approach',
-                    'Prefers holding quality assets'
+                    'Strong conviction - you don\'t waver during market volatility',
+                    'Strategic accumulator - you buy dips and rarely sell',
+                    'Long-term vision - thinking in years, not days',
+                    'Emotional discipline - fear and greed don\'t control you',
+                    'Research-driven - you invest based on fundamentals',
+                    'Portfolio stability - low turnover, high conviction',
+                    'Delayed gratification - willing to wait for real gains'
+                ],
+                strengths: [
+                    'Exceptional patience and emotional control',
+                    'Strong resistance to FOMO and panic',
+                    'Deep understanding of long-term value',
+                    'Compound growth mindset'
+                ],
+                watchouts: [
+                    'May miss short-term opportunities',
+                    'Could be slow to adapt to changing market conditions',
+                    'Might hold losing positions too long',
+                    'Portfolio may lack diversification'
                 ]
             },
             daytrader: {
-                name: 'The Day Trader',
+                name: 'The Chart Master',
                 icon: '📈',
-                desc: 'Active trader who loves riding the waves of market volatility.',
+                desc: 'You live for the thrill of the trade. Charts, indicators, and order books are your playground. Quick reflexes, sharp instincts, and an appetite for action define your approach. You don\'t just watch the market—you dance with it.',
                 traits: [
-                    'Highly active with frequent transactions',
-                    'Quick to spot opportunities',
-                    'Comfortable with risk',
-                    'Always watching the charts'
+                    'Hyper-active trading - multiple transactions daily',
+                    'Technical analysis expert - you read charts like poetry',
+                    'Quick decision maker - can pivot in seconds',
+                    'Risk-comfortable - volatility is opportunity',
+                    'Information junkie - always seeking the next edge',
+                    'Adaptable strategy - you adjust to market conditions',
+                    'Performance tracking - you know your win rate cold'
+                ],
+                strengths: [
+                    'Excellent market timing and execution',
+                    'Ability to profit in any market condition',
+                    'Strong risk management skills',
+                    'Quick to cut losses and take profits'
+                ],
+                watchouts: [
+                    'High transaction fees can eat into profits',
+                    'Burnout from constant monitoring',
+                    'Overtrading during low-volatility periods',
+                    'Tax complexity from numerous transactions'
                 ]
             },
             degen: {
-                name: 'The Degen',
+                name: 'The Degen Ape',
                 icon: '🎰',
-                desc: 'Risk-taker who loves trying new protocols and memecoins.',
+                desc: 'You\'re first to everything—new tokens, experimental protocols, community mints. "DYOR" to you means diving in headfirst and learning by doing. Your risk tolerance? Legendary. Your stories? Unforgettable. You turn the crypto casino into your playground.',
                 traits: [
-                    'Early adopter of new projects',
-                    'Loves the thrill of discovery',
-                    'Not afraid to experiment',
-                    'Always chasing the next big thing'
+                    'Fearless explorer - you try everything first',
+                    'Community-driven - you ape into group calls',
+                    'High-risk tolerance - "Nothing ventured, nothing gained"',
+                    'Early adopter - you find gems before they moon',
+                    'Experimental mindset - failures are just lessons',
+                    'Social trader - Discord and Twitter are your research',
+                    'Narrative chaser - you ride the hype cycles'
+                ],
+                strengths: [
+                    'Potential for massive asymmetric gains',
+                    'Deep involvement in crypto culture',
+                    'First-mover advantage on trends',
+                    'Strong community connections'
+                ],
+                watchouts: [
+                    'High loss rate - many experiments fail',
+                    'Scam vulnerability - not everything is legit',
+                    'Emotional rollercoaster - huge swings',
+                    'Portfolio concentration in high-risk assets'
                 ]
             },
             cautious: {
-                name: 'The Cautious Investor',
+                name: 'The Careful Strategist',
                 icon: '🛡️',
-                desc: 'Careful and methodical. You do your research before every move.',
+                desc: 'You measure twice and cut once. Every move is calculated, every risk assessed. Security, stability, and sustainability matter more than quick gains. Your portfolio is a fortress, not a casino. Slow and steady isn\'t boring—it\'s intelligent.',
                 traits: [
-                    'Prefers established projects',
-                    'Risk-averse approach',
-                    'Values security and stability',
-                    'Makes calculated decisions'
+                    'Risk-averse approach - preservation over speculation',
+                    'Thorough research - you read the documentation',
+                    'Security-conscious - hardware wallets and best practices',
+                    'Established projects only - blue chips over moonshots',
+                    'Diversification focus - don\'t put all eggs in one basket',
+                    'Long verification times - you triple-check addresses',
+                    'Emergency fund mindset - always keep reserves'
+                ],
+                strengths: [
+                    'Low risk of catastrophic losses',
+                    'Strong security practices',
+                    'Sustainable growth trajectory',
+                    'Peace of mind and low stress'
+                ],
+                watchouts: [
+                    'May miss high-growth opportunities',
+                    'Analysis paralysis can delay decisions',
+                    'Conservative approach may underperform in bull markets',
+                    'Fear might prevent necessary portfolio adjustments'
                 ]
             },
             whale: {
                 name: 'The Whale',
                 icon: '🐋',
-                desc: 'Significant holdings that can move markets. Big player energy.',
+                desc: 'Your positions move markets. When you buy, others notice. When you sell, it makes waves. You\'ve either built massive wealth through crypto or brought it from traditional markets. Your decisions carry weight, and you know it. Power and responsibility go hand in hand.',
                 traits: [
-                    'Substantial portfolio value',
-                    'Market influence',
-                    'Strategic position sizing',
-                    'Long-term vision'
+                    'Substantial capital - six figures or more deployed',
+                    'Market impact - your trades create visible movement',
+                    'Strategic positioning - you think about liquidity',
+                    'Long-term wealth preservation - protecting what you\'ve built',
+                    'Sophisticated strategies - you use advanced DeFi',
+                    'Network effects - people watch your wallet',
+                    'Institutional mindset - you think like a fund'
+                ],
+                strengths: [
+                    'Access to exclusive opportunities',
+                    'Ability to negotiate better terms',
+                    'Strong network and insider access',
+                    'Resources for professional advice'
+                ],
+                watchouts: [
+                    'Target for scammers and hackers',
+                    'Slippage on large trades',
+                    'Regulatory scrutiny and reporting requirements',
+                    'Difficulty exiting positions without affecting price'
                 ]
             },
             defi: {
-                name: 'DeFi Power User',
+                name: 'The DeFi Degen',
                 icon: '⚡',
-                desc: 'You live and breathe DeFi. Yield farming is your passion.',
+                desc: 'Banks are obsolete to you. You are your own financial institution. Lending, borrowing, yield farming, liquidity providing—you master it all. Smart contracts are your tools, and protocols are your playground. TradFi? Never heard of it.',
                 traits: [
-                    'Heavy protocol interaction',
-                    'Constantly seeking yield',
-                    'Understands complex DeFi mechanics',
-                    'Early DeFi adopter'
+                    'Protocol power user - you interact with 10+ platforms',
+                    'Yield optimizer - constantly seeking better APY',
+                    'Gas fee calculator - you know when to transact',
+                    'Smart contract reader - you audit code before deploying',
+                    'Liquidity provider - you earn fees from trading pairs',
+                    'Multi-chain operator - you bridge between networks',
+                    'Token economics expert - you understand incentive models'
+                ],
+                strengths: [
+                    'Passive income generation from multiple sources',
+                    'Deep understanding of crypto mechanics',
+                    'Early access to protocol incentives',
+                    'Ability to leverage positions efficiently'
+                ],
+                watchouts: [
+                    'Smart contract risk - code vulnerabilities',
+                    'Impermanent loss from liquidity providing',
+                    'Complex tax situations',
+                    'Protocol risk - exploits and rug pulls'
                 ]
             },
             nftcollector: {
-                name: 'NFT Collector',
+                name: 'The NFT Connoisseur',
                 icon: '🎨',
-                desc: 'You appreciate digital art and collectibles.',
+                desc: 'You see what others miss—the art, the culture, the community, the potential. Your collection tells a story. You don\'t just buy JPEGs; you curate experiences, support artists, and build digital legacy. Web3 culture flows through your veins.',
                 traits: [
-                    'Active in NFT markets',
-                    'Curator of digital assets',
-                    'Community-focused',
-                    'Appreciates uniqueness'
+                    'Community participant - active in Discord and Twitter',
+                    'Artistic eye - you appreciate quality and creativity',
+                    'Culture curator - you spot trends before they peak',
+                    'Relationship builder - you know the artists and founders',
+                    'Whitelist hunter - you get early access to mints',
+                    'Metadata analyst - you understand rarity and traits',
+                    'Long-term collector - some pieces are never for sale'
+                ],
+                strengths: [
+                    'Strong community connections',
+                    'Cultural influence and tastemaking',
+                    'Potential for significant appreciation',
+                    'Digital identity and social capital'
+                ],
+                watchouts: [
+                    'Liquidity challenges - hard to sell quickly',
+                    'Market volatility - floor prices fluctuate',
+                    'Emotional attachment may cloud judgment',
+                    'Storage and display considerations'
                 ]
             },
             newbie: {
-                name: 'The Explorer',
+                name: 'The Curious Explorer',
                 icon: '🌱',
-                desc: 'Just starting your crypto journey. Welcome!',
+                desc: 'Everyone starts somewhere, and you\'re at the beginning of an incredible journey. Your curiosity brought you here, and your courage to take the first step sets you apart. The crypto world is vast, complex, and full of opportunity. Welcome—you\'re going to learn so much.',
                 traits: [
-                    'New to the space',
-                    'Learning and growing',
-                    'Curious about crypto',
-                    'Building experience'
+                    'Learning mode - you\'re absorbing everything',
+                    'Small positions - testing the waters carefully',
+                    'Question asker - you seek to understand',
+                    'Community learner - you follow experts and educators',
+                    'Wallet experimenter - figuring out the tools',
+                    'Cautious explorer - one step at a time',
+                    'Growing confidence - each transaction teaches you'
+                ],
+                strengths: [
+                    'Fresh perspective without bad habits',
+                    'Eagerness to learn and improve',
+                    'Low ego - willing to ask questions',
+                    'Small position sizes limit potential losses'
+                ],
+                watchouts: [
+                    'Vulnerability to scams - learn to spot red flags',
+                    'Information overload - focus on basics first',
+                    'FOMO pressure - don\'t rush into decisions',
+                    'Security mistakes - practice proper wallet hygiene'
+                ],
+                advice: [
+                    '📚 Start with the basics: Bitcoin, Ethereum, and major protocols',
+                    '🔐 Security first: Hardware wallet, strong passwords, 2FA everywhere',
+                    '💰 Never invest more than you can afford to lose',
+                    '🎓 Learn from mistakes: Every transaction is a lesson',
+                    '👥 Find good communities: Quality > Hype',
+                    '📊 Track everything: You\'ll thank yourself at tax time'
                 ]
             }
         };
@@ -974,24 +1126,45 @@
             return result;
         }
 
-        // Etherscan API implementation (V2)
+        // Etherscan API V2 implementation (unified endpoint for all chains)
         async function getEthereumDataViaEtherscan(address, chainType = 'ethereum') {
-            // V2 API endpoints
-            const apiEndpoint = chainType === 'bsc' ? 'https://api.bscscan.com/v2/api' : 
-                              chainType === 'polygon' ? 'https://api.polygonscan.com/v2/api' :
-                              chainType === 'avalanche' ? 'https://api.snowtrace.io/v2/api' :
-                              'https://api.etherscan.io/v2/api';
-
-            // Chain IDs for V2 API
+            // Chains NOT supported on Etherscan free tier (as of Nov 2024)
+            const freeNotSupported = ['bsc', 'avalanche'];
+            
+            if (freeNotSupported.includes(chainType)) {
+                console.log(`=== ${chainType.toUpperCase()} NOT ON FREE TIER ===`);
+                console.log('Falling back to public RPC...');
+                
+                const rpcUrls = {
+                    'bsc': 'https://bsc-dataseed.binance.org/',
+                    'avalanche': 'https://api.avax.network/ext/bc/C/rpc'
+                };
+                
+                const chainIds = {
+                    'bsc': 56,
+                    'avalanche': 43114
+                };
+                
+                return await getDataViaPublicRPC(address, chainType, chainIds[chainType], rpcUrls[chainType]);
+            }
+            
+            // ALL chains use the same Etherscan V2 endpoint with different chainId
+            const apiEndpoint = 'https://api.etherscan.io/v2/api';
+            
+            // Chain IDs for different networks
             const chainIds = {
                 'ethereum': 1,
-                'bsc': 56,
-                'polygon': 137,
-                'avalanche': 43114
+                'polygon': 137
             };
             
             const chainId = chainIds[chainType] || 1;
-            const apiKey = chainType === 'avalanche' ? API_CONFIG.avalanche.key : API_CONFIG.etherscan.key;
+            const apiKey = API_CONFIG.etherscan.key;
+
+            console.log('=== ETHERSCAN V2 UNIFIED API ===');
+            console.log('Chain:', chainType);
+            console.log('Chain ID:', chainId);
+            console.log('Unified Endpoint:', apiEndpoint);
+            console.log('Note: Using single endpoint for all supported chains');
 
             // Check cache
             const cacheKey = `${chainType}:${address}`;
@@ -1005,11 +1178,12 @@
             updateLoadingStatus('Fetching transaction history...', 30);
             completeStep('step1');
 
-            // Fetch transactions using V2 API format
+            // Build V2 API URL for all chains
             const txUrl = `${apiEndpoint}?chainid=${chainId}&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=${apiKey}`;
             
-            console.log('=== ETHERSCAN API V2 CALL ===');
+            console.log('=== ETHERSCAN API CALL ===');
             console.log('Chain:', chainType);
+            console.log('API Version: V2');
             console.log('Chain ID:', chainId);
             console.log('Endpoint:', apiEndpoint);
             console.log('Address:', address);
@@ -1021,6 +1195,22 @@
             console.log('Response status:', txResponse.status);
             console.log('Response OK:', txResponse.ok);
             
+            // Check if response is actually JSON before parsing
+            const contentType = txResponse.headers.get('content-type');
+            console.log('Content-Type:', contentType);
+            
+            if (!txResponse.ok) {
+                const errorText = await txResponse.text();
+                console.error('API Error Response:', errorText.substring(0, 500));
+                throw new Error(`API request failed with status ${txResponse.status}`);
+            }
+            
+            if (!contentType || !contentType.includes('application/json')) {
+                const textResponse = await txResponse.text();
+                console.error('Non-JSON response:', textResponse.substring(0, 500));
+                throw new Error('API returned HTML instead of JSON - endpoint may not exist or API key is invalid');
+            }
+            
             const txData = await txResponse.json();
 
             console.log('=== API RESPONSE ===');
@@ -1031,18 +1221,31 @@
             console.log('Result length:', Array.isArray(txData.result) ? txData.result.length : 'N/A');
 
             if (txData.status !== '1') {
-                let errorMsg = 'Etherscan API Error: ';
+                let errorMsg = 'API Error: ';
                 
                 if (txData.result && typeof txData.result === 'string') {
                     if (txData.result.includes('Invalid API Key')) {
-                        errorMsg = 'Invalid Etherscan API key. The API key may have expired.';
+                        errorMsg = `Invalid API key for ${chainType}. Note: Each blockchain explorer requires its own API key. Get one at:\n`;
+                        errorMsg += chainType === 'bsc' ? '- BscScan: https://bscscan.com/myapikey' :
+                                   chainType === 'polygon' ? '- PolygonScan: https://polygonscan.com/myapikey' :
+                                   chainType === 'avalanche' ? '- SnowTrace: https://snowtrace.io/myapikey' :
+                                   '- Etherscan: https://etherscan.io/myapikey';
                     } else if (txData.result.includes('rate limit')) {
                         errorMsg = 'Rate limit exceeded. Please wait a moment and try again.';
+                    } else if (txData.result.includes('deprecated V1 endpoint')) {
+                        // This error appears on BscScan even though they don't have V2 yet
+                        // It's because the Etherscan API key doesn't work on BscScan
+                        errorMsg = `API key issue: The Etherscan API key doesn't work on ${chainType === 'bsc' ? 'BscScan' : chainType}.\n\n`;
+                        errorMsg += `You need a separate API key from:\n`;
+                        errorMsg += chainType === 'bsc' ? 'BscScan: https://bscscan.com/myapikey' :
+                                   chainType === 'polygon' ? 'PolygonScan: https://polygonscan.com/myapikey' :
+                                   chainType === 'avalanche' ? 'SnowTrace: https://snowtrace.io/myapikey' :
+                                   'Etherscan: https://etherscan.io/myapikey';
                     } else {
                         errorMsg += txData.result;
                     }
                 } else if (txData.message && txData.message.includes('NOTOK')) {
-                    errorMsg = `Etherscan returned NOTOK status.\n\nDetails: ${txData.message}\nResult: ${JSON.stringify(txData.result)}`;
+                    errorMsg = `API returned NOTOK status for ${chainType}.\n\nDetails: ${txData.message}\nResult: ${JSON.stringify(txData.result)}`;
                 } else {
                     errorMsg += `Status: ${txData.status}, Message: ${txData.message}, Result: ${JSON.stringify(txData.result)}`;
                 }
@@ -1061,7 +1264,7 @@
             // Fetch balance using V2 API
             const balanceUrl = `${apiEndpoint}?chainid=${chainId}&module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
             
-            console.log('Fetching balance...');
+            console.log('Fetching balance with V2 API...');
             const balResponse = await fetch(balanceUrl);
             const balData = await balResponse.json();
 
@@ -1083,6 +1286,85 @@
                 timestamp: Date.now()
             });
 
+            return result;
+        }
+
+        // Public RPC implementation for BSC/Polygon/Avalanche (no API key needed!)
+        async function getDataViaPublicRPC(address, chainType, chainId, rpcUrl) {
+            console.log('=== USING PUBLIC RPC ===');
+            console.log('Chain:', chainType);
+            console.log('RPC URL:', rpcUrl);
+            
+            updateLoadingStatus('Fetching balance via public RPC...', 30);
+            completeStep('step1');
+            
+            // Get current balance using eth_getBalance
+            const balanceResponse = await fetch(rpcUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: 1,
+                    method: 'eth_getBalance',
+                    params: [address, 'latest']
+                })
+            });
+            
+            const balanceData = await balanceResponse.json();
+            console.log('Balance response:', balanceData);
+            
+            if (balanceData.error) {
+                throw new Error(`RPC error: ${balanceData.error.message}`);
+            }
+            
+            const balance = parseInt(balanceData.result, 16) / 1e18;
+            
+            completeStep('step2');
+            updateLoadingStatus('Fetching transaction count...', 60);
+            
+            // Get transaction count as a proxy for activity
+            const txCountResponse = await fetch(rpcUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    id: 2,
+                    method: 'eth_getTransactionCount',
+                    params: [address, 'latest']
+                })
+            });
+            
+            const txCountData = await txCountResponse.json();
+            const txCount = parseInt(txCountData.result, 16);
+            
+            console.log('Transaction count:', txCount);
+            
+            completeStep('step3');
+            
+            // Create simplified analysis (we don't have full tx history from RPC)
+            const result = {
+                personality: {
+                    type: balance > 10 ? 'whale' : 
+                          balance > 1 ? 'hodler' : 
+                          txCount > 100 ? 'daytrader' : 'cautious',
+                    stats: {
+                        txCount: txCount,
+                        balance: `${balance.toFixed(4)} ${chains[chainType].nativeCurrency}`,
+                        walletAge: 'N/A (using public RPC)',
+                        activityLevel: txCount > 100 ? 'High' : txCount > 50 ? 'Medium' : 'Low'
+                    },
+                    insights: [
+                        `Current balance: ${balance.toFixed(4)} ${chains[chainType].nativeCurrency}`,
+                        `Total transactions: ${txCount}`,
+                        'Note: Limited data available via public RPC (no transaction history)',
+                        'For full analysis, explorer APIs would need V2 endpoints'
+                    ]
+                },
+                txCount: txCount,
+                balance: balance,
+                historicalData: [] // No historical data from public RPC
+            };
+            
             return result;
         }
 
@@ -1189,13 +1471,20 @@
             updateLoadingStatus('Fetching Bitcoin data...', 30);
             completeStep('step1');
 
-            const response = await fetch(`https://blockchain.info/rawaddr/${address}?limit=100`);
+            const response = await fetch(`https://blockchain.info/rawaddr/${address}?limit=1000`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch Bitcoin data');
             }
 
             const data = await response.json();
+            
+            console.log('=== BITCOIN DATA ===');
+            console.log('Total transactions:', data.n_tx);
+            console.log('Transactions fetched:', data.txs.length);
+            console.log('Oldest tx date:', data.txs[data.txs.length - 1] ? new Date(data.txs[data.txs.length - 1].time * 1000) : 'N/A');
+            console.log('Newest tx date:', data.txs[0] ? new Date(data.txs[0].time * 1000) : 'N/A');
+            
             completeStep('step2');
             updateLoadingStatus('Analyzing wallet...', 60);
             completeStep('step3');
@@ -1261,7 +1550,7 @@
             completeStep('step2');
             updateLoadingStatus('Analyzing transactions...', 60);
 
-            // Get transaction signatures using Helius RPC
+            // Get transaction signatures using Helius RPC (increased limit)
             const sigResponse = await fetch(heliusRpcUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1269,12 +1558,18 @@
                     jsonrpc: '2.0',
                     id: 1,
                     method: 'getSignaturesForAddress',
-                    params: [address, { limit: 100 }]
+                    params: [address, { limit: 1000 }]
                 })
             });
 
             const sigData = await sigResponse.json();
-            console.log('Signatures response:', sigData);
+            console.log('=== SOLANA DATA ===');
+            console.log('Signatures fetched:', sigData.result?.length || 0);
+            
+            if (sigData.result && sigData.result.length > 0) {
+                console.log('Oldest tx date:', new Date(sigData.result[sigData.result.length - 1].blockTime * 1000));
+                console.log('Newest tx date:', new Date(sigData.result[0].blockTime * 1000));
+            }
 
             if (sigData.error) {
                 throw new Error(`Solana RPC error: ${sigData.error.message}`);
@@ -1445,6 +1740,72 @@
             const walletAgeDays = firstTx ? 
                 Math.floor((Date.now() - firstTx.time * 1000) / (1000 * 60 * 60 * 24)) : 0;
 
+            // Generate historical balance data
+            const historicalData = [];
+            const timeframeData = {};
+            let runningBalance = balance;
+            
+            console.log('=== GENERATING BTC HISTORY ===');
+            console.log('Current balance:', balance, 'BTC');
+            console.log('Total transactions to process:', data.txs.length);
+            console.log('Current timeframe:', currentTimeframe);
+            
+            // Process transactions in reverse (newest to oldest)
+            const reversedTxs = [...data.txs].reverse();
+            
+            reversedTxs.forEach((tx, index) => {
+                const date = new Date(tx.time * 1000);
+                const timeKey = getTimeframeKey(date, currentTimeframe);
+                const timeLabel = getTimeframeLabel(date, currentTimeframe);
+                
+                if (index < 5) {
+                    console.log(`TX ${index}: Date=${date.toISOString()}, TimeKey=${timeKey}, Label=${timeLabel}`);
+                }
+                
+                // Record balance BEFORE this transaction
+                if (!timeframeData[timeKey]) {
+                    historicalData.unshift({
+                        month: timeLabel,
+                        balance: Math.max(0, runningBalance)
+                    });
+                    timeframeData[timeKey] = true;
+                }
+                
+                // Calculate transaction effect
+                let txValue = 0;
+                
+                // Calculate inputs (what was sent)
+                if (tx.inputs) {
+                    tx.inputs.forEach(input => {
+                        if (input.prev_out && input.prev_out.addr === address) {
+                            txValue -= input.prev_out.value / 1e8;
+                        }
+                    });
+                }
+                
+                // Calculate outputs (what was received)
+                if (tx.out) {
+                    tx.out.forEach(output => {
+                        if (output.addr === address) {
+                            txValue += output.value / 1e8;
+                        }
+                    });
+                }
+                
+                // Reverse the transaction effect
+                runningBalance -= txValue;
+            });
+            
+            // Store for timeframe switching
+            rawTransactions = data.txs;
+            currentBalance = balance;
+            
+            console.log('Historical data points generated:', historicalData.length);
+            console.log('Date range:', 
+                historicalData.length > 0 ? 
+                `${historicalData[0].month} to ${historicalData[historicalData.length - 1].month}` : 
+                'None');
+
             return {
                 personality: {
                     type: personalityType,
@@ -1458,7 +1819,7 @@
                 },
                 txCount: txCount,
                 balance: balance,
-                historicalData: []
+                historicalData: historicalData
             };
         }
 
@@ -1500,6 +1861,64 @@
             const walletAgeDays = firstTx?.blockTime ? 
                 Math.floor((Date.now() - firstTx.blockTime * 1000) / (1000 * 60 * 60 * 24)) : 0;
 
+            // Generate historical balance data
+            // Since we only have transaction signatures (not full tx details),
+            // we'll create evenly distributed balance points as an approximation
+            const historicalData = [];
+            const timeframeData = {};
+            
+            console.log('=== GENERATING SOLANA HISTORY ===');
+            console.log('Current balance:', balance, 'SOL');
+            console.log('Total transactions:', txCount);
+            console.log('Current timeframe:', currentTimeframe);
+            
+            if (transactions.length > 0) {
+                // Process transactions to create timeframe buckets
+                // Note: Solana transactions don't include balance changes in signatures
+                // So we'll distribute the balance evenly across time periods
+                
+                transactions.forEach((tx, index) => {
+                    if (tx.blockTime) {
+                        const date = new Date(tx.blockTime * 1000);
+                        const timeKey = getTimeframeKey(date, currentTimeframe);
+                        const timeLabel = getTimeframeLabel(date, currentTimeframe);
+                        
+                        if (index < 5) {
+                            console.log(`TX ${index}: Date=${date.toISOString()}, TimeKey=${timeKey}, Label=${timeLabel}`);
+                        }
+                        
+                        // Record a data point for each unique time period
+                        if (!timeframeData[timeKey]) {
+                            // Approximate balance at this point (simplified - actual would need full tx data)
+                            const progressRatio = 1 - (index / transactions.length);
+                            const approximateBalance = balance * progressRatio;
+                            
+                            historicalData.push({
+                                month: timeLabel,
+                                balance: Math.max(0, approximateBalance)
+                            });
+                            timeframeData[timeKey] = true;
+                        }
+                    }
+                });
+                
+                // Sort by date (oldest to newest)
+                historicalData.sort((a, b) => {
+                    // Extract date components for sorting
+                    return 0; // Already in order from forEach
+                });
+            }
+            
+            // Store for timeframe switching
+            rawTransactions = transactions;
+            currentBalance = balance;
+            
+            console.log('Historical data points generated:', historicalData.length);
+            console.log('Date range:', 
+                historicalData.length > 0 ? 
+                `${historicalData[0].month} to ${historicalData[historicalData.length - 1].month}` : 
+                'None');
+
             return {
                 personality: {
                     type: personalityType,
@@ -1513,7 +1932,7 @@
                 },
                 txCount: txCount,
                 balance: balance,
-                historicalData: []
+                historicalData: historicalData
             };
         }
 
@@ -1739,32 +2158,87 @@
             const historicalData = [];
             const timeframeData = {};
             
-            // Start from current balance and work backwards
-            let runningBalance = currentBalance;
+            // Check transaction format to determine blockchain type
+            const firstTx = rawTransactions[0];
+            const isSolana = firstTx.blockTime && !firstTx.timeStamp && !firstTx.time;
+            const isBitcoin = firstTx.time && firstTx.inputs;
+            const isEthereum = firstTx.timeStamp && firstTx.value !== undefined;
             
-            // Process transactions in reverse order (newest to oldest)
+            if (isSolana) {
+                // Solana - simplified balance approximation
+                rawTransactions.forEach((tx, index) => {
+                    if (tx.blockTime) {
+                        const date = new Date(tx.blockTime * 1000);
+                        const timeKey = getTimeframeKey(date, timeframe);
+                        const timeLabel = getTimeframeLabel(date, timeframe);
+                        
+                        if (!timeframeData[timeKey]) {
+                            const progressRatio = 1 - (index / rawTransactions.length);
+                            const approximateBalance = currentBalance * progressRatio;
+                            
+                            historicalData.push({
+                                month: timeLabel,
+                                balance: Math.max(0, approximateBalance)
+                            });
+                            timeframeData[timeKey] = true;
+                        }
+                    }
+                });
+                
+                return historicalData;
+            }
+            
+            // For Bitcoin and Ethereum, calculate backwards from current balance
+            let runningBalance = currentBalance;
             const reversedTxs = [...rawTransactions].reverse();
             
             reversedTxs.forEach(tx => {
-                const value = parseFloat(tx.value || 0) / 1e18;
-                const date = new Date(tx.timeStamp * 1000);
+                const date = new Date((tx.timeStamp || tx.time) * 1000);
                 const timeKey = getTimeframeKey(date, timeframe);
                 const timeLabel = getTimeframeLabel(date, timeframe);
                 
                 // Record balance BEFORE processing this transaction
                 if (!timeframeData[timeKey]) {
-                    historicalData.unshift({ // Add to beginning since we're going backwards
+                    historicalData.unshift({
                         month: timeLabel,
                         balance: Math.max(0, runningBalance)
                     });
                     timeframeData[timeKey] = true;
                 }
                 
-                // Adjust balance for this transaction (reverse the effect)
-                if (tx.from.toLowerCase() === walletAddress.toLowerCase()) {
-                    runningBalance += value; // Was sent out, so add it back
-                } else {
-                    runningBalance -= value; // Was received, so subtract it
+                // Handle different transaction formats
+                if (isEthereum) {
+                    // Ethereum-style transaction
+                    const value = parseFloat(tx.value || 0) / 1e18;
+                    if (tx.from.toLowerCase() === walletAddress.toLowerCase()) {
+                        runningBalance += value; // Was sent out, so add it back
+                    } else {
+                        runningBalance -= value; // Was received, so subtract it
+                    }
+                } else if (isBitcoin) {
+                    // Bitcoin-style transaction
+                    let txValue = 0;
+                    
+                    // Calculate inputs (what was sent)
+                    if (tx.inputs) {
+                        tx.inputs.forEach(input => {
+                            if (input.prev_out && input.prev_out.addr === walletAddress) {
+                                txValue -= input.prev_out.value / 1e8;
+                            }
+                        });
+                    }
+                    
+                    // Calculate outputs (what was received)
+                    if (tx.out) {
+                        tx.out.forEach(output => {
+                            if (output.addr === walletAddress) {
+                                txValue += output.value / 1e8;
+                            }
+                        });
+                    }
+                    
+                    // Reverse the transaction effect
+                    runningBalance -= txValue;
                 }
             });
             
@@ -1946,6 +2420,7 @@
             document.getElementById('statBalance').textContent = personality.stats.balance;
             document.getElementById('statActivity').textContent = personality.stats.activityLevel;
             
+            // Traits
             const traitsList = document.getElementById('traits');
             traitsList.innerHTML = '';
             p.traits.forEach(trait => {
@@ -1955,12 +2430,58 @@
                 traitsList.appendChild(li);
             });
             
+            // Strengths (if available)
+            if (p.strengths && p.strengths.length > 0) {
+                document.getElementById('strengthsSection').style.display = 'block';
+                const strengthsList = document.getElementById('strengths');
+                strengthsList.innerHTML = '';
+                p.strengths.forEach(strength => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start';
+                    li.innerHTML = `<span class="text-green-400 mr-3 text-xl">•</span><span>${strength}</span>`;
+                    strengthsList.appendChild(li);
+                });
+            } else {
+                document.getElementById('strengthsSection').style.display = 'none';
+            }
+            
+            // Watch Outs (if available)
+            if (p.watchouts && p.watchouts.length > 0) {
+                document.getElementById('watchoutsSection').style.display = 'block';
+                const watchoutsList = document.getElementById('watchouts');
+                watchoutsList.innerHTML = '';
+                p.watchouts.forEach(watchout => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start';
+                    li.innerHTML = `<span class="text-yellow-400 mr-3 text-xl">•</span><span>${watchout}</span>`;
+                    watchoutsList.appendChild(li);
+                });
+            } else {
+                document.getElementById('watchoutsSection').style.display = 'none';
+            }
+            
+            // Advice (if available - usually for newbies)
+            if (p.advice && p.advice.length > 0) {
+                document.getElementById('adviceSection').style.display = 'block';
+                const adviceList = document.getElementById('advice');
+                adviceList.innerHTML = '';
+                p.advice.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start';
+                    li.innerHTML = `<span class="text-purple-400 mr-3 text-xl">📚</span><span>${tip}</span>`;
+                    adviceList.appendChild(li);
+                });
+            } else {
+                document.getElementById('adviceSection').style.display = 'none';
+            }
+            
+            // Insights
             const insightsDiv = document.getElementById('insights');
             insightsDiv.innerHTML = '';
             personality.insights.forEach(insight => {
                 const p = document.createElement('p');
                 p.className = 'flex items-start';
-                p.innerHTML = `<span class="mr-2">💡</span><span>${insight}</span>`;
+                p.innerHTML = `<span class="text-cyan-400 mr-3 text-xl">•</span><span>${insight}</span>`;
                 insightsDiv.appendChild(p);
             });
             
