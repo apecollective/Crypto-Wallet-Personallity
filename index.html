@@ -1153,30 +1153,74 @@
     <script>        // ==================== CONFIGURATION ====================
         
         // API Keys are hardcoded and ready to use!
+        // ==================== SECURE API CONFIGURATION ====================
+        // API keys are now stored securely on the backend server
+        // Frontend calls the backend proxy instead of blockchain APIs directly
+        
         const API_CONFIG = {
-            moralis: {
-                key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjRhM2IwMjFiLTE5ODMtNGI3Ny05NThkLWNkNDhjYjFlZTczZiIsIm9yZ0lkIjoiNDg5MTEwIiwidXNlcklkIjoiNTAzMjMyIiwidHlwZUlkIjoiY2MxNDg2ODMtN2I0Zi00YmJjLWI4MzUtODBiZmMyNzEzNTA5IiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3Njc3ODM1ODQsImV4cCI6NDkyMzU0MzU4NH0.iz4j7M9szIwo7_Dm97iJej-Y_TSDmZ-juM5qjXoj8S8',
-                endpoint: 'https://deep-index.moralis.io/api/v2.2'
-            },
-            etherscan: {
-                key: 'UEHPZWDPNC2ZSGRJMBYPVH5GUVE72I66NN',
-                mainnet: 'https://api.etherscan.io/api',
-                bsc: 'https://api.bscscan.com/api',
-                polygon: 'https://api.polygonscan.com/api'
-            },
-            alchemy: {
-                ethereum: 'https://eth-mainnet.g.alchemy.com/v2/demo',
-                polygon: 'https://polygon-mainnet.g.alchemy.com/v2/demo',
-            },
-            helius: {
-                key: 'bbd9292e-e6e2-4d83-8567-d82d6286a2af',
-                endpoint: 'https://api.helius.xyz/v0'
-            },
-            avalanche: {
-                key: 'UEHPZWDPNC2ZSGRJMBYPVH5GUVE72I66NN',
-                snowtrace: 'https://api.snowtrace.io/api'
-            }
+            // Backend API proxy server
+            backend: 'http://localhost:3001',
+            
+            // For production deployment, replace with your actual backend URL:
+            // backend: 'https://api.wallet-dna.com',
         };
+        
+        // Check backend connection on page load
+        async function checkBackendConnection() {
+            try {
+                const response = await fetch(`${API_CONFIG.backend}/health`, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Backend server connected successfully');
+                    return true;
+                }
+            } catch (error) {
+                console.error('❌ Backend server not reachable:', error);
+                
+                // Show user-friendly error
+                const errorDiv = document.createElement('div');
+                errorDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(239, 68, 68, 0.95);
+                    color: white;
+                    padding: 1.5rem;
+                    border-radius: 1rem;
+                    max-width: 500px;
+                    text-align: center;
+                    z-index: 9999;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                `;
+                errorDiv.innerHTML = `
+                    <h3 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.5rem;">⚠️ Backend Server Not Running</h3>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem;">
+                        The API proxy server is not running. Please start it with:
+                    </p>
+                    <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 0.5rem; display: block; font-family: monospace; margin-bottom: 1rem;">
+                        node backend-server.js
+                    </code>
+                    <button onclick="this.parentElement.remove()" style="
+                        background: white;
+                        color: #ef4444;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: 0.5rem;
+                        font-weight: bold;
+                        cursor: pointer;
+                    ">Dismiss</button>
+                `;
+                document.body.appendChild(errorDiv);
+                return false;
+            }
+        }
+        
+        // Check connection when page loads
+        window.addEventListener('DOMContentLoaded', checkBackendConnection);
 
         // ==================== PRICING PLANS ====================
         
@@ -1862,44 +1906,20 @@
             
             if (freeNotSupported.includes(chainType)) {
                 console.log(`=== ${chainType.toUpperCase()} NOT ON FREE TIER ===`);
-                console.log('Falling back to public RPC...');
-                
-                const rpcUrls = {
-                    'bsc': 'https://bsc-dataseed.binance.org/',
-                    'avalanche': 'https://api.avax.network/ext/bc/C/rpc'
-                };
-                
-                const chainIds = {
-                    'bsc': 56,
-                    'avalanche': 43114
-                };
-                
-                return await getDataViaPublicRPC(address, chainType, chainIds[chainType], rpcUrls[chainType]);
+                console.log('Falling back to public RPC via backend...');
+                return await getDataViaPublicRPC(address, chainType);
             }
             
-            // ALL chains use the same Etherscan V2 endpoint with different chainId
-            const apiEndpoint = 'https://api.etherscan.io/v2/api';
-            
-            // Chain IDs for different networks
-            const chainIds = {
-                'ethereum': 1,
-                'polygon': 137
-            };
-            
-            const chainId = chainIds[chainType] || 1;
-            const apiKey = API_CONFIG.etherscan.key;
-
-            console.log('=== ETHERSCAN V2 UNIFIED API ===');
+            console.log('=== SECURE BACKEND API CALL ===');
             console.log('Chain:', chainType);
-            console.log('Chain ID:', chainId);
-            console.log('Unified Endpoint:', apiEndpoint);
-            console.log('Note: Using single endpoint for all supported chains');
+            console.log('Calling backend proxy (API keys hidden)');
 
             // Check cache
             const cacheKey = `${chainType}:${address}`;
             if (apiCache.has(cacheKey)) {
                 const cached = apiCache.get(cacheKey);
                 if (Date.now() - cached.timestamp < 300000) {
+                    console.log('Using cached data');
                     return cached.data;
                 }
             }
@@ -1907,140 +1927,97 @@
             updateLoadingStatus('Fetching transaction history...', 30);
             completeStep('step1');
 
-            // Build V2 API URL for all chains
-            const txUrl = `${apiEndpoint}?chainid=${chainId}&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=asc&apikey=${apiKey}`;
-            
-            console.log('=== ETHERSCAN API CALL ===');
-            console.log('Chain:', chainType);
-            console.log('API Version: V2');
-            console.log('Chain ID:', chainId);
-            console.log('Endpoint:', apiEndpoint);
-            console.log('Address:', address);
-            console.log('API Key:', apiKey ? apiKey.substring(0, 10) + '...' : 'MISSING');
-            console.log('Full URL:', txUrl.replace(apiKey, 'API_KEY_HIDDEN'));
-            
-            const txResponse = await fetch(txUrl);
-            
-            console.log('Response status:', txResponse.status);
-            console.log('Response OK:', txResponse.ok);
-            
-            // Check if response is actually JSON before parsing
-            const contentType = txResponse.headers.get('content-type');
-            console.log('Content-Type:', contentType);
-            
-            if (!txResponse.ok) {
-                const errorText = await txResponse.text();
-                console.error('API Error Response:', errorText.substring(0, 500));
-                throw new Error(`API request failed with status ${txResponse.status}`);
-            }
-            
-            if (!contentType || !contentType.includes('application/json')) {
-                const textResponse = await txResponse.text();
-                console.error('Non-JSON response:', textResponse.substring(0, 500));
-                throw new Error('API returned HTML instead of JSON - endpoint may not exist or API key is invalid');
-            }
-            
-            const txData = await txResponse.json();
-
-            console.log('=== API RESPONSE ===');
-            console.log('Full Response:', txData);
-            console.log('Status:', txData.status);
-            console.log('Message:', txData.message);
-            console.log('Result type:', typeof txData.result);
-            console.log('Result length:', Array.isArray(txData.result) ? txData.result.length : 'N/A');
-
-            if (txData.status !== '1') {
-                let errorMsg = 'API Error: ';
+            try {
+                // Call backend API instead of Etherscan directly
+                const txUrl = `${API_CONFIG.backend}/api/etherscan/${chainType}/transactions?address=${address}`;
                 
-                if (txData.result && typeof txData.result === 'string') {
-                    if (txData.result.includes('Invalid API Key')) {
-                        errorMsg = `Invalid API key for ${chainType}. Note: Each blockchain explorer requires its own API key. Get one at:\n`;
-                        errorMsg += chainType === 'bsc' ? '- BscScan: https://bscscan.com/myapikey' :
-                                   chainType === 'polygon' ? '- PolygonScan: https://polygonscan.com/myapikey' :
-                                   chainType === 'avalanche' ? '- SnowTrace: https://snowtrace.io/myapikey' :
-                                   '- Etherscan: https://etherscan.io/myapikey';
-                    } else if (txData.result.includes('rate limit')) {
-                        errorMsg = 'Rate limit exceeded. Please wait a moment and try again.';
-                    } else if (txData.result.includes('deprecated V1 endpoint')) {
-                        // This error appears on BscScan even though they don't have V2 yet
-                        // It's because the Etherscan API key doesn't work on BscScan
-                        errorMsg = `API key issue: The Etherscan API key doesn't work on ${chainType === 'bsc' ? 'BscScan' : chainType}.\n\n`;
-                        errorMsg += `You need a separate API key from:\n`;
-                        errorMsg += chainType === 'bsc' ? 'BscScan: https://bscscan.com/myapikey' :
-                                   chainType === 'polygon' ? 'PolygonScan: https://polygonscan.com/myapikey' :
-                                   chainType === 'avalanche' ? 'SnowTrace: https://snowtrace.io/myapikey' :
-                                   'Etherscan: https://etherscan.io/myapikey';
-                    } else {
-                        errorMsg += txData.result;
-                    }
-                } else if (txData.message && txData.message.includes('NOTOK')) {
-                    errorMsg = `API returned NOTOK status for ${chainType}.\n\nDetails: ${txData.message}\nResult: ${JSON.stringify(txData.result)}`;
-                } else {
-                    errorMsg += `Status: ${txData.status}, Message: ${txData.message}, Result: ${JSON.stringify(txData.result)}`;
+                console.log('Backend URL:', txUrl);
+                console.log('✅ API keys are secure on backend server');
+                
+                const txResponse = await fetch(txUrl);
+                
+                console.log('Response status:', txResponse.status);
+                
+                if (!txResponse.ok) {
+                    const errorText = await txResponse.text();
+                    console.error('Backend API Error:', errorText.substring(0, 500));
+                    throw new Error(`Backend API returned ${txResponse.status}`);
                 }
                 
-                console.error('=== ETHERSCAN ERROR DETAILS ===');
-                console.error('Status:', txData.status);
-                console.error('Message:', txData.message);
-                console.error('Result:', txData.result);
-                console.error('Full response:', txData);
-                throw new Error(errorMsg);
+                const txData = await txResponse.json();
+
+                console.log('=== API RESPONSE ===');
+                console.log('Full Response:', txData);
+                console.log('Status:', txData.status);
+                console.log('Message:', txData.message);
+                console.log('Result type:', typeof txData.result);
+                console.log('Result length:', Array.isArray(txData.result) ? txData.result.length : 'N/A');
+
+                if (txData.status !== '1') {
+                    console.error('=== BACKEND ERROR DETAILS ===');
+                    console.error('Full response:', txData);
+                    throw new Error('Failed to fetch transaction data from backend');
+                }
+
+                completeStep('step2');
+                updateLoadingStatus('Analyzing wallet...', 60);
+
+                // Fetch balance via backend
+                const balanceUrl = `${API_CONFIG.backend}/api/etherscan/${chainType}/balance?address=${address}`;
+                
+                console.log('Fetching balance via backend...');
+                const balResponse = await fetch(balanceUrl);
+                
+                if (!balResponse.ok) {
+                    throw new Error('Failed to fetch balance from backend');
+                }
+                
+                const balData = await balResponse.json();
+
+                console.log('Balance API response:', balData);
+
+                if (balData.status !== '1') {
+                    throw new Error('Failed to fetch balance');
+                }
+
+                const balance = parseFloat(balData.result) / 1e18;
+                const transactions = txData.result;
+
+                completeStep('step3');
+
+                const result = analyzeEthereumWallet(address, transactions, balance, chainType);
+                
+                apiCache.set(cacheKey, {
+                    data: result,
+                    timestamp: Date.now()
+                });
+
+                return result;
+            } catch (error) {
+                console.error('Error in getEthereumDataViaEtherscan:', error);
+                throw error;
             }
-
-            completeStep('step2');
-            updateLoadingStatus('Analyzing wallet...', 60);
-
-            // Fetch balance using V2 API
-            const balanceUrl = `${apiEndpoint}?chainid=${chainId}&module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
-            
-            console.log('Fetching balance with V2 API...');
-            const balResponse = await fetch(balanceUrl);
-            const balData = await balResponse.json();
-
-            console.log('Balance API response:', balData);
-
-            if (balData.status !== '1') {
-                throw new Error('Failed to fetch balance');
-            }
-
-            const balance = parseFloat(balData.result) / 1e18;
-            const transactions = txData.result;
-
-            completeStep('step3');
-
-            const result = analyzeEthereumWallet(address, transactions, balance, chainType);
-            
-            apiCache.set(cacheKey, {
-                data: result,
-                timestamp: Date.now()
-            });
-
-            return result;
         }
 
-        // Public RPC implementation for BSC/Polygon/Avalanche (no API key needed!)
-        async function getDataViaPublicRPC(address, chainType, chainId, rpcUrl) {
-            console.log('=== USING PUBLIC RPC ===');
+        // Public RPC implementation for BSC/Avalanche via backend
+        async function getDataViaPublicRPC(address, chainType) {
+            console.log('=== USING BACKEND RPC PROXY ===');
             console.log('Chain:', chainType);
-            console.log('RPC URL:', rpcUrl);
             
-            updateLoadingStatus('Fetching balance via public RPC...', 30);
+            updateLoadingStatus('Fetching balance via RPC...', 30);
             completeStep('step1');
             
-            // Get current balance using eth_getBalance
-            const balanceResponse = await fetch(rpcUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: '2.0',
-                    id: 1,
-                    method: 'eth_getBalance',
-                    params: [address, 'latest']
-                })
-            });
-            
-            const balanceData = await balanceResponse.json();
-            console.log('Balance response:', balanceData);
+            try {
+                // Get current balance via backend
+                const balanceUrl = `${API_CONFIG.backend}/api/rpc/${chainType}/balance?address=${address}`;
+                const balanceResponse = await fetch(balanceUrl);
+                
+                if (!balanceResponse.ok) {
+                    throw new Error(`Backend RPC request failed: ${balanceResponse.status}`);
+                }
+                
+                const balanceData = await balanceResponse.json();
+                console.log('Balance response:', balanceData);
             
             if (balanceData.error) {
                 throw new Error(`RPC error: ${balanceData.error.message}`);
@@ -2051,17 +2028,13 @@
             completeStep('step2');
             updateLoadingStatus('Fetching transaction count...', 60);
             
-            // Get transaction count as a proxy for activity
-            const txCountResponse = await fetch(rpcUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: '2.0',
-                    id: 2,
-                    method: 'eth_getTransactionCount',
-                    params: [address, 'latest']
-                })
-            });
+            // Get transaction count via backend
+            const txCountUrl = `${API_CONFIG.backend}/api/rpc/${chainType}/txcount?address=${address}`;
+            const txCountResponse = await fetch(txCountUrl);
+            
+            if (!txCountResponse.ok) {
+                throw new Error(`Backend transaction count request failed: ${txCountResponse.status}`);
+            }
             
             const txCountData = await txCountResponse.json();
             const txCount = parseInt(txCountData.result, 16);
@@ -2095,6 +2068,10 @@
             };
             
             return result;
+            } catch (error) {
+                console.error('Error in getDataViaPublicRPC:', error);
+                throw error;
+            }
         }
 
         // Alchemy API implementation (fallback)
@@ -2200,15 +2177,16 @@
             updateLoadingStatus('Fetching Bitcoin data...', 30);
             completeStep('step1');
 
-            const response = await fetch(`https://blockchain.info/rawaddr/${address}?limit=1000`);
+            // Call backend instead of blockchain.info directly
+            const response = await fetch(`${API_CONFIG.backend}/api/bitcoin/transactions?address=${address}`);
             
             if (!response.ok) {
-                throw new Error('Failed to fetch Bitcoin data');
+                throw new Error('Failed to fetch Bitcoin data from backend');
             }
 
             const data = await response.json();
             
-            console.log('=== BITCOIN DATA ===');
+            console.log('=== BITCOIN DATA (via Backend) ===');
             console.log('Total transactions:', data.n_tx);
             console.log('Transactions fetched:', data.txs.length);
             console.log('Oldest tx date:', data.txs[data.txs.length - 1] ? new Date(data.txs[data.txs.length - 1].time * 1000) : 'N/A');
@@ -2228,7 +2206,7 @@
             return result;
         }
 
-        // SOLANA API (using Helius - much more reliable!)
+        // SOLANA API (via secure backend)
         async function getSolanaData(address) {
             if (!isValidSolanaAddress(address)) {
                 throw new Error('Invalid Solana address format');
@@ -2245,23 +2223,14 @@
             updateLoadingStatus('Fetching Solana data...', 30);
             completeStep('step1');
 
-            // Use Helius RPC (much better than public Solana RPC)
-            const heliusRpcUrl = `https://mainnet.helius-rpc.com/?api-key=${API_CONFIG.helius.key}`;
-            
-            console.log('=== USING HELIUS FOR SOLANA ===');
-            console.log('RPC URL:', heliusRpcUrl);
+            console.log('=== USING BACKEND FOR SOLANA ===');
 
-            // Get balance using Helius RPC
-            const balanceResponse = await fetch(heliusRpcUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: '2.0',
-                    id: 1,
-                    method: 'getBalance',
-                    params: [address]
-                })
-            });
+            // Get balance via backend
+            const balanceResponse = await fetch(`${API_CONFIG.backend}/api/solana/balance?address=${address}`);
+            
+            if (!balanceResponse.ok) {
+                throw new Error('Failed to fetch Solana balance from backend');
+            }
 
             if (!balanceResponse.ok) {
                 throw new Error(`Helius RPC error: ${balanceResponse.status}`);
@@ -2279,20 +2248,15 @@
             completeStep('step2');
             updateLoadingStatus('Analyzing transactions...', 60);
 
-            // Get transaction signatures using Helius RPC (increased limit)
-            const sigResponse = await fetch(heliusRpcUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: '2.0',
-                    id: 1,
-                    method: 'getSignaturesForAddress',
-                    params: [address, { limit: 1000 }]
-                })
-            });
+            // Get transaction signatures via backend
+            const sigResponse = await fetch(`${API_CONFIG.backend}/api/solana/transactions?address=${address}`);
+            
+            if (!sigResponse.ok) {
+                throw new Error('Failed to fetch Solana transactions from backend');
+            }
 
             const sigData = await sigResponse.json();
-            console.log('=== SOLANA DATA ===');
+            console.log('=== SOLANA DATA (via Backend) ===');
             console.log('Signatures fetched:', sigData.result?.length || 0);
             
             if (sigData.result && sigData.result.length > 0) {
