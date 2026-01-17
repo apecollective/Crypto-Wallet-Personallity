@@ -4,45 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Content Security Policy for additional security -->
+    <!-- Content Security Policy - Relaxed for local testing, tighten for production -->
     <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net;
+        default-src 'self' 'unsafe-inline' 'unsafe-eval';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net;
         style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com;
         font-src 'self' https://fonts.gstatic.com;
         img-src 'self' https: data:;
         connect-src 'self' https://api.etherscan.io https://api.blockchain.info https://mainnet.helius-rpc.com https://bsc-dataseed.binance.org https://api.avax.network https://polygon-rpc.com https://cryptologos.cc;
-        frame-src 'none';
-        object-src 'none';
-        base-uri 'self';
-        form-action 'self';
     ">
     
     <title>Wallet DNA - Decode Your On-Chain Genetics</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
     
-    <!-- External Scripts with SRI (Subresource Integrity) for security -->
-    <!-- Tailwind CSS - CDN version (dynamic, no SRI available) -->
-    <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
+    <!-- External Scripts - SRI hashes removed for local testing compatibility -->
+    <!-- For production deployment, generate proper SRI hashes -->
     
-    <!-- Ethers.js with SRI hash -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ethers.js -->
     <script 
         src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"
-        integrity="sha384-R/RPzvKvbfIUNTSn2+8sUQw8fLLJNbFH3ufNKcLVQmvB9d+qRyqFnE4LQiKBl0P3"
         crossorigin="anonymous">
     </script>
     
-    <!-- Chart.js with SRI hash -->
+    <!-- Chart.js -->
     <script 
         src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
-        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc0Km1lp2JPqGr1rnJqKo0BOwCVtS5yQ5g"
         crossorigin="anonymous">
     </script>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         * {
