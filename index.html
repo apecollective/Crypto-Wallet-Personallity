@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallet Personality - Discover Your Crypto Vibe</title>
+    <title>Wallet DNA - Decode Your On-Chain Genetics</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
@@ -331,18 +331,40 @@
             <!-- Start Screen -->
             <div id="startScreen" class="fade-in">
                 
-                <!-- Header -->
+                <!-- Header - Interactive/Gamified -->
                 <div class="text-center mb-12">
-                    <div class="text-6xl md:text-8xl mb-6 float">🔮</div>
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 text-gradient px-4">
-                        WALLET VIBE CHECK
+                    <!-- Animated Icon -->
+                    <div class="text-8xl mb-6 float">🧬</div>
+                    
+                    <!-- Main Title -->
+                    <h1 class="text-5xl sm:text-6xl md:text-7xl font-black mb-6 text-gradient px-4">
+                        WALLET DNA
                     </h1>
-                    <p class="text-lg sm:text-xl md:text-2xl text-white/80 mb-6 px-4">
-                        Discover your on-chain personality
-                    </p>
-                    <div class="badge mx-auto">
-                        <div class="status-dot"></div>
-                        <span>Powered by Moralis</span>
+                    
+                    <!-- Interactive Question -->
+                    <div class="glass p-6 sm:p-8 max-w-3xl mx-auto mb-8">
+                        <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
+                            Ready to decode your wallet? 🔍
+                        </p>
+                        <p class="text-lg sm:text-xl text-white/80 mb-6">
+                            Discover if you're a Diamond Hands 💎, Chart Master 📈, or something else entirely...
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-3 text-sm sm:text-base">
+                            <span class="px-4 py-2 rounded-full bg-white/10 text-white/70">
+                                ⚡ Takes 30 seconds
+                            </span>
+                            <span class="px-4 py-2 rounded-full bg-white/10 text-white/70">
+                                🔒 100% anonymous
+                            </span>
+                            <span class="px-4 py-2 rounded-full bg-white/10 text-white/70">
+                                🎯 8 unique types
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Arrow/Prompt -->
+                    <div class="text-cyan-400 text-xl sm:text-2xl font-semibold mb-4 animate-bounce">
+                        ↓ Start Here ↓
                     </div>
                 </div>
                 
@@ -577,6 +599,162 @@
                     <!-- Wallet Address -->
                     <div class="text-center text-sm text-white/50 mb-8 font-mono">
                         <span id="walletAddress"></span>
+                    </div>
+                    
+                    <!-- NFT Personality Certificate - TRENDY VERSION -->
+                    <div class="relative mb-8">
+                        <!-- Glow background effect -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 blur-3xl"></div>
+                        
+                        <div class="glass p-6 sm:p-8 border-2 border-cyan-400/50 relative overflow-hidden">
+                            <!-- Animated background pattern -->
+                            <div class="absolute inset-0 opacity-10">
+                                <div class="absolute inset-0 bg-gradient-to-br from-cyan-400 via-purple-400 to-pink-400 animate-pulse"></div>
+                            </div>
+                            
+                            <div class="relative z-10">
+                                <!-- Header -->
+                                <div class="text-center mb-8">
+                                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-400/30 mb-4">
+                                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                                        <span class="text-sm font-bold text-cyan-400">LIMITED DROP</span>
+                                    </div>
+                                    <h3 class="text-3xl sm:text-4xl font-black mb-3 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                        MINT YOUR DNA
+                                    </h3>
+                                    <p class="text-base sm:text-lg text-white/80">
+                                        Turn your wallet personality into a collectible NFT
+                                    </p>
+                                </div>
+                                
+                                <!-- NFT Card - Modern 3D Style -->
+                                <div class="max-w-sm mx-auto mb-8">
+                                    <div class="relative group">
+                                        <!-- Card glow on hover -->
+                                        <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
+                                        
+                                        <!-- Main card -->
+                                        <div class="relative bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-cyan-400/30">
+                                            <!-- Top bar with edition number -->
+                                            <div class="flex justify-between items-center mb-4">
+                                                <span class="text-xs font-mono text-cyan-400">WALLET DNA</span>
+                                                <span class="text-xs font-mono text-white/50">#<span id="nftEditionNumber">001</span></span>
+                                            </div>
+                                            
+                                            <!-- Large centered icon with glow -->
+                                            <div class="text-center mb-4">
+                                                <div class="relative inline-block">
+                                                    <div class="absolute inset-0 blur-2xl opacity-50 bg-gradient-to-br from-cyan-400 to-purple-400"></div>
+                                                    <div class="relative text-8xl" id="nftPreviewIcon">💎</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Personality name with gradient -->
+                                            <h4 class="text-2xl font-black text-center mb-2 bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent" id="nftPreviewType">
+                                                The Diamond Hands
+                                            </h4>
+                                            
+                                            <!-- Chain badge -->
+                                            <div class="text-center mb-6">
+                                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-xs font-semibold text-cyan-400">
+                                                    <span id="nftPreviewChain">Ethereum</span>
+                                                </span>
+                                            </div>
+                                            
+                                            <!-- Stats grid -->
+                                            <div class="grid grid-cols-3 gap-3 mb-4">
+                                                <div class="bg-gradient-to-br from-white/5 to-white/0 rounded-xl p-3 border border-white/10 text-center">
+                                                    <div class="text-xs text-white/50 mb-1">TXs</div>
+                                                    <div class="text-sm font-bold text-cyan-400" id="nftPreviewTx">1.2K</div>
+                                                </div>
+                                                <div class="bg-gradient-to-br from-white/5 to-white/0 rounded-xl p-3 border border-white/10 text-center">
+                                                    <div class="text-xs text-white/50 mb-1">Age</div>
+                                                    <div class="text-sm font-bold text-purple-400" id="nftPreviewAge">365d</div>
+                                                </div>
+                                                <div class="bg-gradient-to-br from-white/5 to-white/0 rounded-xl p-3 border border-white/10 text-center">
+                                                    <div class="text-xs text-white/50 mb-1">Rarity</div>
+                                                    <div class="text-sm font-bold text-pink-400">Epic</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Bottom certification -->
+                                            <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                                                <div class="text-xs text-white/40 font-mono">CERTIFIED</div>
+                                                <div class="flex items-center gap-1">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-green-400"></div>
+                                                    <span class="text-xs text-green-400">Authentic</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Features -->
+                                <div class="grid grid-cols-3 gap-4 mb-8">
+                                    <div class="text-center">
+                                        <div class="w-12 h-12 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-cyan-500/5 border border-cyan-400/30 flex items-center justify-center text-2xl">
+                                            🎨
+                                        </div>
+                                        <div class="text-sm font-semibold text-white/90">Unique Art</div>
+                                        <div class="text-xs text-white/50">AI Generated</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-12 h-12 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-400/30 flex items-center justify-center text-2xl">
+                                            ♾️
+                                        </div>
+                                        <div class="text-sm font-semibold text-white/90">Forever</div>
+                                        <div class="text-xs text-white/50">On Polygon</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="w-12 h-12 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-pink-500/20 to-pink-500/5 border border-pink-400/30 flex items-center justify-center text-2xl">
+                                            🔥
+                                        </div>
+                                        <div class="text-sm font-semibold text-white/90">Flex It</div>
+                                        <div class="text-xs text-white/50">Social Ready</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pricing -->
+                                <div class="text-center mb-6">
+                                    <div class="inline-flex items-baseline gap-2">
+                                        <span class="text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">$19.99</span>
+                                        <span class="text-white/60">USD</span>
+                                    </div>
+                                    <div class="text-sm text-white/50 mt-1">
+                                        Pay with card or crypto • Instant mint
+                                    </div>
+                                </div>
+                                
+                                <!-- CTA Button - Super trendy -->
+                                <button onclick="mintNFT()" class="group relative w-full sm:w-auto sm:px-16 py-5 rounded-2xl overflow-hidden">
+                                    <!-- Animated gradient background -->
+                                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 transition-transform group-hover:scale-105"></div>
+                                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    
+                                    <!-- Shine effect -->
+                                    <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                                    
+                                    <!-- Button content -->
+                                    <span class="relative flex items-center justify-center gap-2 text-lg font-black text-white">
+                                        <span>MINT NOW</span>
+                                        <span class="text-2xl">🚀</span>
+                                    </span>
+                                </button>
+                                
+                                <!-- Trust signals -->
+                                <div class="flex flex-wrap justify-center gap-3 mt-6 text-xs text-white/50">
+                                    <span class="flex items-center gap-1">
+                                        <span class="text-green-400">✓</span> Polygon Network
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="text-green-400">✓</span> Low Gas Fees
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="text-green-400">✓</span> Instant Delivery
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Action Buttons -->
@@ -2428,6 +2606,9 @@
             const p = personalities[personality.type];
             const chainInfo = chains[selectedChain];
             
+            // Store for NFT minting
+            currentPersonalityType = personality.type;
+            
             document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('resultsScreen').classList.remove('hidden');
             
@@ -2440,6 +2621,17 @@
             document.getElementById('statWalletAge').textContent = personality.stats.walletAge;
             document.getElementById('statBalance').textContent = personality.stats.balance;
             document.getElementById('statActivity').textContent = personality.stats.activityLevel;
+            
+            // Update NFT Preview
+            document.getElementById('nftPreviewIcon').textContent = p.icon;
+            document.getElementById('nftPreviewType').textContent = p.name;
+            document.getElementById('nftPreviewChain').textContent = chainInfo.name;
+            document.getElementById('nftPreviewTx').textContent = personality.stats.txCount;
+            document.getElementById('nftPreviewAge').textContent = personality.stats.walletAge;
+            
+            // Generate random edition number (1-9999)
+            const editionNumber = Math.floor(Math.random() * 9999) + 1;
+            document.getElementById('nftEditionNumber').textContent = editionNumber.toString().padStart(4, '0');
             
             // Traits
             const traitsList = document.getElementById('traits');
@@ -2573,6 +2765,49 @@
                 step.querySelector('span').textContent = '○';
             });
         }
+
+        async function mintNFT() {
+            // Get current personality data
+            const p = personalities[currentPersonalityType];
+            const chainInfo = chains[selectedChain];
+            
+            // Show confirmation dialog
+            const confirmed = confirm(
+                `🎨 Mint Your Personality Certificate NFT!\n\n` +
+                `Type: ${p.name}\n` +
+                `Chain: ${chainInfo.name}\n` +
+                `Price: $19.99\n\n` +
+                `This will create a unique NFT certificate of your wallet personality on Polygon.\n\n` +
+                `Ready to proceed?`
+            );
+            
+            if (!confirmed) return;
+            
+            // In a real implementation, this would:
+            // 1. Connect to user's wallet
+            // 2. Call smart contract to mint NFT
+            // 3. Process payment ($19.99)
+            // 4. Generate unique artwork
+            // 5. Mint on Polygon
+            
+            alert(
+                `🚧 NFT Minting Coming Soon!\n\n` +
+                `We're building the smart contract infrastructure.\n\n` +
+                `Your personality: ${p.name} ${p.icon}\n\n` +
+                `Join our waitlist at walletdna.io to get notified when minting goes live!\n\n` +
+                `Early supporters get 50% off! 🎉`
+            );
+            
+            // Track interest (you can add analytics here)
+            console.log('NFT Mint Interest:', {
+                personality: p.name,
+                chain: chainInfo.name,
+                wallet: walletAddress
+            });
+        }
+        
+        // Store current personality for NFT minting
+        let currentPersonalityType = 'hodler';
 
         function shareResults() {
             const personalityName = document.getElementById('personalityType').textContent;
