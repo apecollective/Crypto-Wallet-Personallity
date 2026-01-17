@@ -333,6 +333,20 @@
                 
                 <!-- Header - Interactive/Gamified -->
                 <div class="text-center mb-12">
+                    <!-- Current Plan Badge -->
+                    <div class="flex justify-center mb-4 gap-3">
+                        <div id="currentPlanBadge" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20">
+                            <span class="text-sm font-semibold">🆓 FREE PLAN</span>
+                            <span class="text-xs text-white/60">|</span>
+                            <span id="dailyUsage" class="text-xs text-white/60">0/3 today</span>
+                        </div>
+                        
+                        <!-- Demo Plan Switcher -->
+                        <button onclick="cyclePlan()" class="text-xs px-3 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 transition">
+                            Switch Plan (Demo)
+                        </button>
+                    </div>
+                    
                     <!-- Animated Icon -->
                     <div class="text-8xl mb-6 float">🧬</div>
                     
@@ -395,19 +409,28 @@
                         </div>
                         
                         <div class="chain-btn" onclick="selectChain('bsc')">
-                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="absolute top-2 right-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                🔒 PRO
+                            </div>
+                            <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" class="w-16 h-16 mx-auto mb-4 opacity-60">
                             <div class="text-lg font-bold text-center">BNB Chain</div>
                             <div class="text-sm text-white/60 text-center">BNB</div>
                         </div>
                         
                         <div class="chain-btn" onclick="selectChain('polygon')">
-                            <img src="https://cryptologos.cc/logos/polygon-matic-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="absolute top-2 right-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                🔒 PRO
+                            </div>
+                            <img src="https://cryptologos.cc/logos/polygon-matic-logo.svg" class="w-16 h-16 mx-auto mb-4 opacity-60">
                             <div class="text-lg font-bold text-center">Polygon</div>
                             <div class="text-sm text-white/60 text-center">MATIC</div>
                         </div>
                         
                         <div class="chain-btn" onclick="selectChain('avalanche')">
-                            <img src="https://cryptologos.cc/logos/avalanche-avax-logo.svg" class="w-16 h-16 mx-auto mb-4">
+                            <div class="absolute top-2 right-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                🔒 PRO
+                            </div>
+                            <img src="https://cryptologos.cc/logos/avalanche-avax-logo.svg" class="w-16 h-16 mx-auto mb-4 opacity-60">
                             <div class="text-lg font-bold text-center">Avalanche</div>
                             <div class="text-sm text-white/60 text-center">AVAX</div>
                         </div>
@@ -595,6 +618,256 @@
                             <canvas id="portfolioChart"></canvas>
                         </div>
                     </div>
+                    
+                    <!-- PREMIUM FEATURES START -->
+                    
+                    <!-- Wallet Health Score (Premium+) -->
+                    <div id="walletHealthSection" class="glass p-4 sm:p-6 md:p-8 mb-8 relative" style="display:none;">
+                        <div class="text-center mb-6">
+                            <h3 class="text-xl sm:text-2xl font-bold mb-4 flex items-center justify-center gap-3">
+                                <span>❤️</span> Wallet Health Score
+                            </h3>
+                            
+                            <!-- Health Score Circle -->
+                            <div class="relative inline-flex items-center justify-center w-32 h-32 mb-4">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="64" cy="64" r="56" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                                    <circle id="healthCircle" cx="64" cy="64" r="56" stroke="url(#healthGradient)" stroke-width="8" fill="none" 
+                                            stroke-dasharray="352" stroke-dashoffset="88" stroke-linecap="round"/>
+                                    <defs>
+                                        <linearGradient id="healthGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00f2fe"/>
+                                            <stop offset="100%" style="stop-color:#4facfe"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span id="healthScore" class="text-4xl font-black text-gradient">87</span>
+                                    <span class="text-xs text-white/60">/ 100</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Health Breakdown -->
+                            <div class="space-y-3 text-left max-w-md mx-auto">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-white/80">Security</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-400" style="width: 82%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-cyan-400 w-8">82</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-white/80">Activity</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-green-400 to-emerald-400" style="width: 91%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-green-400 w-8">91</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-white/80">Diversification</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-yellow-400 to-orange-400" style="width: 65%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-yellow-400 w-8">65</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-white/80">Gas Efficiency</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-cyan-400 to-blue-400" style="width: 79%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-cyan-400 w-8">79</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-white/80">Risk Level</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-red-400 to-pink-400" style="width: 34%"></div>
+                                        </div>
+                                        <span class="text-sm font-bold text-green-400 w-8">34</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Breakdown (Premium+) -->
+                    <div id="portfolioBreakdownSection" class="glass p-4 sm:p-6 md:p-8 mb-8" style="display:none;">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>💰</span> Portfolio Breakdown
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">1.</span>
+                                    <div>
+                                        <div class="font-bold">ETH</div>
+                                        <div class="text-xs text-white/50">Ethereum</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold">45.2%</div>
+                                    <div class="text-sm text-green-400">+5.2%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">2.</span>
+                                    <div>
+                                        <div class="font-bold">USDC</div>
+                                        <div class="text-xs text-white/50">Stablecoin</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold">28.1%</div>
+                                    <div class="text-sm text-white/50">0.0%</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl">3.</span>
+                                    <div>
+                                        <div class="font-bold">LINK</div>
+                                        <div class="text-xs text-white/50">Chainlink</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="font-bold">12.3%</div>
+                                    <div class="text-sm text-green-400">+12.1%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-cyan-400/10 border border-cyan-400/30 rounded-lg">
+                            <p class="text-sm text-white/80">
+                                💡 <strong>Insight:</strong> You're 73% in stablecoins + ETH (conservative). Consider rebalancing - high ETH concentration detected.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Transaction Patterns (Premium+) -->
+                    <div id="transactionPatternsSection" class="glass p-4 sm:p-6 md:p-8 mb-8" style="display:none;">
+                        <h3 class="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-3">
+                            <span>📈</span> Transaction Patterns
+                        </h3>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="text-sm text-white/60 mb-1">Most Active Hour</div>
+                                <div class="text-2xl font-bold text-cyan-400">2-3 PM EST</div>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="text-sm text-white/60 mb-1">Most Active Day</div>
+                                <div class="text-2xl font-bold text-purple-400">Wednesday</div>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="text-sm text-white/60 mb-1">Avg Gas Paid</div>
+                                <div class="text-2xl font-bold text-white">$12.50</div>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-lg">
+                                <div class="text-sm text-white/60 mb-1">Gas Saved (if optimal)</div>
+                                <div class="text-2xl font-bold text-green-400">$450</div>
+                                <div class="text-xs text-white/50">23% savings possible</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upgrade Prompt (for Free users) -->
+                    <div id="upgradePromptSection" class="relative mb-8" style="display:none;">
+                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 blur-2xl"></div>
+                        <div class="glass p-6 sm:p-8 border-2 border-cyan-400/50 relative">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">🚀</div>
+                                <h3 class="text-2xl sm:text-3xl font-black mb-3 text-gradient">
+                                    Unlock Premium Features
+                                </h3>
+                                <p class="text-white/80 mb-6">
+                                    Get deeper insights, advanced analytics, and unlimited analyses
+                                </p>
+                                
+                                <!-- Pricing Cards -->
+                                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                                    <!-- Premium -->
+                                    <div class="glass p-6 border border-cyan-400/30 rounded-2xl text-left">
+                                        <div class="text-cyan-400 font-bold text-sm mb-2">PREMIUM</div>
+                                        <div class="text-4xl font-black mb-4">
+                                            $9.99<span class="text-lg text-white/50">/mo</span>
+                                        </div>
+                                        <ul class="space-y-2 text-sm mb-6">
+                                            <li class="flex items-start gap-2">
+                                                <span class="text-green-400">✓</span>
+                                                <span>Unlimited analyses</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="text-green-400">✓</span>
+                                                <span>All 6 chains</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="text-green-400">✓</span>
+                                                <span>Wallet Health Score</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="text-green-400">✓</span>
+                                                <span>Portfolio Breakdown</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="text-green-400">✓</span>
+                                                <span>Multi-wallet comparison</span>
+                                            </li>
+                                        </ul>
+                                        <button onclick="upgradeToPremium()" class="btn-gradient w-full py-3">
+                                            Upgrade to Premium
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Pro -->
+                                    <div class="relative">
+                                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-1 rounded-full text-xs font-bold">
+                                            MOST POPULAR
+                                        </div>
+                                        <div class="glass p-6 border-2 border-purple-400/50 rounded-2xl text-left">
+                                            <div class="text-purple-400 font-bold text-sm mb-2">PRO</div>
+                                            <div class="text-4xl font-black mb-4">
+                                                $29.99<span class="text-lg text-white/50">/mo</span>
+                                            </div>
+                                            <ul class="space-y-2 text-sm mb-6">
+                                                <li class="flex items-start gap-2">
+                                                    <span class="text-green-400">✓</span>
+                                                    <span>Everything in Premium</span>
+                                                </li>
+                                                <li class="flex items-start gap-2">
+                                                    <span class="text-green-400">✓</span>
+                                                    <span>AI-Powered Insights</span>
+                                                </li>
+                                                <li class="flex items-start gap-2">
+                                                    <span class="text-green-400">✓</span>
+                                                    <span>Whale Watching</span>
+                                                </li>
+                                                <li class="flex items-start gap-2">
+                                                    <span class="text-green-400">✓</span>
+                                                    <span>API Access</span>
+                                                </li>
+                                                <li class="flex items-start gap-2">
+                                                    <span class="text-green-400">✓</span>
+                                                    <span>Priority Support</span>
+                                                </li>
+                                            </ul>
+                                            <button onclick="upgradeToPro()" class="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition">
+                                                Upgrade to Pro
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- PREMIUM FEATURES END -->
                     
                     <!-- Wallet Address -->
                     <div class="text-center text-sm text-white/50 mb-8 font-mono">
@@ -813,6 +1086,98 @@
             }
         };
 
+        // ==================== PRICING PLANS ====================
+        
+        const PLANS = {
+            free: {
+                name: 'Free',
+                price: 0,
+                features: {
+                    analysesPerDay: 3,
+                    chains: ['ethereum', 'bitcoin', 'solana'],
+                    walletHealthScore: false,
+                    portfolioBreakdown: false,
+                    transactionPatterns: false,
+                    smartContractSafety: false,
+                    multiWallet: false,
+                    taxExport: false,
+                    evolutionTracker: false,
+                    alerts: 0,
+                    whaleWatching: false,
+                    aiInsights: false,
+                    peerBenchmark: false,
+                    advancedCharts: false,
+                    apiAccess: false
+                }
+            },
+            premium: {
+                name: 'Premium',
+                price: 9.99,
+                features: {
+                    analysesPerDay: -1, // unlimited
+                    chains: ['ethereum', 'bitcoin', 'solana', 'polygon', 'bsc', 'avalanche'],
+                    walletHealthScore: true,
+                    portfolioBreakdown: true,
+                    transactionPatterns: true,
+                    smartContractSafety: true,
+                    multiWallet: 3,
+                    taxExport: 'basic',
+                    evolutionTracker: true,
+                    alerts: 5,
+                    whaleWatching: false,
+                    aiInsights: false,
+                    peerBenchmark: false,
+                    advancedCharts: false,
+                    apiAccess: false
+                }
+            },
+            pro: {
+                name: 'Pro',
+                price: 29.99,
+                features: {
+                    analysesPerDay: -1,
+                    chains: ['ethereum', 'bitcoin', 'solana', 'polygon', 'bsc', 'avalanche'],
+                    walletHealthScore: true,
+                    portfolioBreakdown: true,
+                    transactionPatterns: true,
+                    smartContractSafety: true,
+                    multiWallet: -1,
+                    taxExport: 'advanced',
+                    evolutionTracker: true,
+                    alerts: -1,
+                    whaleWatching: 10,
+                    aiInsights: true,
+                    peerBenchmark: true,
+                    advancedCharts: true,
+                    apiAccess: true
+                }
+            }
+        };
+        
+        let currentPlan = 'free';
+        let analysesUsedToday = 0;
+        let lastAnalysisDate = new Date().toDateString();
+        
+        function hasAccess(feature) {
+            return PLANS[currentPlan].features[feature];
+        }
+        
+        function isChainAvailable(chain) {
+            return PLANS[currentPlan].features.chains.includes(chain);
+        }
+        
+        function canAnalyzeToday() {
+            const today = new Date().toDateString();
+            if (today !== lastAnalysisDate) {
+                analysesUsedToday = 0;
+                lastAnalysisDate = today;
+            }
+            const limit = PLANS[currentPlan].features.analysesPerDay;
+            return limit === -1 || analysesUsedToday < limit;
+        }
+        
+        // ==================== CHAINS ====================
+        
         const chains = {
             ethereum: {
                 name: 'Ethereum',
@@ -1073,6 +1438,43 @@
 
         let selectedChain = null;
         let walletAddress = null;
+        
+        // Tier System
+        let currentTier = 'free'; // 'free', 'premium', 'pro'
+        let dailyAnalysesUsed = 0;
+        const DAILY_FREE_LIMIT = 3;
+        
+        // Tier Features
+        const tierFeatures = {
+            free: {
+                dailyLimit: 3,
+                chains: ['ethereum', 'bitcoin', 'solana'],
+                features: ['basic-personality', 'basic-chart', 'basic-insights']
+            },
+            premium: {
+                dailyLimit: -1, // unlimited
+                chains: ['ethereum', 'bitcoin', 'solana', 'bsc', 'polygon', 'avalanche'],
+                features: [
+                    'basic-personality', 'basic-chart', 'basic-insights',
+                    'wallet-health', 'portfolio-breakdown', 'transaction-patterns',
+                    'contract-safety', 'multi-wallet', 'tax-export',
+                    'personality-evolution', 'custom-alerts'
+                ]
+            },
+            pro: {
+                dailyLimit: -1, // unlimited
+                chains: ['ethereum', 'bitcoin', 'solana', 'bsc', 'polygon', 'avalanche'],
+                features: [
+                    'basic-personality', 'basic-chart', 'basic-insights',
+                    'wallet-health', 'portfolio-breakdown', 'transaction-patterns',
+                    'contract-safety', 'multi-wallet', 'tax-export',
+                    'personality-evolution', 'custom-alerts',
+                    'ai-insights', 'whale-watching', 'peer-benchmark',
+                    'what-if-analysis', 'advanced-charts', 'api-access',
+                    'pdf-reports', 'priority-support'
+                ]
+            }
+        };
         let chartInstance = null;
         let currentTimeframe = 'biweekly';
         let rawTransactions = null;
@@ -2138,6 +2540,21 @@
         // ==================== UI FUNCTIONS ====================
 
         function selectChain(chain) {
+            // Check if chain is available on current plan
+            if (!isChainAvailable(chain)) {
+                const requiredPlan = chain === 'ethereum' || chain === 'bitcoin' || chain === 'solana' ? 'free' : 'premium';
+                alert(`🔒 ${chains[chain].name} requires ${requiredPlan === 'premium' ? 'Premium' : 'Pro'} plan\n\nUpgrade to unlock all 6 chains!`);
+                showUpgradePrompt();
+                return;
+            }
+            
+            // Check daily limit
+            if (!canAnalyzeToday()) {
+                alert(`⚠️ Daily limit reached!\n\nYou've used all ${PLANS[currentPlan].features.analysesPerDay} free analyses today.\n\nUpgrade to Premium for unlimited analyses!`);
+                showUpgradePrompt();
+                return;
+            }
+            
             selectedChain = chain;
             const chainInfo = chains[chain];
             
@@ -2602,6 +3019,83 @@
             }, 100);
         }
 
+        function showUpgradePrompt() {
+            // Scroll to upgrade section if on results page
+            const upgradeSection = document.getElementById('upgradePromptSection');
+            if (upgradeSection && !upgradeSection.classList.contains('hidden')) {
+                upgradeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function upgradeToPremium() {
+            alert('🚀 Upgrading to Premium!\n\nIn production, this would:\n• Process payment ($9.99/mo)\n• Unlock all premium features\n• Enable unlimited analyses\n\nFor demo: Setting plan to Premium...');
+            currentPlan = 'premium';
+            updatePlanBadge();
+            updatePremiumFeatures();
+        }
+        
+        function upgradeToPro() {
+            alert('🚀 Upgrading to Pro!\n\nIn production, this would:\n• Process payment ($29.99/mo)\n• Unlock ALL features\n• Enable API access\n\nFor demo: Setting plan to Pro...');
+            currentPlan = 'pro';
+            updatePlanBadge();
+            updatePremiumFeatures();
+        }
+        
+        function updatePlanBadge() {
+            const badge = document.getElementById('currentPlanBadge');
+            const usageSpan = document.getElementById('dailyUsage');
+            
+            if (currentPlan === 'free') {
+                badge.innerHTML = `
+                    <span class="text-sm font-semibold">🆓 FREE PLAN</span>
+                    <span class="text-xs text-white/60">|</span>
+                    <span id="dailyUsage" class="text-xs text-white/60">${analysesUsedToday}/3 today</span>
+                `;
+            } else if (currentPlan === 'premium') {
+                badge.innerHTML = `
+                    <span class="text-sm font-semibold text-cyan-400">💎 PREMIUM</span>
+                    <span class="text-xs text-cyan-400/60">Unlimited Analyses</span>
+                `;
+            } else if (currentPlan === 'pro') {
+                badge.innerHTML = `
+                    <span class="text-sm font-semibold text-purple-400">🚀 PRO</span>
+                    <span class="text-xs text-purple-400/60">All Features Unlocked</span>
+                `;
+            }
+        }
+        
+        function cyclePlan() {
+            if (currentPlan === 'free') {
+                currentPlan = 'premium';
+            } else if (currentPlan === 'premium') {
+                currentPlan = 'pro';
+            } else {
+                currentPlan = 'free';
+                analysesUsedToday = 0;
+            }
+            updatePlanBadge();
+            alert(`Plan switched to: ${PLANS[currentPlan].name}\n\nFeatures updated! Try selecting locked chains or view premium features.`);
+        }
+        
+        function updatePremiumFeatures() {
+            // Show/hide features based on plan
+            const showHealth = hasAccess('walletHealthScore');
+            const showPortfolio = hasAccess('portfolioBreakdown');
+            const showPatterns = hasAccess('transactionPatterns');
+            
+            document.getElementById('walletHealthSection').style.display = showHealth ? 'block' : 'none';
+            document.getElementById('portfolioBreakdownSection').style.display = showPortfolio ? 'block' : 'none';
+            document.getElementById('transactionPatternsSection').style.display = showPatterns ? 'block' : 'none';
+            
+            // Show upgrade prompt for free users, hide for others
+            document.getElementById('upgradePromptSection').style.display = currentPlan === 'free' ? 'block' : 'none';
+        }
+        
+        function incrementAnalysisCount() {
+            analysesUsedToday++;
+            updatePlanBadge();
+        }
+
         function showResults(personality, txCount, balance, historicalData) {
             const p = personalities[personality.type];
             const chainInfo = chains[selectedChain];
@@ -2609,8 +3103,14 @@
             // Store for NFT minting
             currentPersonalityType = personality.type;
             
+            // Increment analysis count
+            incrementAnalysisCount();
+            
             document.getElementById('loadingScreen').classList.add('hidden');
             document.getElementById('resultsScreen').classList.remove('hidden');
+            
+            // Update premium features visibility
+            updatePremiumFeatures();
             
             document.getElementById('resultChainIcon').textContent = chainInfo.icon;
             document.getElementById('resultChainName').textContent = chainInfo.name;
