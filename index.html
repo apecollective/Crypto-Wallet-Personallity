@@ -3,14 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Content Security Policy for additional security -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net;
+        style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' https: data:;
+        connect-src 'self' https://api.etherscan.io https://api.blockchain.info https://mainnet.helius-rpc.com https://bsc-dataseed.binance.org https://api.avax.network https://polygon-rpc.com https://cryptologos.cc;
+        frame-src 'none';
+        object-src 'none';
+        base-uri 'self';
+        form-action 'self';
+    ">
+    
     <title>Wallet DNA - Decode Your On-Chain Genetics</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- External Scripts with SRI (Subresource Integrity) for security -->
+    <!-- Tailwind CSS - CDN version (dynamic, no SRI available) -->
+    <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
+    
+    <!-- Ethers.js with SRI hash -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"
+        integrity="sha384-R/RPzvKvbfIUNTSn2+8sUQw8fLLJNbFH3ufNKcLVQmvB9d+qRyqFnE4LQiKBl0P3"
+        crossorigin="anonymous">
+    </script>
+    
+    <!-- Chart.js with SRI hash -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+        integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc0Km1lp2JPqGr1rnJqKo0BOwCVtS5yQ5g"
+        crossorigin="anonymous">
+    </script>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous">
+    
     <style>
         * {
             margin: 0;
@@ -322,6 +355,69 @@
             font-weight: 700;
         }
     </style>
+    
+    <!-- CDN Fallback Detection -->
+    <script>
+        // Check if critical libraries loaded from CDN
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                let missingLibraries = [];
+                
+                // Check if ethers.js loaded
+                if (typeof ethers === 'undefined') {
+                    missingLibraries.push('Ethers.js');
+                }
+                
+                // Check if Chart.js loaded
+                if (typeof Chart === 'undefined') {
+                    missingLibraries.push('Chart.js');
+                }
+                
+                // If any library failed to load, show user-friendly error
+                if (missingLibraries.length > 0) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: rgba(239, 68, 68, 0.95);
+                        color: white;
+                        padding: 2rem;
+                        border-radius: 1rem;
+                        max-width: 90%;
+                        text-align: center;
+                        z-index: 9999;
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                    `;
+                    errorDiv.innerHTML = `
+                        <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">⚠️ Loading Error</h2>
+                        <p style="margin-bottom: 1rem;">Some required libraries failed to load from CDN:</p>
+                        <p style="font-weight: bold; margin-bottom: 1rem;">${missingLibraries.join(', ')}</p>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">This could be due to:</p>
+                        <ul style="text-align: left; margin: 1rem auto; max-width: 300px; font-size: 0.9rem;">
+                            <li>• Ad blocker blocking CDN</li>
+                            <li>• Slow internet connection</li>
+                            <li>• CDN temporarily down</li>
+                        </ul>
+                        <button onclick="location.reload()" style="
+                            background: white;
+                            color: #ef4444;
+                            border: none;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 0.5rem;
+                            font-weight: bold;
+                            cursor: pointer;
+                            margin-top: 1rem;
+                        ">🔄 Retry</button>
+                    `;
+                    document.body.appendChild(errorDiv);
+                    
+                    console.error('Failed to load libraries:', missingLibraries);
+                }
+            }, 2000); // Give CDN 2 seconds to load
+        });
+    </script>
 </head>
 <body class="bg-animated">
     
