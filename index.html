@@ -11,7 +11,7 @@
         style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com;
         font-src 'self' https://fonts.gstatic.com;
         img-src 'self' https: data:;
-        connect-src 'self' https://api.etherscan.io https://api.blockchain.info https://mainnet.helius-rpc.com https://bsc-dataseed.binance.org https://api.avax.network https://polygon-rpc.com https://cryptologos.cc;
+        connect-src 'self' http://localhost:3001 http://localhost:* https://api.etherscan.io https://api.blockchain.info https://mainnet.helius-rpc.com https://bsc-dataseed.binance.org https://api.avax.network https://polygon-rpc.com https://cryptologos.cc https://cdn.jsdelivr.net;
     ">
     
     <title>Wallet DNA - Decode Your On-Chain Genetics</title>
@@ -1068,7 +1068,7 @@
                                             ♾️
                                         </div>
                                         <div class="text-sm font-semibold text-white/90">Forever</div>
-                                        <div class="text-xs text-white/50">On Polygon</div>
+                                        <div class="text-xs text-white/50">On Solana</div>
                                     </div>
                                     <div class="text-center">
                                         <div class="w-12 h-12 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-pink-500/20 to-pink-500/5 border border-pink-400/30 flex items-center justify-center text-2xl">
@@ -1109,10 +1109,10 @@
                                 <!-- Trust signals -->
                                 <div class="flex flex-wrap justify-center gap-3 mt-6 text-xs text-white/50">
                                     <span class="flex items-center gap-1">
-                                        <span class="text-green-400">✓</span> Polygon Network
+                                        <span class="text-green-400">✓</span> Solana Network
                                     </span>
                                     <span class="flex items-center gap-1">
-                                        <span class="text-green-400">✓</span> Low Gas Fees
+                                        <span class="text-green-400">✓</span> Ultra-Low Fees
                                     </span>
                                     <span class="flex items-center gap-1">
                                         <span class="text-green-400">✓</span> Instant Delivery
@@ -3456,22 +3456,22 @@
                 `Type: ${p.name}\n` +
                 `Chain: ${chainInfo.name}\n` +
                 `Price: $19.99\n\n` +
-                `This will create a unique NFT certificate of your wallet personality on Polygon.\n\n` +
+                `This will create a unique NFT certificate of your wallet personality on Solana.\n\n` +
                 `Ready to proceed?`
             );
             
             if (!confirmed) return;
             
             // In a real implementation, this would:
-            // 1. Connect to user's wallet
+            // 1. Connect to user's wallet (Phantom, Solflare, etc.)
             // 2. Call smart contract to mint NFT
-            // 3. Process payment ($19.99)
+            // 3. Process payment ($19.99 or SOL equivalent)
             // 4. Generate unique artwork
-            // 5. Mint on Polygon
+            // 5. Mint on Solana
             
             alert(
                 `🚧 NFT Minting Coming Soon!\n\n` +
-                `We're building the smart contract infrastructure.\n\n` +
+                `We're building the smart contract infrastructure on Solana.\n\n` +
                 `Your personality: ${p.name} ${p.icon}\n\n` +
                 `Join our waitlist at walletdna.io to get notified when minting goes live!\n\n` +
                 `Early supporters get 50% off! 🎉`
